@@ -34,8 +34,13 @@ def test_create_inquiry_valid_and_persistence():
     assert data["name"] == payload["name"]
     assert data["phone"] == payload["phone"]
 
-    # GET list and verify presence
-    g = requests.get(f"{API}/inquiries", timeout=30)
+    # GET list (admin) and verify presence
+    login = requests.post(f"{API}/admin/login", json={
+        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+    }, timeout=30)
+    assert login.status_code == 200
+    token = login.json()["token"]
+    g = requests.get(f"{API}/admin/inquiries", headers={"Authorization": f"Bearer {token}"}, timeout=30)
     assert g.status_code == 200
     ids = [i["id"] for i in g.json()]
     assert data["id"] in ids
@@ -59,8 +64,13 @@ def test_create_inquiry_missing_phone():
     assert r.status_code == 422
 
 
-def test_list_inquiries():
-    r = requests.get(f"{API}/inquiries", timeout=30)
+def test_list_inquiries_admin():
+    login = requests.post(f"{API}/admin/login", json={
+        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+    }, timeout=30)
+    assert login.status_code == 200
+    token = login.json()["token"]
+    r = requests.get(f"{API}/admin/inquiries", headers={"Authorization": f"Bearer {token}"}, timeout=30)
     assert r.status_code == 200
     assert isinstance(r.json(), list)
 
@@ -106,7 +116,12 @@ def test_upload_policy_rejects_oversized():
     assert r.status_code == 413, r.status_code
 
 
-def test_list_policy_uploads():
-    r = requests.get(f"{API}/policy-uploads", timeout=30)
+def test_list_policy_uploads_admin():
+    login = requests.post(f"{API}/admin/login", json={
+        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+    }, timeout=30)
+    assert login.status_code == 200
+    token = login.json()["token"]
+    r = requests.get(f"{API}/admin/policy-uploads", headers={"Authorization": f"Bearer {token}"}, timeout=30)
     assert r.status_code == 200
     assert isinstance(r.json(), list)

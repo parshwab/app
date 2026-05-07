@@ -8,7 +8,7 @@ import {
 const faqs = [
     {
         q: "Why use an advisor instead of buying online?",
-        a: "Online platforms optimise for price comparison; we optimise for the right outcome. Premiums matter, but exclusions, sub-limits, and claim history matter more — and that requires a human conversation.",
+        a: "Online platforms optimise for price comparison; we optimise for the right outcome. Premiums matter, but exclusions, sub-limits, and claim history matter more, and that requires a calm consultation.",
     },
     {
         q: "Can you review my existing policy?",
@@ -16,15 +16,15 @@ const faqs = [
     },
     {
         q: "Will you help during claims?",
-        a: "Always. Claim assistance is the most important part of what we do — we help with documentation, follow-ups, and escalations so you're not navigating the process alone.",
+        a: "Always. Claim assistance is the most important part of what we do, we help with documentation, follow-ups, and escalations so you're not navigating the process alone.",
     },
     {
         q: "Do you charge consultation fees?",
-        a: "No. Consultations and policy reviews are free. We're compensated by insurers as IRDAI-licensed intermediaries — but our recommendations are independent, not commission-led.",
+        a: "No. Consultations and policy reviews are free. We're compensated by insurers as IRDAI-licensed intermediaries, but our recommendations are independent, not commission-led.",
     },
     {
         q: "How do I know which insurance is right for me?",
-        a: "We start by understanding your family, dependents, income, existing cover, and concerns. Then we shortlist options and walk you through the trade-offs. You decide — we just make the choice clearer.",
+        a: "We start by understanding your family, dependents, income, existing cover, and concerns. Then we shortlist options and walk you through the trade-offs. You decide, we just make the choice clearer.",
     },
     {
         q: "What documents are required?",

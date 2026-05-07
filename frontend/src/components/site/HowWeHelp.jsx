@@ -4,7 +4,7 @@ const cards = [
     {
         icon: Ear,
         title: "Understand",
-        body: "We start by listening — your family, your finances, your concerns. No forms, no pressure.",
+        body: "We start by listening, your family, your finances, your concerns. No forms, no pressure.",
     },
     {
         icon: Lightbulb,
@@ -14,7 +14,7 @@ const cards = [
     {
         icon: HeartHandshake,
         title: "Support",
-        body: "We stay with you — at renewal, when life changes, and most importantly, when you need to claim.",
+        body: "We stay with you, at renewal, when life changes, and most importantly, when you need to claim.",
     },
 ];
 
@@ -31,11 +31,11 @@ export default function HowWeHelp() {
                         How we help
                     </p>
                     <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                        Three calm steps. Real human guidance throughout.
+                        Three calm steps. Trusted guidance throughout.
                     </h2>
                     <p className="mt-5 text-lg text-[#475569] leading-relaxed">
                         Our advisors aren&rsquo;t paid to push policies. They&rsquo;re
-                        here to help you choose what&rsquo;s right — and to be there
+                        here to help you choose what&rsquo;s right, and to be there
                         long after you&rsquo;ve signed.
                     </p>
                 </div>

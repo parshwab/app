@@ -214,7 +214,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                         {loading ? "Uploading..." : "Submit for review"}
                     </button>
                     <p className="text-xs text-center text-[#475569]">
-                        Your document is handled confidentially by human advisors.
+                        Your document is handled confidentially by experienced advisors.
                     </p>
                 </form>
             </DialogContent>

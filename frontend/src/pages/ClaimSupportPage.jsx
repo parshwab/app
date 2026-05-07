@@ -21,7 +21,7 @@ const HELP = [
     {
         icon: ClipboardList,
         title: "Documentation guidance",
-        body: "We tell you exactly which forms, bills, and reports to collect — and in what order. No paperwork loops.",
+        body: "We tell you exactly which forms, bills, and reports to collect, and in what order. No paperwork loops.",
     },
     {
         icon: HeartHandshake,
@@ -36,7 +36,7 @@ const HELP = [
     {
         icon: Scale,
         title: "Escalation support",
-        body: "If a fair claim gets unfairly rejected, we help you escalate — internally, to the Ombudsman, or further.",
+        body: "If a fair claim gets unfairly rejected, we help you escalate, internally, to the Ombudsman, or further.",
     },
     {
         icon: Phone,
@@ -54,17 +54,17 @@ const STEPS = [
     {
         n: "01",
         t: "Tell us what's happening",
-        b: "Share basics — insurer, policy number, claim type. We respond within hours, not days.",
+        b: "Share basics, insurer, policy number, claim type. We respond within hours, not days.",
     },
     {
         n: "02",
         t: "We map the next steps",
-        b: "Documentation, intimation timelines, hospital coordination — laid out clearly.",
+        b: "Documentation, intimation timelines, hospital coordination, laid out clearly.",
     },
     {
         n: "03",
         t: "We handle the back-and-forth",
-        b: "Phone calls, emails, surveyor visits — we coordinate so you can focus on what matters.",
+        b: "Phone calls, emails, surveyor visits, we coordinate so you can focus on what matters.",
     },
     {
         n: "04",
@@ -84,15 +84,15 @@ const FAQS = [
     },
     {
         q: "What if my claim has already been rejected?",
-        a: "Don't accept it as final. Many rejections are reversed on appeal. Send us the rejection letter and policy — we'll review the grounds.",
+        a: "Don't accept it as final. Many rejections are reversed on appeal. Send us the rejection letter and policy, we'll review the grounds.",
     },
     {
         q: "How fast can you respond in an emergency?",
-        a: "WhatsApp us — we typically respond within an hour during waking hours, faster in true emergencies.",
+        a: "WhatsApp us, we typically respond within an hour during waking hours, faster in true emergencies.",
     },
     {
         q: "Will you talk to the hospital and insurer directly?",
-        a: "Yes — with your written authorisation, we coordinate directly with both, especially for cashless approvals and surveyor visits.",
+        a: "Yes, with your written authorisation, we coordinate directly with both, especially for cashless approvals and surveyor visits.",
     },
 ];
 
@@ -103,7 +103,7 @@ export default function ClaimSupportPage() {
 
     return (
         <article data-testid="claim-support-page" className="bg-[#FAF9F6]">
-            {/* Hero — calm, reassuring */}
+            {/* Hero, calm, reassuring */}
             <section className="border-b border-[#E2E8F0]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#E2E8F0] px-3.5 py-1.5 text-xs font-medium text-[#475569]">
@@ -115,9 +115,9 @@ export default function ClaimSupportPage() {
                         <span className="text-[#C8322A]">claim alone.</span>
                     </h1>
                     <p className="mt-6 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-2xl mx-auto">
-                        A real human will help you understand your policy, organise
+                        An advisor will help you understand your policy, organise
                         documents, coordinate with insurers, and stay with you until
-                        your claim is resolved — calmly and without judgement.
+                        your claim is resolved, calmly and without judgement.
                     </p>
                     <div className="mt-9 flex flex-wrap gap-3 justify-center">
                         <button
@@ -150,11 +150,11 @@ export default function ClaimSupportPage() {
                             How RightPolicy helps during claims
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                            Real human help, end to end.
+                            Trusted advisor support, end to end.
                         </h2>
                         <p className="mt-5 text-lg text-[#475569] leading-relaxed">
                             Insurance is sold easily. Claims are where it gets hard. We
-                            stand on your side — quietly, persistently, and with the
+                            stand on your side, quietly, persistently, and with the
                             insurers&rsquo; processes already mapped out.
                         </p>
                     </div>
@@ -219,7 +219,7 @@ export default function ClaimSupportPage() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] leading-[1.1]">
                         &ldquo;RightPolicy isn&rsquo;t only there when you buy
-                        insurance — they&rsquo;re there when you actually need help.&rdquo;
+                        insurance, they&rsquo;re there when you actually need help.&rdquo;
                     </h2>
                     <p className="mt-5 text-[#475569]">
                         That&rsquo;s the promise. Quietly kept, again and again.
@@ -271,7 +271,7 @@ export default function ClaimSupportPage() {
                             className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#C8322A]/15 blur-3xl"
                         />
                         <h2 className="font-display relative text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl mx-auto leading-[1.1]">
-                            Whatever your claim situation — start the conversation.
+                            Whatever your claim situation, start the conversation.
                         </h2>
                         <p className="relative mt-4 text-white/75 max-w-xl mx-auto">
                             A real advisor will respond within one business day.

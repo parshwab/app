@@ -18,13 +18,13 @@ export default function FinalCTA() {
                         className="absolute -bottom-40 -left-20 h-80 w-80 rounded-full bg-[#0F172A]/5 blur-3xl"
                     />
                     <div className="relative p-10 sm:p-16 lg:p-20 text-center">
-                        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-[#0F172A] max-w-3xl mx-auto leading-[1.05]">
+                        <h2 className="font-display relative text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-[#0F172A] max-w-3xl mx-auto leading-[1.05]">
                             Insurance decisions deserve{" "}
-                            <span className="text-[#C8322A]">human conversations</span>.
+                            <span className="text-[#C8322A]">calm conversations</span>.
                         </h2>
                         <p className="mt-6 text-lg text-[#475569] max-w-xl mx-auto leading-relaxed">
-                            No bots. No pressure. Just a calm conversation with someone
-                            who&rsquo;s done this for 15+ years.
+                            No bots. No pressure. Just a thoughtful conversation with
+                            advisors who&rsquo;ve done this for 15+ years.
                         </p>
                         <div className="mt-9 flex flex-wrap gap-3 justify-center">
                             <button

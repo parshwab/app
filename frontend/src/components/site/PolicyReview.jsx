@@ -27,8 +27,7 @@ export default function PolicyReview() {
                             </h2>
                             <p className="mt-5 text-lg text-white/75 leading-relaxed max-w-2xl">
                                 Upload your existing policy and our advisors will review
-                                it for hidden gaps, claim risks, and unnecessary costs —
-                                confidentially, and with no obligation.
+                                it for hidden gaps, claim risks, and unnecessary costs,                                 confidentially, and with no obligation.
                             </p>
 
                             <ul className="mt-8 grid sm:grid-cols-2 gap-4 max-w-xl">

@@ -72,7 +72,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
                         A real insurance advisor will connect with you within 24 hours
-                        — no bots, no pressure.
+                       , no bots, no pressure.
                     </DialogDescription>
                 </DialogHeader>
 

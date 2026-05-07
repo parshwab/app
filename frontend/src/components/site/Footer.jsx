@@ -1,7 +1,8 @@
-import { ShieldCheck, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SERVICES } from "@/data/services";
 import { CONTACT_EMAIL, WHATSAPP_DISPLAY, waLink } from "@/lib/rp";
+import Logo from "./Logo";
 
 export default function Footer() {
     return (
@@ -12,18 +13,13 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                 <div className="grid lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-5">
-                        <a href="#top" className="flex items-center gap-2">
-                            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#C8322A] text-white">
-                                <ShieldCheck className="h-5 w-5" strokeWidth={2.2} />
-                            </span>
-                            <span className="font-display text-xl font-bold tracking-tight text-[#0F172A]">
-                                Right<span className="text-[#C8322A]">Policy</span>
-                            </span>
-                        </a>
+                        <Link to="/" className="inline-flex items-center">
+                            <Logo asLink={false} className="h-8" />
+                        </Link>
                         <p className="mt-4 text-sm text-[#475569] leading-relaxed max-w-md">
-                            A human-first insurance advisory for Indian families and
-                            businesses. Independent guidance, real claim support,
-                            long-term relationships.
+                            A premium insurance advisory for Indian families and
+                            businesses. Trusted guidance, dedicated claim assistance,
+                            long-term support.
                         </p>
                     </div>
 
@@ -92,10 +88,10 @@ export default function Footer() {
 
                 <div className="mt-12 pt-6 border-t border-[#E2E8F0] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-xs text-[#475569]">
                     <p>
-                        © {new Date().getFullYear()} RightPolicy Advisory. IRDAI-aligned
+                        © {new Date().getFullYear()} RightPolicy Advisory. IRDAI aligned
                         intermediary services.
                     </p>
-                    <p>Made with care · Real humans, not bots.</p>
+                    <p>Made with care. Trusted advisory, calm support.</p>
                 </div>
             </div>
         </footer>

@@ -8,7 +8,7 @@ import {
 
 const items = [
     { icon: CalendarClock, label: "15+ Years Experience" },
-    { icon: Users, label: "Human Insurance Advisors" },
+    { icon: Users, label: "Experienced Advisors" },
     { icon: LifeBuoy, label: "Dedicated Claim Assistance" },
     { icon: BookOpenCheck, label: "Transparent Guidance" },
     { icon: Handshake, label: "Long-Term Support" },

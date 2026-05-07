@@ -8,8 +8,8 @@ const values = [
     },
     {
         icon: Users,
-        title: "Human guidance",
-        body: "A consistent advisor who knows your story — not a new agent every renewal.",
+        title: "Trusted guidance",
+        body: "A consistent advisor who knows your story, not a new agent every renewal.",
     },
     {
         icon: LifeBuoy,

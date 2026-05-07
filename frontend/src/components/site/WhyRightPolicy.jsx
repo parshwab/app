@@ -1,12 +1,12 @@
 import { Check, X } from "lucide-react";
 
 const rows = [
-    "Real human advisors",
+    "Experienced personal advisors",
     "Personalised recommendations",
     "Hands-on claim assistance",
     "Long-term relationship support",
     "Pressure-free consultations",
-    "Real people available on call",
+    "Advisors available on call",
 ];
 
 export default function WhyRightPolicy() {
@@ -25,7 +25,7 @@ export default function WhyRightPolicy() {
                     </h2>
                     <p className="mt-5 text-lg text-[#475569] leading-relaxed">
                         Online platforms compare prices. We help you compare
-                        consequences — what cover means when life actually happens.
+                        consequences, what cover means when life actually happens.
                     </p>
                 </div>
 

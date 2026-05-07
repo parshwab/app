@@ -4,7 +4,7 @@ const steps = [
     {
         icon: Phone,
         title: "Talk to an Advisor",
-        body: "A short, calm conversation — at a time that works for you. No sales scripts.",
+        body: "A short, calm conversation, at a time that works for you. No sales scripts.",
     },
     {
         icon: Compass,
@@ -19,7 +19,7 @@ const steps = [
     {
         icon: InfinityIcon,
         title: "Ongoing Support",
-        body: "Renewals, life changes, and most importantly, claims — we&rsquo;re still on the line.",
+        body: "Renewals, life changes, and most importantly, claims, we&rsquo;re still on the line.",
     },
 ];
 

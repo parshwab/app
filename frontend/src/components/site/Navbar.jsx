@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ShieldCheck, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { openDialog } from "@/lib/rp";
 import { SERVICES } from "@/data/services";
+import Logo from "./Logo";
 
 const links = [
     { to: "/#services", label: "Services" },
@@ -33,18 +34,13 @@ export default function Navbar() {
             }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
+                <div className="flex h-16 lg:h-[72px] items-center justify-between gap-4">
                     <Link
                         to="/"
                         data-testid="navbar-logo"
                         className="flex items-center gap-2 group flex-shrink-0"
                     >
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#C8322A] text-white">
-                            <ShieldCheck className="h-5 w-5" strokeWidth={2.2} />
-                        </span>
-                        <span className="font-display text-[1.15rem] sm:text-xl font-bold tracking-tight text-[#0F172A]">
-                            Right<span className="text-[#C8322A]">Policy</span>
-                        </span>
+                        <Logo asLink={false} className="h-7 sm:h-9" testid="navbar-logo-img" />
                     </Link>
 
                     <nav

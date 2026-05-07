@@ -32,13 +32,8 @@ export default function AdminLoginPage() {
         <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center px-4">
             <Toaster position="top-center" richColors />
             <div className="w-full max-w-md">
-                <Link to="/" className="flex items-center gap-2 justify-center">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#C8322A] text-white">
-                        <ShieldCheck className="h-5 w-5" />
-                    </span>
-                    <span className="font-display text-xl font-bold text-[#0F172A]">
-                        Right<span className="text-[#C8322A]">Policy</span>
-                    </span>
+                <Link to="/" className="flex items-center justify-center">
+                    <Logo asLink={false} className="h-10" />
                 </Link>
                 <div className="mt-8 rounded-2xl border border-[#E2E8F0] bg-white shadow-sm p-8">
                     <h1 className="font-display text-2xl font-bold text-[#0F172A]">

@@ -257,7 +257,7 @@ async def create_inquiry(payload: InquiryCreate):
     # Fire-and-forget emails
     asyncio.create_task(send_email_async(
         ADVISOR_ALERT_EMAIL,
-        f"New consultation request — {doc['name']}",
+        f"New consultation request, {doc['name']}",
         _wrap_email(
             "New consultation request",
             f"""<p>A new advisor inquiry has been received.</p>
@@ -265,17 +265,17 @@ async def create_inquiry(payload: InquiryCreate):
 <tr><td><b>Name</b></td><td>{doc['name']}</td></tr>
 <tr><td><b>Email</b></td><td>{doc['email']}</td></tr>
 <tr><td><b>Phone</b></td><td>{doc['phone']}</td></tr>
-<tr><td><b>Type</b></td><td>{doc['insurance_type'] or '—'}</td></tr>
-<tr><td><b>Message</b></td><td>{doc['message'] or '—'}</td></tr>
+<tr><td><b>Type</b></td><td>{doc['insurance_type'] or '-'}</td></tr>
+<tr><td><b>Message</b></td><td>{doc['message'] or '-'}</td></tr>
 </table>"""
         ),
     ))
     asyncio.create_task(send_email_async(
         doc["email"],
-        "We received your request — RightPolicy",
+        "We received your request, RightPolicy",
         _wrap_email(
             f"Hi {doc['name'].split()[0]}, we'll be in touch within 24 hours.",
-            "<p>Thank you for reaching out to RightPolicy. A real advisor will connect with you within one business day — calmly, with no pressure.</p>"
+            "<p>Thank you for reaching out to RightPolicy. A real advisor will connect with you within one business day, calmly, with no pressure.</p>"
             "<p>If it's urgent, you can also reach us on WhatsApp at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
     ))
@@ -332,7 +332,7 @@ async def upload_policy(
 
     asyncio.create_task(send_email_async(
         ADVISOR_ALERT_EMAIL,
-        f"Policy uploaded for review — {record['name']}",
+        f"Policy uploaded for review, {record['name']}",
         _wrap_email(
             "New policy upload",
             f"""<p>A client has uploaded their existing policy for review.</p>
@@ -341,13 +341,13 @@ async def upload_policy(
 <tr><td><b>Email</b></td><td>{record['email']}</td></tr>
 <tr><td><b>Phone</b></td><td>{record['phone']}</td></tr>
 <tr><td><b>File</b></td><td>{record['filename']} ({round(record['size_bytes']/1024)} KB)</td></tr>
-<tr><td><b>Notes</b></td><td>{record['notes'] or '—'}</td></tr>
+<tr><td><b>Notes</b></td><td>{record['notes'] or '-'}</td></tr>
 </table>"""
         ),
     ))
     asyncio.create_task(send_email_async(
         record["email"],
-        "We received your policy — RightPolicy",
+        "We received your policy, RightPolicy",
         _wrap_email(
             f"Thanks {record['name'].split()[0]}, your policy is with us.",
             "<p>Our advisors will review your policy for coverage gaps, claim risks, and unnecessary costs. You'll hear back within one business day.</p>"
@@ -376,7 +376,7 @@ async def create_claim_request(payload: ClaimSupportCreate):
 
     asyncio.create_task(send_email_async(
         ADVISOR_ALERT_EMAIL,
-        f"Claim support request — {doc['name']}",
+        f"Claim support request, {doc['name']}",
         _wrap_email(
             "New claim support request",
             f"""<p>A client needs help with a claim.</p>
@@ -384,19 +384,19 @@ async def create_claim_request(payload: ClaimSupportCreate):
 <tr><td><b>Name</b></td><td>{doc['name']}</td></tr>
 <tr><td><b>Email</b></td><td>{doc['email']}</td></tr>
 <tr><td><b>Phone</b></td><td>{doc['phone']}</td></tr>
-<tr><td><b>Insurer</b></td><td>{doc['insurer'] or '—'}</td></tr>
-<tr><td><b>Policy #</b></td><td>{doc['policy_number'] or '—'}</td></tr>
-<tr><td><b>Claim type</b></td><td>{doc['claim_type'] or '—'}</td></tr>
-<tr><td><b>Message</b></td><td>{doc['message'] or '—'}</td></tr>
+<tr><td><b>Insurer</b></td><td>{doc['insurer'] or '-'}</td></tr>
+<tr><td><b>Policy #</b></td><td>{doc['policy_number'] or '-'}</td></tr>
+<tr><td><b>Claim type</b></td><td>{doc['claim_type'] or '-'}</td></tr>
+<tr><td><b>Message</b></td><td>{doc['message'] or '-'}</td></tr>
 </table>"""
         ),
     ))
     asyncio.create_task(send_email_async(
         doc["email"],
-        "We're here to help — RightPolicy",
+        "We're here to help, RightPolicy",
         _wrap_email(
             f"Hi {doc['name'].split()[0]}, we'll reach out shortly.",
-            "<p>Claims can feel overwhelming — you don't have to navigate this alone. A RightPolicy advisor will reach out within one business day to help with paperwork, insurer coordination, and the next steps.</p>"
+            "<p>Claims can feel overwhelming, you don't have to navigate this alone. A RightPolicy advisor will reach out within one business day to help with paperwork, insurer coordination, and the next steps.</p>"
             "<p>If it's urgent, please WhatsApp us at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
     ))

@@ -78,7 +78,7 @@ export default function ClaimSupportDialog({ open, onOpenChange }) {
                         Get Claim Support
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
-                        Share a few details and a real advisor will reach out — calmly,
+                        Share a few details and a real advisor will reach out, calmly,
                         within 24 hours.
                     </DialogDescription>
                 </DialogHeader>
@@ -187,7 +187,7 @@ export default function ClaimSupportDialog({ open, onOpenChange }) {
                         {loading ? "Sending..." : "Request claim support"}
                     </button>
                     <p className="text-xs text-center text-[#475569]">
-                        Your details are confidential. A real human will respond.
+                        Your details are confidential. An advisor will respond.
                     </p>
                 </form>
             </DialogContent>

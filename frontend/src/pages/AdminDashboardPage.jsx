@@ -7,12 +7,12 @@ import {
     Mail,
     Phone,
     MessageCircle,
-    ShieldCheck,
     RefreshCw,
     Inbox,
     FileText,
     LifeBuoy,
 } from "lucide-react";
+import Logo from "@/components/site/Logo";
 import {
     Tabs,
     TabsList,
@@ -269,11 +269,11 @@ function InquiriesPanel() {
                                     </div>
                                 </td>
                                 <td className="p-3 text-[#475569]">
-                                    {it.insurance_type || "—"}
+                                    {it.insurance_type || "-"}
                                 </td>
                                 <td className="p-3 max-w-xs">
                                     <div className="text-[#475569] line-clamp-3">
-                                        {it.message || "—"}
+                                        {it.message || "-"}
                                     </div>
                                 </td>
                                 <td className="p-3 space-y-1">
@@ -317,7 +317,7 @@ function InquiriesPanel() {
                         <div className="text-xs text-[#475569]">{fmtDate(it.created_at)}</div>
                         <div className="text-sm text-[#0F172A]">{it.email}</div>
                         <div className="text-sm text-[#475569]">
-                            {it.phone} · {it.insurance_type || "—"}
+                            {it.phone} · {it.insurance_type || "-"}
                         </div>
                         {it.message && (
                             <p className="text-sm text-[#475569]">{it.message}</p>
@@ -546,13 +546,13 @@ function ClaimsPanel() {
                                     </div>
                                 </td>
                                 <td className="p-3 text-[#475569]">
-                                    <div>{it.insurer || "—"}</div>
+                                    <div>{it.insurer || "-"}</div>
                                     <div className="text-xs">{it.policy_number || ""}</div>
                                 </td>
-                                <td className="p-3 text-[#475569]">{it.claim_type || "—"}</td>
+                                <td className="p-3 text-[#475569]">{it.claim_type || "-"}</td>
                                 <td className="p-3 max-w-xs">
                                     <div className="text-[#475569] line-clamp-3">
-                                        {it.message || "—"}
+                                        {it.message || "-"}
                                     </div>
                                 </td>
                                 <td className="p-3 space-y-1">
@@ -596,7 +596,7 @@ function ClaimsPanel() {
                         <div className="text-sm text-[#0F172A]">{it.email}</div>
                         <div className="text-sm text-[#475569]">{it.phone}</div>
                         <div className="text-sm text-[#475569]">
-                            {it.insurer || "—"} · {it.claim_type || "—"}
+                            {it.insurer || "-"} · {it.claim_type || "-"}
                         </div>
                         {it.message && (
                             <p className="text-sm text-[#475569]">{it.message}</p>
@@ -673,13 +673,10 @@ export default function AdminDashboardPage() {
             <Toaster position="top-center" richColors />
             <header className="bg-white border-b border-[#E2E8F0]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-                    <Link to="/" className="flex items-center gap-2">
-                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-[#C8322A] text-white">
-                            <ShieldCheck className="h-4 w-4" />
-                        </span>
-                        <span className="font-display font-bold text-[#0F172A]">
-                            Right<span className="text-[#C8322A]">Policy</span>{" "}
-                            <span className="text-[#475569] font-medium">/ admin</span>
+                    <Link to="/" className="flex items-center gap-3">
+                        <Logo asLink={false} className="h-7" />
+                        <span className="text-[#475569] font-medium text-sm hidden sm:inline">
+                            / admin
                         </span>
                     </Link>
                     <button
