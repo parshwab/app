@@ -82,7 +82,7 @@ export default function ServiceDetailPage() {
                             What it covers
                         </p>
                         <h2 className="font-display mt-3 text-2xl sm:text-3xl font-bold text-[#0F172A]">
-                            Coverage, in plain English.
+                            Coverage, explained.
                         </h2>
                         <ul className="mt-7 space-y-4">
                             {service.coverage.map((item) => (

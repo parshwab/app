@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { openDialog } from "@/lib/rp";
 import { SERVICES } from "@/data/services";
@@ -12,10 +12,21 @@ const links = [
     { to: "/#contact", label: "Contact" },
 ];
 
+function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return true;
+    }
+    return false;
+}
+
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,6 +34,29 @@ export default function Navbar() {
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    // When the URL has a hash (e.g. /#about) and user is on home, scroll to it.
+    useEffect(() => {
+        if (location.pathname === "/" && location.hash) {
+            const id = location.hash.replace("#", "");
+            // Small timeout to wait for DOM
+            const t = setTimeout(() => scrollToId(id), 60);
+            return () => clearTimeout(t);
+        }
+    }, [location]);
+
+    const goToHashLink = (to) => (e) => {
+        if (!to.startsWith("/#")) return; // only handle home anchors
+        e.preventDefault();
+        const id = to.slice(2); // strip "/#"
+        setOpen(false);
+        if (location.pathname !== "/") {
+            navigate(`/#${id}`);
+        } else if (!scrollToId(id)) {
+            // Fallback if the section is not yet mounted
+            navigate(`/#${id}`);
+        }
+    };
 
     return (
         <header
@@ -96,6 +130,7 @@ export default function Navbar() {
 
                         <a
                             href="/#about"
+                            onClick={goToHashLink("/#about")}
                             data-testid="navlink-about"
                             className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
                         >
@@ -103,6 +138,7 @@ export default function Navbar() {
                         </a>
                         <a
                             href="/#contact"
+                            onClick={goToHashLink("/#contact")}
                             data-testid="navlink-contact"
                             className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
                         >
@@ -158,16 +194,33 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <div className="h-px bg-[#E2E8F0] my-2" />
-                        {links.slice(1).map((l) => (
-                            <a
-                                key={l.to}
-                                href={l.to}
-                                onClick={() => setOpen(false)}
-                                className="px-3 py-3 rounded-lg text-[#0F172A] font-medium hover:bg-white"
-                            >
-                                {l.label}
-                            </a>
-                        ))}
+                        {links.slice(1).map((l) => {
+                            const isHash = l.to.startsWith("/#");
+                            const handle = (e) => {
+                                if (isHash) {
+                                    goToHashLink(l.to)(e);
+                                } else {
+                                    setOpen(false);
+                                }
+                            };
+                            const common = {
+                                "data-testid": `mobile-navlink-${l.label
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "-")}`,
+                                className:
+                                    "px-3 py-3 rounded-lg text-[#0F172A] font-medium hover:bg-white",
+                                onClick: handle,
+                            };
+                            return isHash ? (
+                                <a key={l.to} href={l.to} {...common}>
+                                    {l.label}
+                                </a>
+                            ) : (
+                                <Link key={l.to} to={l.to} {...common}>
+                                    {l.label}
+                                </Link>
+                            );
+                        })}
                         <button
                             data-testid="navbar-mobile-claim-button"
                             onClick={() => {

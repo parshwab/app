@@ -40,20 +40,21 @@ export default function Hero() {
                         data-testid="hero-headline"
                         className="font-display mt-6 text-4xl sm:text-5xl lg:text-[3.65rem] leading-[1.05] font-bold tracking-tight text-[#0F172A]"
                     >
-                        Two ways to feel{" "}
-                        <span className="text-[#C8322A]">truly insured.</span>
+                        Insurance guidance you can{" "}
+                        <span className="text-[#C8322A]">actually trust.</span>
                     </h1>
                     <p
                         data-testid="hero-subheadline"
                         className="mt-5 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-3xl"
                     >
-                        RightPolicy helps you choose insurance wisely, and supports
-                        you when you need help during claims. Choose the path you need
-                        today.
+                        No bots. No automated recommendations. Just experienced
+                        advisors helping families and businesses make confident
+                        insurance decisions, and standing by you when it&rsquo;s
+                        time to claim.
                     </p>
                 </div>
 
-                <div className="mt-12 grid lg:grid-cols-2 gap-5 lg:gap-7">
+                <div className="mt-12 grid md:grid-cols-2 gap-5 lg:gap-7 items-stretch">
                     {/* OPTION 1: Insurance Advisory */}
                     <article
                         data-testid="hero-card-advisory"
@@ -86,28 +87,30 @@ export default function Hero() {
                             ))}
                         </ul>
 
-                        <div className="mt-7 flex flex-wrap gap-2.5 pt-6 border-t border-[#E2E8F0]">
-                            <button
-                                data-testid="hero-talk-advisor-button"
-                                onClick={() => openDialog("advisor")}
-                                className="group/btn inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 text-sm transition-colors shadow-sm"
-                            >
-                                Book a Free Consultation
-                                <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform" />
-                            </button>
-                            <button
-                                data-testid="hero-upload-policy-button"
-                                onClick={() => openDialog("upload")}
-                                className="inline-flex items-center gap-2 rounded-full bg-[#FAF9F6] text-[#0F172A] border border-[#E2E8F0] hover:bg-white font-semibold px-5 py-3 text-sm transition-colors"
-                            >
-                                <Upload className="h-4 w-4" />
-                                Upload Existing Policy
-                            </button>
+                        <div className="mt-auto pt-7">
+                            <div className="flex flex-wrap gap-2.5 pt-6 border-t border-[#E2E8F0]">
+                                <button
+                                    data-testid="hero-talk-advisor-button"
+                                    onClick={() => openDialog("advisor")}
+                                    className="group/btn inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 text-sm transition-colors shadow-sm"
+                                >
+                                    Book a Free Consultation
+                                    <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform" />
+                                </button>
+                                <button
+                                    data-testid="hero-upload-policy-button"
+                                    onClick={() => openDialog("upload")}
+                                    className="inline-flex items-center gap-2 rounded-full bg-[#FAF9F6] text-[#0F172A] border border-[#E2E8F0] hover:bg-white font-semibold px-5 py-3 text-sm transition-colors"
+                                >
+                                    <Upload className="h-4 w-4" />
+                                    Upload Existing Policy
+                                </button>
+                            </div>
+                            <p className="mt-3 text-xs text-[#475569]">
+                                A real insurance advisor will connect with you within
+                                24 hours.
+                            </p>
                         </div>
-                        <p className="mt-3 text-xs text-[#475569]">
-                            A real insurance advisor will connect with you within 24
-                            hours.
-                        </p>
                     </article>
 
                     {/* OPTION 2: Claim Support */}
@@ -146,43 +149,31 @@ export default function Hero() {
                             ))}
                         </ul>
 
-                        <div className="relative mt-7 flex flex-wrap gap-2.5 pt-6 border-t border-white/12">
-                            <button
-                                data-testid="hero-claim-support-button"
-                                onClick={() => openDialog("claim")}
-                                className="inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 text-sm transition-colors shadow-sm"
-                            >
-                                Get Claim Support
-                                <ArrowRight className="h-4 w-4" />
-                            </button>
-                            <a
-                                href="/claim-support"
-                                data-testid="hero-claim-learn"
-                                className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/15 text-white border border-white/15 font-semibold px-5 py-3 text-sm transition-colors"
-                            >
-                                <Phone className="h-4 w-4" />
-                                How we help
-                            </a>
+                        <div className="relative mt-auto pt-7">
+                            <div className="flex flex-wrap gap-2.5 pt-6 border-t border-white/12">
+                                <button
+                                    data-testid="hero-claim-support-button"
+                                    onClick={() => openDialog("claim")}
+                                    className="inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 text-sm transition-colors shadow-sm"
+                                >
+                                    Get Claim Support
+                                    <ArrowRight className="h-4 w-4" />
+                                </button>
+                                <a
+                                    href="/claim-support"
+                                    data-testid="hero-claim-learn"
+                                    className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/15 text-white border border-white/15 font-semibold px-5 py-3 text-sm transition-colors"
+                                >
+                                    <Phone className="h-4 w-4" />
+                                    How we help
+                                </a>
+                            </div>
+                            <p className="mt-3 text-xs text-white/70">
+                                We respond within one business day, faster on
+                                WhatsApp.
+                            </p>
                         </div>
-                        <p className="relative mt-3 text-xs text-white/70">
-                            We respond within one business day, faster on WhatsApp.
-                        </p>
                     </article>
-                </div>
-
-                <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-[#475569]">
-                    <span className="inline-flex items-center gap-2">
-                        <ShieldCheck className="h-4 w-4 text-[#16A34A]" />
-                        IRDAI aligned guidance
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-[#C8322A]" />
-                        Experienced advisors on call
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                        <LifeBuoy className="h-4 w-4 text-[#C8322A]" />
-                        Hands on claim assistance
-                    </span>
                 </div>
             </div>
         </section>

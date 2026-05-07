@@ -9,7 +9,7 @@ const cards = [
     {
         icon: Lightbulb,
         title: "Recommend",
-        body: "We translate the fine print into plain English and recommend cover that fits your real life.",
+        body: "We translate the fine print into clear language and recommend cover that fits your real life.",
     },
     {
         icon: HeartHandshake,

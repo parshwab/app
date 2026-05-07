@@ -17,3 +17,59 @@
         transparent
     );
 }
+
+/* Smooth scroll for in-page anchor navigation */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px; /* offset under sticky navbar */
+}
+
+/* Premium marquee for the trust strip */
+.rp-marquee {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+    );
+}
+
+.rp-marquee__track {
+    display: flex;
+    flex-shrink: 0;
+    gap: 3rem;
+    padding: 0 1.5rem;
+    animation: rp-marquee 38s linear infinite;
+    will-change: transform;
+}
+
+.rp-marquee:hover .rp-marquee__track {
+    animation-play-state: paused;
+}
+
+@keyframes rp-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        /* Track contains items duplicated once, so shift by exactly half. */
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rp-marquee__track {
+        animation: none;
+    }
+}

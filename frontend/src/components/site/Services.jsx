@@ -40,7 +40,7 @@ export default function Services() {
                             What we cover
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                            Insurance, explained without the jargon.
+                            Insurance, explained.
                         </h2>
                     </div>
                     <p className="text-base text-[#475569] max-w-md">
