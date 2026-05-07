@@ -1,40 +1,72 @@
 # RightPolicy — Product Requirements Document
 
 ## Original Problem Statement
-Redesign and refine the RIGHTPOLICY homepage inspired by Policygenius UX/structure while keeping a unique premium, calm, human-first insurance advisory identity for India. NOT a fintech marketplace, NOT aggressive lead-gen. Visual: warm off-white, deep navy, refined red, premium spacing, mobile-first.
+Premium human-first insurance advisory platform for India with two equally important verticals — (1) Insurance Advisory and (2) Claim Support & Assistance. UX inspired by Policygenius. NOT a fintech marketplace, NOT aggressive lead-gen.
 
-## User Choices (Dec 2025)
-- Frontend + backend (inquiries + PDF policy uploads stored)
-- India-specific tone (₹/IRDAI references)
-- Stock photo human imagery (Unsplash)
-- Real PDF upload to backend
-- Reasonable design defaults: Outfit (display) + Manrope (body), #FAF9F6 / #0F172A / #C8322A
-
-## User Personas
-1. **Family decision-maker** — needs honest guidance on health/life insurance, dislikes call-center scripts.
-2. **Existing policyholder** — wants a free second opinion on coverage gaps.
-3. **Small business owner** — needs liability/employee benefits without sales pressure.
+## Brand
+- Palette: warm off-white `#FAF9F6`, deep navy `#0F172A`, refined red `#C8322A`, success `#16A34A`
+- Typography: Outfit (display), Manrope (body)
+- WhatsApp number: +91 9404 9088 66 (`919404908866`)
+- Contact email: contact@rightpolicy.in
 
 ## Architecture
-- Backend: FastAPI + Motor (async MongoDB), file uploads to `/app/backend/uploads`.
-- Endpoints (all `/api`-prefixed):
-  - `GET /health`
-  - `POST/GET /inquiries` — advisor request form
-  - `POST/GET /policy-uploads` — multipart PDF/image upload (max 15 MB; .pdf/.png/.jpg/.jpeg)
-- Frontend: React 19 + Tailwind + shadcn UI (Dialog, Accordion, Input, Label, Textarea) + sonner toasts + lucide-react icons.
+- **Backend**: FastAPI + Motor (async MongoDB), bcrypt + PyJWT for admin auth, file uploads to `/app/backend/uploads`, Resend for email (log-only fallback when `RESEND_API_KEY` empty).
+- **Frontend**: React 19 + Tailwind + shadcn UI (Dialog, Accordion, Tabs, Input, Label, Textarea) + sonner toasts + lucide-react icons + React Router 7.
 
-## Implemented (2025-12)
-- 12-section homepage: Navbar (sticky w/ scroll-blur), Hero (split, two CTAs, floating card), TrustStrip (5 items), HowWeHelp (3-step cards), PolicyReview (dark navy band w/ image + upload CTA), Services (6 cards), WhyRightPolicy (3-col comparison table w/ red X / green ✓), ClientExperience (4 value cards, no fake names), ImpactStats (4 numbers), HowItWorks (4-step timeline), FAQ (shadcn accordion, 6 Qs), FinalCTA, Footer.
-- AdvisorDialog (form → POST /api/inquiries) + UploadDialog (multipart → POST /api/policy-uploads).
-- Custom event bus `rp-open-dialog` for cross-section CTAs.
-- All interactive elements have `data-testid` attributes.
-- Backend validation: EmailStr, phone min length, file extension allowlist, 15 MB hard limit, ObjectId excluded from responses.
-- 100% backend + 100% frontend test pass (testing_agent_v3 iter 1).
+## Routes
+| Path | Page |
+|---|---|
+| `/` | Home (12 sections + claim banner) |
+| `/services/{health\|motor\|life\|business\|travel\|personal-accident}` | Service detail page |
+| `/claim-support` | Claim Support page |
+| `/admin/login` | Admin login |
+| `/admin` | Admin dashboard (protected) |
+
+## API Endpoints (all `/api`-prefixed)
+**Public**: `GET /health`, `POST/GET /inquiries`, `POST/GET /policy-uploads`, `POST /claim-support`
+**Admin** (Bearer JWT, 12h): `POST /admin/login`, `GET /admin/me`, `GET /admin/stats`, `GET/PATCH /admin/inquiries[/{id}]`, `GET/PATCH /admin/policy-uploads[/{id}]`, `GET /admin/policy-uploads/{id}/download`, `GET/PATCH /admin/claim-requests[/{id}]`. All admin lists support `?q=&status=` filters.
+
+## Implemented (Dec 2025)
+
+### Iteration 1
+- 12-section homepage (Navbar, Hero, TrustStrip, HowWeHelp, PolicyReview, Services, WhyRightPolicy, ClientExperience, ImpactStats, HowItWorks, FAQ, FinalCTA, Footer)
+- Inquiry + Policy Upload dialogs + endpoints
+- 100% testing_agent_v3 pass
+
+### Iteration 2
+- Premium WhatsApp floating CTA (bottom-right, navy pill, not neon)
+- 6 Service detail pages with editorial layout (intro, coverage, common mistakes, claim guidance, FAQ, related services)
+- Dedicated `/claim-support` page (calm reassuring hero, 6 help cards, 4-step process, FAQ, closing CTA)
+- ClaimSupportDialog (POST `/api/claim-support`)
+- ClaimSupportBanner on homepage
+- Navbar: Services dropdown, Claim Support link, dual CTAs ("Get Claim Support" + "Book a Free Consultation")
+- All CTAs unified to "Book a Free Consultation" with subline
+- Admin auth (JWT 12h, bcrypt, idempotent seed) — credentials in `/app/memory/test_credentials.md`
+- Admin dashboard: stat cards, 3 tabs, search/status filter, status select, notes editor, contact icons (mail/phone/whatsapp), policy file download
+- Email notifications via Resend (advisor alert + user confirmation) — log-only fallback when key absent
+- 100% testing_agent_v3 pass (backend 16/16, frontend 19/19)
+
+## User Personas
+1. **Family decision-maker** — needs honest guidance on health/life insurance.
+2. **Existing policyholder** — wants free second opinion on coverage gaps.
+3. **Small business owner** — needs liability/employee benefits without pressure.
+4. **Distressed claimant** — needs human help navigating an active claim.
+5. **Internal admin** — needs to triage incoming leads/uploads/claim requests.
 
 ## Backlog
-- P1: Admin view of inquiries / policy uploads (table + download link).
-- P1: Email/SMS notification on new inquiry (SendGrid / Twilio).
-- P1: Per-service detail pages (Health, Motor, Life, Business, Travel, Personal Accident).
-- P2: Multi-language (Hindi) toggle for India market.
-- P2: Insurance learning blog/articles.
-- P2: WhatsApp click-to-chat advisor handoff.
+- P1: Add `RESEND_API_KEY` and verify live email delivery
+- P1: Hindi (हिंदी) language toggle
+- P1: Per-service blog/articles for SEO/educational depth
+- P2: Optional dark mode (muted, not gaming-style)
+- P2: Slack/Telegram alert webhook for new high-priority claims
+- P2: Activity log per inquiry/claim (multiple internal notes with timestamps)
+- P2: Export inquiries/claims to CSV
+- P2: Two-factor admin auth
+- P3: Public reviews/testimonials submission flow
+
+## Files of Note
+- `/app/backend/server.py` — single-file FastAPI app
+- `/app/backend/.env` — JWT_SECRET, ADMIN_EMAIL/PASSWORD, RESEND_API_KEY, ADVISOR_ALERT_EMAIL, SENDER_EMAIL
+- `/app/frontend/src/data/services.js` — single source of truth for the 6 services
+- `/app/frontend/src/lib/rp.js` — axios instance, WhatsApp helpers, error formatting
+- `/app/memory/test_credentials.md` — admin login credentials
