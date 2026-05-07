@@ -43,7 +43,7 @@ export default function Hero() {
                                 onClick={() => openDialog("advisor")}
                                 className="group inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-6 py-3.5 text-base transition-colors shadow-sm"
                             >
-                                Talk to an Advisor
+                                Book a Free Consultation
                                 <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                             <button
@@ -55,6 +55,9 @@ export default function Hero() {
                                 Upload Existing Policy
                             </button>
                         </div>
+                        <p className="mt-3 text-sm text-[#475569]">
+                            A real insurance advisor will connect with you within 24 hours.
+                        </p>
 
                         <div className="mt-8 flex items-center gap-6 text-sm text-[#475569]">
                             <div className="flex items-center gap-2">

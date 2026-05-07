@@ -32,7 +32,7 @@ export default function FinalCTA() {
                                 onClick={() => openDialog("advisor")}
                                 className="group inline-flex items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-7 py-4 transition-colors shadow-sm"
                             >
-                                Talk to an Advisor
+                                Book a Free Consultation
                                 <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                             <button
@@ -44,6 +44,9 @@ export default function FinalCTA() {
                                 Upload Existing Policy
                             </button>
                         </div>
+                        <p className="mt-5 text-sm text-[#475569]">
+                            A real insurance advisor will connect with you within 24 hours.
+                        </p>
                     </div>
                 </div>
             </div>

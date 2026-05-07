@@ -4,7 +4,7 @@ import { openDialog } from "@/lib/rp";
 export default function PolicyReview() {
     return (
         <section
-            id="claims"
+            id="policy-review"
             data-testid="policy-review-section"
             className="rp-section py-20 sm:py-24"
         >

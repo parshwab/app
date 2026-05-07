@@ -7,40 +7,24 @@ import {
     PersonStanding,
     ArrowUpRight,
 } from "lucide-react";
-import { openDialog } from "@/lib/rp";
+import { Link } from "react-router-dom";
 
-const services = [
-    {
-        icon: HeartPulse,
-        title: "Health Insurance",
-        body: "Cover for hospitalisation, critical illness, and family floater plans suited to Indian healthcare.",
-    },
-    {
-        icon: Car,
-        title: "Motor Insurance",
-        body: "Comprehensive and third-party motor cover with claim guidance you can actually rely on.",
-    },
-    {
-        icon: Sparkles,
-        title: "Life Insurance",
-        body: "Term, traditional, and ULIP guidance — picked for protection first, not commissions.",
-    },
-    {
-        icon: Briefcase,
-        title: "Business Insurance",
-        body: "Liability, property, and employee benefits structured around how your business actually works.",
-    },
-    {
-        icon: Plane,
-        title: "Travel Insurance",
-        body: "Domestic and international travel cover with real claim support across time zones.",
-    },
-    {
-        icon: PersonStanding,
-        title: "Personal Accident",
-        body: "Income protection and accident cover so a single event doesn&rsquo;t change everything.",
-    },
-];
+const ICONS = {
+    health: HeartPulse,
+    motor: Car,
+    life: Sparkles,
+    business: Briefcase,
+    travel: Plane,
+    "personal-accident": PersonStanding,
+};
+
+import { SERVICES as DATA } from "@/data/services";
+const services = DATA.map((s) => ({
+    slug: s.slug,
+    icon: ICONS[s.slug] || HeartPulse,
+    title: s.name,
+    body: s.tagline,
+}));
 
 export default function Services() {
     return (
@@ -67,9 +51,10 @@ export default function Services() {
 
                 <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
                     {services.map((s) => (
-                        <article
-                            key={s.title}
-                            data-testid={`service-card-${s.title.toLowerCase().replace(/\s+/g, "-")}`}
+                        <Link
+                            to={`/services/${s.slug}`}
+                            key={s.slug}
+                            data-testid={`service-card-${s.slug}`}
                             className="group rounded-2xl bg-white border border-[#E2E8F0] p-7 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-[#C8322A]/25 transition-all duration-300 flex flex-col"
                         >
                             <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-[#E2E8F0] text-[#0F172A] group-hover:text-[#C8322A] group-hover:border-[#C8322A]/30 transition-colors">
@@ -78,19 +63,17 @@ export default function Services() {
                             <h3 className="font-display mt-5 text-xl font-semibold text-[#0F172A]">
                                 {s.title}
                             </h3>
-                            <p
-                                className="mt-2 text-[#475569] leading-relaxed text-sm"
-                                dangerouslySetInnerHTML={{ __html: s.body }}
-                            />
-                            <button
-                                data-testid={`service-learn-more-${s.title.toLowerCase().replace(/\s+/g, "-")}`}
-                                onClick={() => openDialog("advisor")}
+                            <p className="mt-2 text-[#475569] leading-relaxed text-sm">
+                                {s.body}
+                            </p>
+                            <span
+                                data-testid={`service-learn-more-${s.slug}`}
                                 className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#C8322A] hover:text-[#A82A23] self-start"
                             >
                                 Learn more
                                 <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                            </button>
-                        </article>
+                            </span>
+                        </Link>
                     ))}
                 </div>
             </div>

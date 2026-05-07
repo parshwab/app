@@ -1,4 +1,7 @@
-import { ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
+import { ShieldCheck, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { SERVICES } from "@/data/services";
+import { CONTACT_EMAIL, WHATSAPP_DISPLAY, waLink } from "@/lib/rp";
 
 export default function Footer() {
     return (
@@ -29,12 +32,24 @@ export default function Footer() {
                             Services
                         </h4>
                         <ul className="mt-4 space-y-2 text-sm text-[#475569]">
-                            <li>Health Insurance</li>
-                            <li>Motor Insurance</li>
-                            <li>Life Insurance</li>
-                            <li>Business Insurance</li>
-                            <li>Travel Insurance</li>
-                            <li>Personal Accident</li>
+                            {SERVICES.map((s) => (
+                                <li key={s.slug}>
+                                    <Link
+                                        to={`/services/${s.slug}`}
+                                        className="hover:text-[#0F172A]"
+                                    >
+                                        {s.name}
+                                    </Link>
+                                </li>
+                            ))}
+                            <li className="pt-2 border-t border-[#E2E8F0] mt-3">
+                                <Link
+                                    to="/claim-support"
+                                    className="text-[#C8322A] hover:text-[#A82A23] font-medium"
+                                >
+                                    Claim Support →
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
@@ -44,12 +59,28 @@ export default function Footer() {
                         </h4>
                         <ul className="mt-4 space-y-3 text-sm text-[#475569]">
                             <li className="flex items-center gap-2">
-                                <Phone className="h-4 w-4 text-[#C8322A]" /> +91 90000
-                                00000
+                                <Phone className="h-4 w-4 text-[#C8322A]" /> {WHATSAPP_DISPLAY}
+                            </li>
+                            <li>
+                                <a
+                                    href={waLink()}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    data-testid="footer-whatsapp"
+                                    className="inline-flex items-center gap-2 hover:text-[#0F172A]"
+                                >
+                                    <MessageCircle className="h-4 w-4 text-[#C8322A]" />
+                                    Chat on WhatsApp
+                                </a>
                             </li>
                             <li className="flex items-center gap-2">
                                 <Mail className="h-4 w-4 text-[#C8322A]" />
-                                hello@rightpolicy.in
+                                <a
+                                    href={`mailto:${CONTACT_EMAIL}`}
+                                    className="hover:text-[#0F172A]"
+                                >
+                                    {CONTACT_EMAIL}
+                                </a>
                             </li>
                             <li className="flex items-start gap-2">
                                 <MapPin className="h-4 w-4 text-[#C8322A] mt-0.5" />

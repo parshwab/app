@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ShieldCheck } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { Menu, X, ShieldCheck, ChevronDown } from "lucide-react";
 import { openDialog } from "@/lib/rp";
+import { SERVICES } from "@/data/services";
 
 const links = [
-    { href: "#services", label: "Services" },
-    { href: "#claims", label: "Claims Support" },
-    { href: "#about", label: "About" },
-    { href: "#contact", label: "Contact" },
+    { to: "/#services", label: "Services" },
+    { to: "/claim-support", label: "Claim Support" },
+    { to: "/#about", label: "About" },
+    { to: "/#contact", label: "Contact" },
 ];
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
+    const [servicesOpen, setServicesOpen] = useState(false);
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 8);
@@ -30,11 +33,11 @@ export default function Navbar() {
             }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 lg:h-20 items-center justify-between">
-                    <a
-                        href="#top"
+                <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
+                    <Link
+                        to="/"
                         data-testid="navbar-logo"
-                        className="flex items-center gap-2 group"
+                        className="flex items-center gap-2 group flex-shrink-0"
                     >
                         <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#C8322A] text-white">
                             <ShieldCheck className="h-5 w-5" strokeWidth={2.2} />
@@ -42,38 +45,96 @@ export default function Navbar() {
                         <span className="font-display text-[1.15rem] sm:text-xl font-bold tracking-tight text-[#0F172A]">
                             Right<span className="text-[#C8322A]">Policy</span>
                         </span>
-                    </a>
+                    </Link>
 
                     <nav
-                        className="hidden md:flex items-center gap-9"
+                        className="hidden lg:flex items-center gap-8 flex-1 justify-center"
                         data-testid="navbar-links"
                     >
-                        {links.map((l) => (
-                            <a
-                                key={l.href}
-                                href={l.href}
-                                data-testid={`navlink-${l.label.toLowerCase().replace(/\s+/g, "-")}`}
-                                className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
+                        <div
+                            className="relative"
+                            onMouseEnter={() => setServicesOpen(true)}
+                            onMouseLeave={() => setServicesOpen(false)}
+                        >
+                            <button
+                                data-testid="navlink-services"
+                                className="flex items-center gap-1 text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
                             >
-                                {l.label}
-                            </a>
-                        ))}
+                                Services
+                                <ChevronDown className="h-4 w-4" />
+                            </button>
+                            {servicesOpen && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
+                                    <div className="rounded-2xl border border-[#E2E8F0] bg-white shadow-xl p-2 w-72">
+                                        {SERVICES.map((s) => (
+                                            <Link
+                                                key={s.slug}
+                                                to={`/services/${s.slug}`}
+                                                data-testid={`navmenu-service-${s.slug}`}
+                                                className="block px-3 py-2.5 rounded-lg text-sm text-[#0F172A] hover:bg-[#FAF9F6]"
+                                            >
+                                                <div className="font-medium">{s.name}</div>
+                                                <div className="text-xs text-[#475569] mt-0.5">
+                                                    {s.tagline}
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <NavLink
+                            to="/claim-support"
+                            data-testid="navlink-claim-support"
+                            className={({ isActive }) =>
+                                `text-sm font-medium transition-colors ${
+                                    isActive
+                                        ? "text-[#C8322A]"
+                                        : "text-[#475569] hover:text-[#0F172A]"
+                                }`
+                            }
+                        >
+                            Claim Support
+                        </NavLink>
+
+                        <a
+                            href="/#about"
+                            data-testid="navlink-about"
+                            className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
+                        >
+                            About
+                        </a>
+                        <a
+                            href="/#contact"
+                            data-testid="navlink-contact"
+                            className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
+                        >
+                            Contact
+                        </a>
                     </nav>
 
-                    <div className="hidden md:flex items-center gap-3">
+                    <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+                        <button
+                            data-testid="navbar-claim-support-button"
+                            onClick={() => openDialog("claim")}
+                            className="rounded-full text-sm font-semibold px-4 py-2.5 text-[#0F172A] hover:bg-white border border-[#E2E8F0] transition-colors"
+                        >
+                            Get Claim Support
+                        </button>
                         <button
                             data-testid="navbar-talk-advisor-button"
                             onClick={() => openDialog("advisor")}
                             className="rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white text-sm font-semibold px-5 py-2.5 transition-colors shadow-sm"
                         >
-                            Talk to an Advisor
+                            Book a Free Consultation
                         </button>
                     </div>
 
                     <button
                         data-testid="navbar-mobile-toggle"
                         onClick={() => setOpen((v) => !v)}
-                        className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A]"
+                        className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A]"
                         aria-label="Toggle menu"
                     >
                         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -83,14 +144,28 @@ export default function Navbar() {
 
             {open && (
                 <div
-                    className="md:hidden border-t border-[#E2E8F0] bg-[#FAF9F6]/95 backdrop-blur-xl"
+                    className="lg:hidden border-t border-[#E2E8F0] bg-[#FAF9F6]/95 backdrop-blur-xl"
                     data-testid="navbar-mobile-menu"
                 >
                     <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
-                        {links.map((l) => (
+                        <div className="px-3 py-2 text-xs uppercase tracking-wider text-[#475569]">
+                            Services
+                        </div>
+                        {SERVICES.map((s) => (
+                            <Link
+                                key={s.slug}
+                                to={`/services/${s.slug}`}
+                                onClick={() => setOpen(false)}
+                                className="px-3 py-2 rounded-lg text-[#0F172A] hover:bg-white text-sm"
+                            >
+                                {s.name}
+                            </Link>
+                        ))}
+                        <div className="h-px bg-[#E2E8F0] my-2" />
+                        {links.slice(1).map((l) => (
                             <a
-                                key={l.href}
-                                href={l.href}
+                                key={l.to}
+                                href={l.to}
                                 onClick={() => setOpen(false)}
                                 className="px-3 py-3 rounded-lg text-[#0F172A] font-medium hover:bg-white"
                             >
@@ -98,14 +173,24 @@ export default function Navbar() {
                             </a>
                         ))}
                         <button
+                            data-testid="navbar-mobile-claim-button"
+                            onClick={() => {
+                                setOpen(false);
+                                openDialog("claim");
+                            }}
+                            className="mt-2 rounded-full bg-white border border-[#E2E8F0] text-[#0F172A] font-semibold px-5 py-3"
+                        >
+                            Get Claim Support
+                        </button>
+                        <button
                             data-testid="navbar-mobile-talk-advisor-button"
                             onClick={() => {
                                 setOpen(false);
                                 openDialog("advisor");
                             }}
-                            className="mt-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 transition-colors"
+                            className="rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 transition-colors"
                         >
-                            Talk to an Advisor
+                            Book a Free Consultation
                         </button>
                     </div>
                 </div>

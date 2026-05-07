@@ -13,22 +13,25 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { api, formatApiError } from "@/lib/rp";
 
-const insuranceOptions = [
-    "Health",
-    "Motor",
-    "Life",
-    "Business",
-    "Travel",
-    "Personal Accident",
-    "Not sure yet",
+const claimTypes = [
+    "Health / Hospitalisation",
+    "Motor accident",
+    "Life claim (death claim)",
+    "Critical illness",
+    "Travel emergency",
+    "Personal accident",
+    "Business / Property",
+    "Other",
 ];
 
-export default function AdvisorDialog({ open, onOpenChange }) {
+export default function ClaimSupportDialog({ open, onOpenChange }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
         phone: "",
-        insurance_type: "",
+        insurer: "",
+        policy_number: "",
+        claim_type: "",
         message: "",
     });
     const [loading, setLoading] = useState(false);
@@ -38,18 +41,22 @@ export default function AdvisorDialog({ open, onOpenChange }) {
     const submit = async (e) => {
         e.preventDefault();
         if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-            toast.error("Please fill name, email and phone.");
+            toast.error("Please share name, email, and phone so we can reach you.");
             return;
         }
         setLoading(true);
         try {
-            await api.post("/inquiries", form);
-            toast.success("Thanks! An advisor will reach out shortly.");
+            await api.post("/claim-support", form);
+            toast.success(
+                "We've received your request. A real advisor will reach out within 24 hours."
+            );
             setForm({
                 name: "",
                 email: "",
                 phone: "",
-                insurance_type: "",
+                insurer: "",
+                policy_number: "",
+                claim_type: "",
                 message: "",
             });
             onOpenChange(false);
@@ -63,26 +70,26 @@ export default function AdvisorDialog({ open, onOpenChange }) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent
-                data-testid="advisor-dialog"
+                data-testid="claim-dialog"
                 className="sm:max-w-lg bg-white border-[#E2E8F0]"
             >
                 <DialogHeader>
                     <DialogTitle className="font-display text-2xl text-[#0F172A]">
-                        Book a Free Consultation
+                        Get Claim Support
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
-                        A real insurance advisor will connect with you within 24 hours
-                        — no bots, no pressure.
+                        Share a few details and a real advisor will reach out — calmly,
+                        within 24 hours.
                     </DialogDescription>
                 </DialogHeader>
 
                 <form onSubmit={submit} className="space-y-4 mt-2">
                     <div className="grid sm:grid-cols-2 gap-4">
                         <div>
-                            <Label htmlFor="adv-name">Full name</Label>
+                            <Label htmlFor="cl-name">Full name</Label>
                             <Input
-                                id="adv-name"
-                                data-testid="advisor-form-name"
+                                id="cl-name"
+                                data-testid="claim-form-name"
                                 value={form.name}
                                 onChange={update("name")}
                                 required
@@ -91,10 +98,10 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="adv-phone">Phone</Label>
+                            <Label htmlFor="cl-phone">Phone</Label>
                             <Input
-                                id="adv-phone"
-                                data-testid="advisor-form-phone"
+                                id="cl-phone"
+                                data-testid="claim-form-phone"
                                 value={form.phone}
                                 onChange={update("phone")}
                                 required
@@ -104,10 +111,10 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                         </div>
                     </div>
                     <div>
-                        <Label htmlFor="adv-email">Email</Label>
+                        <Label htmlFor="cl-email">Email</Label>
                         <Input
-                            id="adv-email"
-                            data-testid="advisor-form-email"
+                            id="cl-email"
+                            data-testid="claim-form-email"
                             type="email"
                             value={form.email}
                             onChange={update("email")}
@@ -116,17 +123,41 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                             className="mt-1.5"
                         />
                     </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <Label htmlFor="cl-insurer">Insurer</Label>
+                            <Input
+                                id="cl-insurer"
+                                data-testid="claim-form-insurer"
+                                value={form.insurer}
+                                onChange={update("insurer")}
+                                placeholder="HDFC Ergo, Star, etc."
+                                className="mt-1.5"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="cl-policy">Policy number</Label>
+                            <Input
+                                id="cl-policy"
+                                data-testid="claim-form-policy"
+                                value={form.policy_number}
+                                onChange={update("policy_number")}
+                                placeholder="Optional"
+                                className="mt-1.5"
+                            />
+                        </div>
+                    </div>
                     <div>
-                        <Label htmlFor="adv-type">Insurance type</Label>
+                        <Label htmlFor="cl-type">Claim type</Label>
                         <select
-                            id="adv-type"
-                            data-testid="advisor-form-type"
-                            value={form.insurance_type}
-                            onChange={update("insurance_type")}
+                            id="cl-type"
+                            data-testid="claim-form-type"
+                            value={form.claim_type}
+                            onChange={update("claim_type")}
                             className="mt-1.5 w-full bg-white border border-[#E2E8F0] rounded-md px-3 py-2 text-sm text-[#0F172A] focus:ring-2 focus:ring-[#C8322A]/40 focus:border-[#C8322A] outline-none"
                         >
                             <option value="">Select (optional)</option>
-                            {insuranceOptions.map((o) => (
+                            {claimTypes.map((o) => (
                                 <option key={o} value={o}>
                                     {o}
                                 </option>
@@ -134,13 +165,13 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                         </select>
                     </div>
                     <div>
-                        <Label htmlFor="adv-msg">How can we help?</Label>
+                        <Label htmlFor="cl-msg">What&rsquo;s happening?</Label>
                         <Textarea
-                            id="adv-msg"
-                            data-testid="advisor-form-message"
+                            id="cl-msg"
+                            data-testid="claim-form-message"
                             value={form.message}
                             onChange={update("message")}
-                            placeholder="Tell us briefly about your situation..."
+                            placeholder="Briefly describe the situation, dates, hospital name (if any)..."
                             rows={4}
                             className="mt-1.5"
                         />
@@ -149,14 +180,14 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                     <button
                         type="submit"
                         disabled={loading}
-                        data-testid="advisor-form-submit"
+                        data-testid="claim-form-submit"
                         className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] disabled:opacity-70 text-white font-semibold px-6 py-3 transition-colors"
                     >
                         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                        {loading ? "Sending..." : "Request a callback"}
+                        {loading ? "Sending..." : "Request claim support"}
                     </button>
                     <p className="text-xs text-center text-[#475569]">
-                        We respond within one business day. Your details stay private.
+                        Your details are confidential. A real human will respond.
                     </p>
                 </form>
             </DialogContent>
