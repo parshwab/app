@@ -61,6 +61,14 @@ Premium human-first insurance advisory platform for India with two equally impor
 - Site-wide copy refresh: removed em dashes (—) everywhere (frontend + backend email templates), reduced overuse of "human / human-first / real humans / real people" in favour of "experienced advisors / trusted guidance / calm consultation / long-term support"
 - testing_agent_v3 final pass: 100% backend (25/25) + 100% frontend (after fixing the AdminLoginPage Logo import + final `humans` reference in PolicyReview)
 
+### Iteration 4 (Dec 2025) — Polish & Refinement
+- Restored emotional hero positioning: new headline **"Insurance guidance you can actually trust."** with the original "no bots, experienced advisors, families and businesses, standing by you when it's time to claim" sub-line. Both verticals stay side-by-side at md+ via `md:grid-cols-2`.
+- Trust strip is now a smooth premium **CSS marquee/ticker** (6 items, GPU-accelerated transform, hover-to-pause, soft fade edges, `prefers-reduced-motion` respected).
+- Service page copy cleaned: "Insurance, explained without the jargon." → "Insurance, explained." / "Coverage, in plain English." → "Coverage, explained." / HowWeHelp "plain English" → "clear language".
+- **Mobile menu nav fixed**: About + Contact now smooth-scroll on the homepage and route + scroll across pages via `useLocation`/`useNavigate` + `scrollIntoView` + `history.replaceState` for URL hash sync. New testids: `mobile-navlink-{about|contact|claim-support}`.
+- WhatsApp float copy: **"Chat with our Expert"** (was "Chat with a real advisor").
+- testing_agent_v3 final pass: 100% backend (25/25), 100% frontend acceptance.
+
 ## Backlog
 - P1: Add `RESEND_API_KEY` to `/app/backend/.env` to switch emails from log-only to live
 - P1: Hindi (हिंदी) language toggle

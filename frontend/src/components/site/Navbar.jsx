@@ -52,9 +52,10 @@ export default function Navbar() {
         setOpen(false);
         if (location.pathname !== "/") {
             navigate(`/#${id}`);
-        } else if (!scrollToId(id)) {
-            // Fallback if the section is not yet mounted
-            navigate(`/#${id}`);
+        } else {
+            // Already on home: scroll, and reflect the section in URL.
+            scrollToId(id);
+            window.history.replaceState(null, "", `/#${id}`);
         }
     };
 
