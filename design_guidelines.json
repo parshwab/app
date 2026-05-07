@@ -1,0 +1,138 @@
+{
+  "theme": "light",
+  "archetype": "1 (Organic & Earthy / Trust)",
+  "colors": {
+    "background": "#FAF9F6",
+    "surface": "#FFFFFF",
+    "surface_secondary": "#F3F4F6",
+    "primary": "#C8322A",
+    "primary_hover": "#A82A23",
+    "text_primary": "#0F172A",
+    "text_secondary": "#475569",
+    "border": "#E2E8F0",
+    "success": "#16A34A"
+  },
+  "typography": {
+    "heading_font": "Outfit",
+    "body_font": "Manrope",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0F172A]",
+      "h2": "text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A]",
+      "h3": "text-2xl font-semibold text-[#0F172A]",
+      "h4": "text-xl font-semibold text-[#0F172A]",
+      "body": "text-base text-[#475569] leading-relaxed",
+      "small": "text-sm text-[#475569]"
+    }
+  },
+  "spacing_and_layout": {
+    "section_padding": "py-16 md:py-24",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "grid_gap": "gap-8",
+    "card_padding": "p-8",
+    "border_radius": "rounded-2xl"
+  },
+  "surfaces_and_shadows": {
+    "card_base": "bg-white rounded-2xl border border-[#E2E8F0] shadow-sm transition-all duration-300",
+    "card_hover": "hover:shadow-md hover:-translate-y-1 hover:border-[#C8322A]/20",
+    "glass_header": "bg-[#FAF9F6]/80 backdrop-blur-xl border-b border-[#E2E8F0]"
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#C8322A] text-white rounded-full px-6 py-3 font-semibold hover:bg-[#A82A23] transition-colors focus:ring-2 focus:ring-[#C8322A] focus:ring-offset-2",
+      "secondary": "bg-white text-[#0F172A] border border-[#E2E8F0] rounded-full px-6 py-3 font-semibold hover:bg-[#F3F4F6] transition-colors",
+      "outline": "border-2 border-[#C8322A] text-[#C8322A] rounded-full px-6 py-3 font-semibold hover:bg-[#C8322A] hover:text-white transition-colors"
+    },
+    "inputs": "bg-white border border-[#E2E8F0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#C8322A] focus:border-transparent outline-none transition-all w-full"
+  },
+  "motion": {
+    "hover_transition": "transition-all duration-300 ease-in-out",
+    "fade_in_up": "initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}"
+  },
+  "icons_library": "@phosphor-icons/react",
+  "media": {
+    "hero_image": {
+      "url": "https://images.unsplash.com/photo-1659352786973-82ae3af461a3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxpbmRpYW4lMjBmYW1pbHklMjBpbnN1cmFuY2UlMjBoYXBweXxlbnwwfHx8fDE3NzgxMzE3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Happy Indian family for hero section to establish human trust",
+      "category": "hero"
+    },
+    "advisor_image": {
+      "url": "https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxmaW5hbmNpYWwlMjBhZHZpc29yJTIwbWVldGluZyUyMGluZGlhbnxlbnwwfHx8fDE3NzgxMzE3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Human advisor meeting with client, representing personalized guidance",
+      "category": "advisor_section"
+    },
+    "family_support_image": {
+      "url": "https://images.unsplash.com/photo-1659352787906-f809a3b9e86e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjBmYW1pbHklMjBpbnN1cmFuY2UlMjBoYXBweXxlbnwwfHx8fDE3NzgxMzE3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Family portrait for long-term relationships section",
+      "category": "client_experience"
+    },
+    "process_image": {
+      "url": "https://images.unsplash.com/photo-1667572737790-739cd3439614?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHw0fHxmaW5hbmNpYWwlMjBhZHZpc29yJTIwbWVldGluZyUyMGluZGlhbnxlbnwwfHx8fDE3NzgxMzE3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Advisor talking to client on a bench, conveying human conversation",
+      "category": "how_it_works"
+    }
+  },
+  "sections": [
+    {
+      "name": "Navigation",
+      "guidelines": "Sticky header with backdrop-blur. Logo on left (Deep Navy). Links centered: Services, Claims Support, About, Contact. Right: 'Talk to an Advisor' primary button."
+    },
+    {
+      "name": "Hero",
+      "guidelines": "Split layout or highly engaging centered layout. Headline: 'Insurance advice from real people who care.' Subhead: 'No bots. No automated recommendations. Just experienced advisors helping you make confident insurance decisions.' Buttons: Primary 'Talk to an Advisor', Secondary 'Upload Existing Policy'. Use hero_image."
+    },
+    {
+      "name": "Trust Strip",
+      "guidelines": "Horizontal bar with logos/icons and text: 15+ Years Experience, Human Insurance Advisors, Dedicated Claim Assistance, Transparent Guidance, Long-Term Support."
+    },
+    {
+      "name": "How We Help",
+      "guidelines": "3-column grid of cards. Understand, Recommend, Support. Subtle icons."
+    },
+    {
+      "name": "Policy Review / Second Opinion",
+      "guidelines": "Distinct background section (maybe soft deep navy with white text, or pale sage). 'Get a second opinion on your insurance.' CTA to Upload PDF."
+    },
+    {
+      "name": "Services",
+      "guidelines": "6-card bento/grid layout for Health, Motor, Life, Business, Travel, Personal Accident. Use large outline icons (Phosphor). 'Learn More' ghost buttons."
+    },
+    {
+      "name": "Comparison Table (Why RightPolicy)",
+      "guidelines": "Table highlighting 'Typical Online Platforms' vs 'RightPolicy Advisory'. Red X for typical platforms, Green Check for RightPolicy. Emphasize human advisors, claim assistance."
+    },
+    {
+      "name": "Client Experience",
+      "guidelines": "Card grid focusing on client values: Clear explanations, Human guidance, Claim support, Long-term trust. Use warm photography."
+    },
+    {
+      "name": "Impact Stats",
+      "guidelines": "Large numbers: 15+ Years, 1000+ Policies, Dedicated Claim Assistance, Long-Term Relationships."
+    },
+    {
+      "name": "How It Works",
+      "guidelines": "4-step horizontal or vertical timeline flow. Talk to an Advisor -> Get Personalized Guidance -> Choose with Confidence -> Ongoing Support."
+    },
+    {
+      "name": "FAQ",
+      "guidelines": "Accordion pattern using Shadcn UI. 6 questions."
+    },
+    {
+      "name": "Final CTA",
+      "guidelines": "Large prominent banner. 'Insurance decisions deserve human conversations.' Buttons: 'Talk to an Advisor', 'Upload Existing Policy'."
+    }
+  ],
+  "accessibility_and_testing": {
+    "data_testid_convention": "kebab-case, role-based, e.g., hero-talk-advisor-button",
+    "contrast_requirements": "WCAG AA minimum, check red against white and navy against off-white"
+  },
+  "instructions_to_main_agent": [
+    "Do NOT create a fintech-style insurance marketplace.",
+    "Do NOT create an aggressive lead-generation website.",
+    "Design should feel calm, trustworthy, modern, premium, human-centered.",
+    "Use Phosphor Icons for a clean, outline look.",
+    "Implement the 'Upload Existing Policy' feature connecting to the backend.",
+    "Install and use 'framer-motion' for subtle scroll animations (fade in up).",
+    "Install Google Fonts 'Outfit' and 'Manrope' in index.html or global CSS.",
+    "Add tailwind colors to tailwind.config.js."
+  ]
+}
