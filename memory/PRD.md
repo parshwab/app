@@ -53,8 +53,16 @@ Premium human-first insurance advisory platform for India with two equally impor
 4. **Distressed claimant** — needs human help navigating an active claim.
 5. **Internal admin** — needs to triage incoming leads/uploads/claim requests.
 
+### Iteration 3 (Dec 2025)
+- Replaced all logos with the official red-umbrella + blue RIGHTPOLICY wordmark (`/app/frontend/public/logo.png`, derived `favicon.png` + `favicon.ico`)
+- Centralised `<Logo />` component reused across navbar, footer, admin login, admin dashboard
+- Redesigned hero into TWO equally-weighted verticals: Option 1 *Insurance Advisory* (white card, "Book a Free Consultation" + "Upload Existing Policy") and Option 2 *Claim Support & Assistance* (dark navy card, "Get Claim Support" + "How we help")
+- New hero headline: "Two ways to feel truly insured."
+- Site-wide copy refresh: removed em dashes (—) everywhere (frontend + backend email templates), reduced overuse of "human / human-first / real humans / real people" in favour of "experienced advisors / trusted guidance / calm consultation / long-term support"
+- testing_agent_v3 final pass: 100% backend (25/25) + 100% frontend (after fixing the AdminLoginPage Logo import + final `humans` reference in PolicyReview)
+
 ## Backlog
-- P1: Add `RESEND_API_KEY` and verify live email delivery
+- P1: Add `RESEND_API_KEY` to `/app/backend/.env` to switch emails from log-only to live
 - P1: Hindi (हिंदी) language toggle
 - P1: Per-service blog/articles for SEO/educational depth
 - P2: Optional dark mode (muted, not gaming-style)

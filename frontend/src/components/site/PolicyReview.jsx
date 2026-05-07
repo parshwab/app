@@ -76,7 +76,7 @@ export default function PolicyReview() {
                             </div>
                             <div className="mt-4 flex items-center gap-2 text-sm text-white/70">
                                 <Lock className="h-4 w-4" /> Your documents stay
-                                private. Reviewed by humans, not algorithms.
+                                private. Reviewed by experienced advisors, not algorithms.
                             </div>
                         </div>
                     </div>
