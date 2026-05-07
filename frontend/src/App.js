@@ -1,54 +1,78 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { Toaster } from "sonner";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import Navbar from "./components/site/Navbar";
+import Hero from "./components/site/Hero";
+import TrustStrip from "./components/site/TrustStrip";
+import HowWeHelp from "./components/site/HowWeHelp";
+import PolicyReview from "./components/site/PolicyReview";
+import Services from "./components/site/Services";
+import WhyRightPolicy from "./components/site/WhyRightPolicy";
+import ClientExperience from "./components/site/ClientExperience";
+import ImpactStats from "./components/site/ImpactStats";
+import HowItWorks from "./components/site/HowItWorks";
+import FAQ from "./components/site/FAQ";
+import FinalCTA from "./components/site/FinalCTA";
+import Footer from "./components/site/Footer";
+import AdvisorDialog from "./components/site/AdvisorDialog";
+import UploadDialog from "./components/site/UploadDialog";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+function Home() {
+    const [advisorOpen, setAdvisorOpen] = useState(false);
+    const [uploadOpen, setUploadOpen] = useState(false);
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail === "advisor") setAdvisorOpen(true);
+            if (e.detail === "upload") setUploadOpen(true);
+        };
+        window.addEventListener("rp-open-dialog", handler);
+        return () => window.removeEventListener("rp-open-dialog", handler);
+    }, []);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+    return (
+        <div className="App" data-testid="rightpolicy-home">
+            <Navbar />
+            <main>
+                <Hero />
+                <TrustStrip />
+                <HowWeHelp />
+                <PolicyReview />
+                <Services />
+                <WhyRightPolicy />
+                <ClientExperience />
+                <ImpactStats />
+                <HowItWorks />
+                <FAQ />
+                <FinalCTA />
+            </main>
+            <Footer />
+            <AdvisorDialog open={advisorOpen} onOpenChange={setAdvisorOpen} />
+            <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+            <Toaster
+                position="top-center"
+                richColors
+                closeButton
+                toastOptions={{
+                    style: {
+                        fontFamily: "Manrope, sans-serif",
+                    },
+                }}
+            />
+        </div>
+    );
+}
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
