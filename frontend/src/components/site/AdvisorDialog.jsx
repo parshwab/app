@@ -17,7 +17,7 @@ const insuranceOptions = [
     "Health",
     "Motor",
     "Life",
-    "Business",
+    "Business Package",
     "Travel",
     "Personal Accident",
     "Not sure yet",

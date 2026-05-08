@@ -20,7 +20,7 @@ const claimTypes = [
     "Critical illness",
     "Travel emergency",
     "Personal accident",
-    "Business / Property",
+    "Business Package / Property",
     "Other",
 ];
 
