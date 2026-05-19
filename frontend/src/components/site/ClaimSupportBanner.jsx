@@ -20,7 +20,7 @@ export default function ClaimSupportBanner() {
                             <h2 className="font-display mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A] leading-[1.1]">
                                 We&rsquo;re not just here when you{" "}
                                 <span className="text-[#C8322A]">buy</span>, we&rsquo;re
-                                here when you actually need help.
+                                here when you actually need support.
                             </h2>
                             <p className="mt-5 text-lg text-[#475569] leading-relaxed max-w-2xl">
                                 Claims can feel overwhelming. Our advisors help with
