@@ -149,7 +149,9 @@ export default function UploadDialog({ open, onOpenChange }) {
                                         </span>{" "}
                                         or drag and drop
                                     </p>
-                                    <p className="text-xs">PDF / PNG / JPG up to 15 MB</p>
+                                    <p className="text-xs">
+                                        PDF / PNG / JPG up to 15 MB · securely checked
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="flex items-center justify-between gap-3 text-left">
