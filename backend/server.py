@@ -7,12 +7,14 @@ import os
 import asyncio
 import logging
 import uuid
+from html import escape
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
 import bcrypt
 import jwt
 import resend
+from email_validator import EmailNotValidError, validate_email
 from fastapi import (
     FastAPI,
     APIRouter,
@@ -38,12 +40,25 @@ MAX_UPLOAD_BYTES = 15 * 1024 * 1024  # 15 MB
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 12
 
+APP_ENV = os.environ.get("APP_ENV", "development").lower()
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@rightpolicy.in")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 ADVISOR_ALERT_EMAIL = os.environ.get("ADVISOR_ALERT_EMAIL", "contact@rightpolicy.in")
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "onboarding@resend.dev")
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
-JWT_SECRET = os.environ.get("JWT_SECRET", "dev-secret-change-me")
+JWT_SECRET = os.environ.get("JWT_SECRET")
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(",")
+    if origin.strip()
+]
+CORS_ALLOW_CREDENTIALS = "*" not in CORS_ORIGINS
+
+if APP_ENV in {"production", "prod"} and (not ADMIN_PASSWORD or not JWT_SECRET):
+    raise RuntimeError("ADMIN_PASSWORD and JWT_SECRET must be set in production")
+
+ADMIN_PASSWORD = ADMIN_PASSWORD or "admin123"
+JWT_SECRET = JWT_SECRET or "dev-secret-change-me"
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
@@ -67,6 +82,43 @@ api = APIRouter(prefix="/api")
 # ---------- Helpers ----------
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def h(value) -> str:
+    return escape(str(value or "-"), quote=True)
+
+
+def validate_public_email(value: str) -> str:
+    try:
+        return validate_email(value, check_deliverability=False).normalized.lower()
+    except EmailNotValidError:
+        raise HTTPException(status_code=422, detail="Invalid email address")
+
+
+def validate_upload_form(name: str, email: str, phone: str, notes: str) -> dict:
+    cleaned = {
+        "name": (name or "").strip(),
+        "email": validate_public_email((email or "").strip()),
+        "phone": (phone or "").strip(),
+        "notes": (notes or "").strip(),
+    }
+    if not cleaned["name"] or len(cleaned["name"]) > 120:
+        raise HTTPException(status_code=422, detail="Name must be 1-120 characters")
+    if len(cleaned["phone"]) < 6 or len(cleaned["phone"]) > 25:
+        raise HTTPException(status_code=422, detail="Phone must be 6-25 characters")
+    if len(cleaned["notes"]) > 2000:
+        raise HTTPException(status_code=422, detail="Notes must be 2000 characters or fewer")
+    return cleaned
+
+
+def upload_content_matches_ext(ext: str, head: bytes) -> bool:
+    signatures = {
+        ".pdf": lambda data: data.startswith(b"%PDF"),
+        ".png": lambda data: data.startswith(b"\x89PNG\r\n\x1a\n"),
+        ".jpg": lambda data: data.startswith(b"\xff\xd8\xff"),
+        ".jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
+    }
+    return signatures[ext](head)
 
 
 def hash_password(password: str) -> str:
@@ -262,11 +314,11 @@ async def create_inquiry(payload: InquiryCreate):
             "New consultation request",
             f"""<p>A new advisor inquiry has been received.</p>
 <table cellpadding="6" style="font-size:14px;color:#0F172A;">
-<tr><td><b>Name</b></td><td>{doc['name']}</td></tr>
-<tr><td><b>Email</b></td><td>{doc['email']}</td></tr>
-<tr><td><b>Phone</b></td><td>{doc['phone']}</td></tr>
-<tr><td><b>Type</b></td><td>{doc['insurance_type'] or '-'}</td></tr>
-<tr><td><b>Message</b></td><td>{doc['message'] or '-'}</td></tr>
+<tr><td><b>Name</b></td><td>{h(doc['name'])}</td></tr>
+<tr><td><b>Email</b></td><td>{h(doc['email'])}</td></tr>
+<tr><td><b>Phone</b></td><td>{h(doc['phone'])}</td></tr>
+<tr><td><b>Type</b></td><td>{h(doc['insurance_type'])}</td></tr>
+<tr><td><b>Message</b></td><td>{h(doc['message'])}</td></tr>
 </table>"""
         ),
     ))
@@ -290,7 +342,8 @@ async def upload_policy(
     notes: str = Form(""),
     file: UploadFile = File(...),
 ):
-    original = file.filename or "policy"
+    form = validate_upload_form(name, email, phone, notes)
+    original = Path(file.filename or "policy").name or "policy"
     ext = Path(original).suffix.lower()
     if ext not in ALLOWED_EXTS:
         raise HTTPException(
@@ -303,27 +356,40 @@ async def upload_policy(
     dest = UPLOAD_DIR / safe_name
 
     size = 0
+    checked_type = False
     with dest.open("wb") as out:
         while True:
             chunk = await file.read(1024 * 1024)
             if not chunk:
                 break
+            if not checked_type:
+                checked_type = True
+                if not upload_content_matches_ext(ext, chunk):
+                    out.close()
+                    dest.unlink(missing_ok=True)
+                    raise HTTPException(
+                        status_code=400,
+                        detail="File contents do not match the uploaded file extension",
+                    )
             size += len(chunk)
             if size > MAX_UPLOAD_BYTES:
                 out.close()
                 dest.unlink(missing_ok=True)
                 raise HTTPException(status_code=413, detail="File too large. Max 15 MB.")
             out.write(chunk)
+    if size == 0:
+        dest.unlink(missing_ok=True)
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
 
     record = {
         "id": file_id,
-        "name": name.strip(),
-        "email": email.lower().strip(),
-        "phone": phone.strip(),
+        "name": form["name"],
+        "email": form["email"],
+        "phone": form["phone"],
         "filename": original,
         "stored_filename": safe_name,
         "size_bytes": size,
-        "notes": (notes or "").strip(),
+        "notes": form["notes"],
         "status": "new",
         "admin_notes": "",
         "created_at": now_iso(),
@@ -337,11 +403,11 @@ async def upload_policy(
             "New policy upload",
             f"""<p>A client has uploaded their existing policy for review.</p>
 <table cellpadding="6" style="font-size:14px;color:#0F172A;">
-<tr><td><b>Name</b></td><td>{record['name']}</td></tr>
-<tr><td><b>Email</b></td><td>{record['email']}</td></tr>
-<tr><td><b>Phone</b></td><td>{record['phone']}</td></tr>
-<tr><td><b>File</b></td><td>{record['filename']} ({round(record['size_bytes']/1024)} KB)</td></tr>
-<tr><td><b>Notes</b></td><td>{record['notes'] or '-'}</td></tr>
+<tr><td><b>Name</b></td><td>{h(record['name'])}</td></tr>
+<tr><td><b>Email</b></td><td>{h(record['email'])}</td></tr>
+<tr><td><b>Phone</b></td><td>{h(record['phone'])}</td></tr>
+<tr><td><b>File</b></td><td>{h(record['filename'])} ({round(record['size_bytes']/1024)} KB)</td></tr>
+<tr><td><b>Notes</b></td><td>{h(record['notes'])}</td></tr>
 </table>"""
         ),
     ))
@@ -381,13 +447,13 @@ async def create_claim_request(payload: ClaimSupportCreate):
             "New claim support request",
             f"""<p>A client needs help with a claim.</p>
 <table cellpadding="6" style="font-size:14px;color:#0F172A;">
-<tr><td><b>Name</b></td><td>{doc['name']}</td></tr>
-<tr><td><b>Email</b></td><td>{doc['email']}</td></tr>
-<tr><td><b>Phone</b></td><td>{doc['phone']}</td></tr>
-<tr><td><b>Insurer</b></td><td>{doc['insurer'] or '-'}</td></tr>
-<tr><td><b>Policy #</b></td><td>{doc['policy_number'] or '-'}</td></tr>
-<tr><td><b>Claim type</b></td><td>{doc['claim_type'] or '-'}</td></tr>
-<tr><td><b>Message</b></td><td>{doc['message'] or '-'}</td></tr>
+<tr><td><b>Name</b></td><td>{h(doc['name'])}</td></tr>
+<tr><td><b>Email</b></td><td>{h(doc['email'])}</td></tr>
+<tr><td><b>Phone</b></td><td>{h(doc['phone'])}</td></tr>
+<tr><td><b>Insurer</b></td><td>{h(doc['insurer'])}</td></tr>
+<tr><td><b>Policy #</b></td><td>{h(doc['policy_number'])}</td></tr>
+<tr><td><b>Claim type</b></td><td>{h(doc['claim_type'])}</td></tr>
+<tr><td><b>Message</b></td><td>{h(doc['message'])}</td></tr>
 </table>"""
         ),
     ))
@@ -606,8 +672,8 @@ async def shutdown_db_client():
 # ---------- Middleware ----------
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_credentials=CORS_ALLOW_CREDENTIALS,
+    allow_origins=CORS_ORIGINS or ["http://localhost:3000"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
