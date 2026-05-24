@@ -1,26 +1,33 @@
 import os
+from pathlib import Path
+
 import pytest
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
-# Session-wide list to track spooled/stored filenames created during this test run
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+load_dotenv(BACKEND_DIR / ".env")
+
+# Session-wide list to track stored filenames created during this test run.
 CREATED_TEST_FILENAMES = []
+
 
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_test_suite():
     yield
-    
-    # Teardown: Clean up targeted files that were tracked during this test session
-    uploads_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
-    if os.path.exists(uploads_dir):
+
+    # Remove only upload files created during this test session.
+    uploads_dir = BACKEND_DIR / "uploads"
+    if uploads_dir.exists():
         for filename in CREATED_TEST_FILENAMES:
-            filepath = os.path.join(uploads_dir, filename)
-            if os.path.exists(filepath) and filename != ".gitkeep":
+            filepath = uploads_dir / filename
+            if filepath.exists() and filename != ".gitkeep":
                 try:
-                    os.unlink(filepath)
-                except Exception:
+                    filepath.unlink()
+                except OSError:
                     pass
 
-    # Clean up test database records (names starting with TEST_)
+    # Use the same database configuration loaded by backend/server.py.
     mongo_url = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
     db_name = os.environ.get("DB_NAME", "rightpolicy")
     try:
@@ -39,7 +46,9 @@ def upload_tracker():
     class Tracker:
         def __init__(self):
             self.filenames = CREATED_TEST_FILENAMES
+
         def add(self, filename):
             if filename:
                 self.filenames.append(filename)
+
     return Tracker()

@@ -129,9 +129,9 @@ export default function UploadDialog({ open, onOpenChange }) {
                     </div>
 
                     <div>
-                        <div className="flex justify-between items-baseline">
+                        <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline">
                             <Label>Policy file (PDF, PNG or JPG · max 15 MB)</Label>
-                            <span className="text-[11px] text-[#C8322A] font-semibold tracking-wide uppercase">
+                            <span className="text-[11px] text-[#C8322A] font-semibold tracking-wide uppercase sm:text-right">
                                 Documents validated before review
                             </span>
                         </div>
