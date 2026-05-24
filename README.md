@@ -62,14 +62,10 @@ cd backend && uvicorn server:app --port 8000 --reload
 2. Install npm dependencies:
    ```bash
    npm install
-   # or
-   yarn install
    ```
 3. Start the React development server:
    ```bash
    npm start
-   # or
-   yarn start
    ```
    The app will run at `http://localhost:3000` and automatically proxy request APIs to the backend service.
 
