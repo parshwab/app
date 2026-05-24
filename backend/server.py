@@ -24,6 +24,7 @@ from fastapi import (
     HTTPException,
     Depends,
     Request,
+    Query,
 )
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
@@ -54,11 +55,16 @@ CORS_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = "*" not in CORS_ORIGINS
 
-if APP_ENV in {"production", "prod"} and (not ADMIN_PASSWORD or not JWT_SECRET):
-    raise RuntimeError("ADMIN_PASSWORD and JWT_SECRET must be set in production")
+ALLOW_INSECURE_DEFAULTS = os.environ.get("ALLOW_INSECURE_DEFAULTS", "false").lower() == "true"
 
-ADMIN_PASSWORD = ADMIN_PASSWORD or "admin123"
-JWT_SECRET = JWT_SECRET or "dev-secret-change-me"
+if not ADMIN_PASSWORD or not JWT_SECRET:
+    if not ALLOW_INSECURE_DEFAULTS:
+        raise RuntimeError(
+            "ADMIN_PASSWORD and JWT_SECRET environment variables must be configured. "
+            "For exceptional local development convenience only, you may set ALLOW_INSECURE_DEFAULTS=true in your environment."
+        )
+    ADMIN_PASSWORD = ADMIN_PASSWORD or "admin123"
+    JWT_SECRET = JWT_SECRET or "dev-secret-change-me"
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
@@ -119,6 +125,41 @@ def upload_content_matches_ext(ext: str, head: bytes) -> bool:
         ".jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
     }
     return signatures[ext](head)
+
+
+def save_file_sync(spooled_file, dest_path: Path, ext: str) -> int:
+    size = 0
+    checked_type = False
+    try:
+        spooled_file.seek(0)
+        with dest_path.open("wb") as out:
+            while True:
+                chunk = spooled_file.read(1024 * 1024)
+                if not chunk:
+                    break
+                if not checked_type:
+                    checked_type = True
+                    if not upload_content_matches_ext(ext, chunk):
+                        raise HTTPException(
+                            status_code=400,
+                            detail="File contents do not match the uploaded file extension",
+                        )
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    raise HTTPException(status_code=413, detail="File too large. Max 15 MB.")
+                out.write(chunk)
+        if size == 0:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty")
+        return size
+    except HTTPException:
+        if dest_path.exists():
+            dest_path.unlink(missing_ok=True)
+        raise
+    except Exception as e:
+        if dest_path.exists():
+            dest_path.unlink(missing_ok=True)
+        logger.error("File upload write failure: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail="File upload failed")
 
 
 def hash_password(password: str) -> str:
@@ -272,9 +313,9 @@ class AdminLoginOut(BaseModel):
 
 
 class StatusUpdate(BaseModel):
-    status: Optional[str] = None
-    notes: Optional[str] = None
-    admin_notes: Optional[str] = None
+    status: Optional[str] = Field(default=None, max_length=50)
+    notes: Optional[str] = Field(default=None, max_length=2000)
+    admin_notes: Optional[str] = Field(default=None, max_length=2000)
 
 
 VALID_STATUSES = {"new", "in_progress", "contacted", "resolved", "closed"}
@@ -326,7 +367,7 @@ async def create_inquiry(payload: InquiryCreate):
         doc["email"],
         "We received your request, RightPolicy",
         _wrap_email(
-            f"Hi {doc['name'].split()[0]}, we'll be in touch within 24 hours.",
+            f"Hi {h(doc['name'].split()[0])}, we'll be in touch within 24 hours.",
             "<p>Thank you for reaching out to RightPolicy. A real advisor will connect with you within one business day, calmly, with no pressure.</p>"
             "<p>If it's urgent, you can also reach us on WhatsApp at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
@@ -355,31 +396,8 @@ async def upload_policy(
     safe_name = f"{file_id}{ext}"
     dest = UPLOAD_DIR / safe_name
 
-    size = 0
-    checked_type = False
-    with dest.open("wb") as out:
-        while True:
-            chunk = await file.read(1024 * 1024)
-            if not chunk:
-                break
-            if not checked_type:
-                checked_type = True
-                if not upload_content_matches_ext(ext, chunk):
-                    out.close()
-                    dest.unlink(missing_ok=True)
-                    raise HTTPException(
-                        status_code=400,
-                        detail="File contents do not match the uploaded file extension",
-                    )
-            size += len(chunk)
-            if size > MAX_UPLOAD_BYTES:
-                out.close()
-                dest.unlink(missing_ok=True)
-                raise HTTPException(status_code=413, detail="File too large. Max 15 MB.")
-            out.write(chunk)
-    if size == 0:
-        dest.unlink(missing_ok=True)
-        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    import anyio
+    size = await anyio.to_thread.run_sync(save_file_sync, file.file, dest, ext)
 
     record = {
         "id": file_id,
@@ -415,9 +433,9 @@ async def upload_policy(
         record["email"],
         "We received your policy, RightPolicy",
         _wrap_email(
-            f"Thanks {record['name'].split()[0]}, your policy is with us.",
+            f"Thanks {h(record['name'].split()[0])}, your policy is with us.",
             "<p>Our advisors will review your policy for coverage gaps, claim risks, and unnecessary costs. You'll hear back within one business day.</p>"
-            "<p>Your document stays confidential and is reviewed by humans, not algorithms.</p>",
+            "<p>Your document stays confidential and is reviewed by experienced advisors, not algorithms.</p>",
         ),
     ))
     return PolicyUploadRecord(**record)
@@ -461,7 +479,7 @@ async def create_claim_request(payload: ClaimSupportCreate):
         doc["email"],
         "We're here to help, RightPolicy",
         _wrap_email(
-            f"Hi {doc['name'].split()[0]}, we'll reach out shortly.",
+            f"Hi {h(doc['name'].split()[0])}, we'll reach out shortly.",
             "<p>Claims can feel overwhelming, you don't have to navigate this alone. A RightPolicy advisor will reach out within one business day to help with paperwork, insurer coordination, and the next steps.</p>"
             "<p>If it's urgent, please WhatsApp us at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
@@ -490,11 +508,14 @@ async def admin_me(current: dict = Depends(get_current_admin)):
 
 # ---------- Admin: Lists / Stats ----------
 def _build_filter(q: Optional[str], status: Optional[str], fields: List[str]) -> dict:
+    import re
     flt: dict = {}
     if status and status in VALID_STATUSES:
         flt["status"] = status
     if q:
-        flt["$or"] = [{f: {"$regex": q, "$options": "i"}} for f in fields]
+        # Enforce search query limit to prevent ReDoS/regex CPU abuse
+        escaped_q = re.escape(q[:100].strip())
+        flt["$or"] = [{f: {"$regex": escaped_q, "$options": "i"}} for f in fields]
     return flt
 
 
@@ -515,9 +536,9 @@ async def admin_stats(current: dict = Depends(get_current_admin)):
 
 @admin_api.get("/inquiries", response_model=List[Inquiry])
 async def admin_list_inquiries(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(q, status, ["name", "email", "phone", "insurance_type", "message"])
@@ -548,9 +569,9 @@ async def admin_update_inquiry(
 
 @admin_api.get("/policy-uploads", response_model=List[PolicyUploadRecord])
 async def admin_list_uploads(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(q, status, ["name", "email", "phone", "filename", "notes"])
@@ -596,9 +617,9 @@ async def admin_download_upload(item_id: str, current: dict = Depends(get_curren
 
 @admin_api.get("/claim-requests", response_model=List[ClaimSupportRecord])
 async def admin_list_claims(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(

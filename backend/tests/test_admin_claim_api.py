@@ -3,11 +3,11 @@ import os
 import io
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://advisor-first-hub.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8000").rstrip("/")
 API = f"{BASE_URL}/api"
 
-ADMIN_EMAIL = "admin@rightpolicy.in"
-ADMIN_PASSWORD = "SKbn6cPQjVER9g8eqGulhQ"
+ADMIN_EMAIL = os.environ.get("TEST_ADMIN_EMAIL", "admin@rightpolicy.in")
+ADMIN_PASSWORD = os.environ.get("TEST_ADMIN_PASSWORD", "disposableLocalPassword123!")
 
 
 # ---------- Auth helpers ----------
@@ -163,14 +163,16 @@ def test_admin_patch_inquiry_flow():
 
 
 # ---------- Admin PATCH + DOWNLOAD policy-uploads ----------
-def test_admin_patch_and_download_upload():
+def test_admin_patch_and_download_upload(upload_tracker):
     # Seed an upload
     files = {"file": ("admin_test.pdf", b"%PDF-1.4\nTESTADMIN", "application/pdf")}
     data = {"name": "TEST_AdminUpl", "email": "test_adminupl@example.com",
             "phone": "9876543210", "notes": "TEST"}
     r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
     assert r.status_code == 201
-    up_id = r.json()["id"]
+    body = r.json()
+    upload_tracker.add(body.get("stored_filename"))
+    up_id = body["id"]
 
     # PATCH
     p = requests.patch(f"{API}/admin/policy-uploads/{up_id}",
@@ -210,3 +212,49 @@ def test_admin_patch_claim_flow():
     p2 = requests.patch(f"{API}/admin/claim-requests/does-not-exist",
                        json={"status": "resolved"}, headers=_hdr(), timeout=30)
     assert p2.status_code == 404
+
+
+# ---------- Admin Search Regex Hardening Tests ----------
+def test_admin_search_regex_escaped():
+    # 1. Seed a known record first
+    payload = {
+        "name": "TEST_RegexTestTarget",
+        "email": "test_regex@example.com",
+        "phone": "+919876543210",
+        "insurance_type": "health",
+        "message": "TEST regex search target",
+    }
+    r = requests.post(f"{API}/inquiries", json=payload, timeout=30)
+    assert r.status_code == 201
+    seeded_id = r.json()["id"]
+
+    # 2. Query search with literal '.*' (un-escaped regex matches everything; escaped regex matches nothing)
+    r_wildcard = requests.get(f"{API}/admin/inquiries?q=.*", headers=_hdr(), timeout=30)
+    assert r_wildcard.status_code == 200
+    matched_ids = [item["id"] for item in r_wildcard.json()]
+    # If escaping is active, '.*' matches literally, which does not match "TEST_RegexTestTarget"
+    assert seeded_id not in matched_ids
+
+    # 3. Query search with literal target name (verifying search still works perfectly for exact terms)
+    r_valid = requests.get(f"{API}/admin/inquiries?q=TEST_RegexTestTarget", headers=_hdr(), timeout=30)
+    assert r_valid.status_code == 200
+    matched_ids_valid = [item["id"] for item in r_valid.json()]
+    assert seeded_id in matched_ids_valid
+
+    # 4. Query containing invalid unclosed regex grouping: ( (unescaped throws 500/errors, escaped handles successfully)
+    r_invalid = requests.get(f"{API}/admin/inquiries?q=(", headers=_hdr(), timeout=30)
+    assert r_invalid.status_code == 200
+    assert isinstance(r_invalid.json(), list)
+
+    # 5. Query exceeding 100 characters limit (FastAPI returns 422)
+    long_q = "a" * 150
+    r_long = requests.get(f"{API}/admin/inquiries?q={long_q}", headers=_hdr(), timeout=30)
+    assert r_long.status_code == 422
+
+    # 6. Admin list limit out of bounds (too large, expects 422)
+    r_limit_large = requests.get(f"{API}/admin/inquiries?limit=250", headers=_hdr(), timeout=30)
+    assert r_limit_large.status_code == 422
+
+    # 7. Admin list limit out of bounds (too small, expects 422)
+    r_limit_small = requests.get(f"{API}/admin/inquiries?limit=0", headers=_hdr(), timeout=30)
+    assert r_limit_small.status_code == 422

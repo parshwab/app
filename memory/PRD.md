@@ -11,7 +11,7 @@ Premium human-first insurance advisory platform for India with two equally impor
 
 ## Architecture
 - **Backend**: FastAPI + Motor (async MongoDB), bcrypt + PyJWT for admin auth, file uploads to `/app/backend/uploads`, Resend for email (log-only fallback when `RESEND_API_KEY` empty).
-- **Frontend**: React 19 + Tailwind + shadcn UI (Dialog, Accordion, Tabs, Input, Label, Textarea) + sonner toasts + lucide-react icons + React Router 7.
+- **Frontend**: React 18 + Tailwind + shadcn UI (Dialog, Accordion, Tabs, Input, Label, Textarea) + sonner toasts + lucide-react icons + React Router 7.
 
 ## Routes
 | Path | Page |
@@ -23,7 +23,7 @@ Premium human-first insurance advisory platform for India with two equally impor
 | `/admin` | Admin dashboard (protected) |
 
 ## API Endpoints (all `/api`-prefixed)
-**Public**: `GET /health`, `POST/GET /inquiries`, `POST/GET /policy-uploads`, `POST /claim-support`
+**Public**: `GET /health`, `POST /inquiries`, `POST /policy-uploads`, `POST /claim-support`
 **Admin** (Bearer JWT, 12h): `POST /admin/login`, `GET /admin/me`, `GET /admin/stats`, `GET/PATCH /admin/inquiries[/{id}]`, `GET/PATCH /admin/policy-uploads[/{id}]`, `GET /admin/policy-uploads/{id}/download`, `GET/PATCH /admin/claim-requests[/{id}]`. All admin lists support `?q=&status=` filters.
 
 ## Implemented (Dec 2025)

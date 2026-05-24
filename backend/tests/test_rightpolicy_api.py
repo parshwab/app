@@ -3,8 +3,11 @@ import os
 import io
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://advisor-first-hub.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8000").rstrip("/")
 API = f"{BASE_URL}/api"
+
+ADMIN_EMAIL = os.environ.get("TEST_ADMIN_EMAIL", "admin@rightpolicy.in")
+ADMIN_PASSWORD = os.environ.get("TEST_ADMIN_PASSWORD", "disposableLocalPassword123!")
 
 
 # ---------- Health ----------
@@ -36,7 +39,7 @@ def test_create_inquiry_valid_and_persistence():
 
     # GET list (admin) and verify presence
     login = requests.post(f"{API}/admin/login", json={
-        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+        "email": ADMIN_EMAIL, "password": ADMIN_PASSWORD
     }, timeout=30)
     assert login.status_code == 200
     token = login.json()["token"]
@@ -49,7 +52,7 @@ def test_create_inquiry_valid_and_persistence():
 def test_create_inquiry_invalid_email():
     r = requests.post(
         f"{API}/inquiries",
-        json={"name": "X", "email": "not-an-email", "phone": "9876543210"},
+        json={"name": "TEST_Invalid", "email": "not-an-email", "phone": "9876543210"},
         timeout=30,
     )
     assert r.status_code == 422
@@ -58,7 +61,7 @@ def test_create_inquiry_invalid_email():
 def test_create_inquiry_missing_phone():
     r = requests.post(
         f"{API}/inquiries",
-        json={"name": "X", "email": "x@example.com"},
+        json={"name": "TEST_MissingPhone", "email": "x@example.com"},
         timeout=30,
     )
     assert r.status_code == 422
@@ -66,7 +69,7 @@ def test_create_inquiry_missing_phone():
 
 def test_list_inquiries_admin():
     login = requests.post(f"{API}/admin/login", json={
-        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+        "email": ADMIN_EMAIL, "password": ADMIN_PASSWORD
     }, timeout=30)
     assert login.status_code == 200
     token = login.json()["token"]
@@ -77,12 +80,12 @@ def test_list_inquiries_admin():
 
 # ---------- Policy Uploads ----------
 def _pdf_bytes(size=2048):
-    # Minimal PDF-ish bytes; backend only checks extension and size
+    # Minimal PDF-ish bytes; backend checks extension and signature
     header = b"%PDF-1.4\n%TEST\n"
     return header + b"0" * max(0, size - len(header))
 
 
-def test_upload_policy_pdf_success():
+def test_upload_policy_pdf_success(upload_tracker):
     files = {"file": ("sample_policy.pdf", _pdf_bytes(4096), "application/pdf")}
     data = {
         "name": "TEST_Upload User",
@@ -93,6 +96,7 @@ def test_upload_policy_pdf_success():
     r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=60)
     assert r.status_code == 201, r.text
     body = r.json()
+    upload_tracker.add(body.get("stored_filename"))
     for k in ("id", "filename", "stored_filename", "size_bytes"):
         assert k in body
     assert body["filename"] == "sample_policy.pdf"
@@ -100,25 +104,61 @@ def test_upload_policy_pdf_success():
     assert body["size_bytes"] == 4096
 
 
+def test_upload_policy_png_success(upload_tracker):
+    # Valid PNG starts with \x89PNG\r\n\x1a\n
+    png_bytes = b"\x89PNG\r\n\x1a\n" + b"0" * 1024
+    files = {"file": ("screenshot.png", png_bytes, "image/png")}
+    data = {
+        "name": "TEST_PNG Upload",
+        "email": "test_png@example.com",
+        "phone": "+919999999999",
+        "notes": "TEST PNG",
+    }
+    r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
+    assert r.status_code == 201, r.text
+    body = r.json()
+    upload_tracker.add(body.get("stored_filename"))
+    assert body["filename"] == "screenshot.png"
+    assert body["stored_filename"].endswith(".png")
+
+
+
 def test_upload_policy_rejects_exe():
     files = {"file": ("malware.exe", b"MZ\x00\x00hello", "application/octet-stream")}
-    data = {"name": "X", "email": "x@example.com", "phone": "9876543210"}
+    data = {"name": "TEST_Malware", "email": "x@example.com", "phone": "9876543210"}
     r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
     assert r.status_code == 400, r.text
 
 
 def test_upload_policy_rejects_oversized():
-    # 16 MB > 15 MB limit
-    big = io.BytesIO(b"0" * (16 * 1024 * 1024))
+    # 16 MB > 15 MB limit. Must begin with %PDF signature to pass type check
+    big = io.BytesIO(b"%PDF-1.4\n" + b"0" * (16 * 1024 * 1024))
     files = {"file": ("big.pdf", big, "application/pdf")}
-    data = {"name": "X", "email": "x@example.com", "phone": "9876543210"}
+    data = {"name": "TEST_Oversized", "email": "x@example.com", "phone": "9876543210"}
     r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=120)
     assert r.status_code == 413, r.status_code
 
 
+def test_upload_policy_signature_mismatch():
+    # .pdf extension but starting with PE/EXE header
+    files = {"file": ("fake.pdf", b"MZ\x00\x00somebinarydata", "application/pdf")}
+    data = {"name": "TEST_Mismatch", "email": "x@example.com", "phone": "9876543210"}
+    r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
+    assert r.status_code == 400, r.text
+    assert "contents do not match" in r.text
+
+
+def test_upload_policy_empty_file():
+    files = {"file": ("empty.pdf", b"", "application/pdf")}
+    data = {"name": "TEST_Empty", "email": "x@example.com", "phone": "9876543210"}
+    r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
+    assert r.status_code == 400, r.text
+    assert "empty" in r.text or "match" in r.text
+
+
 def test_list_policy_uploads_admin():
     login = requests.post(f"{API}/admin/login", json={
-        "email": "admin@rightpolicy.in", "password": "SKbn6cPQjVER9g8eqGulhQ"
+        "email": ADMIN_EMAIL, "password": ADMIN_PASSWORD
     }, timeout=30)
     assert login.status_code == 200
     token = login.json()["token"]

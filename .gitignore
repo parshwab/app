@@ -83,5 +83,10 @@ backend/uploads/*
 
 memory/test_credentials.md
 
+# Test reports
+test_reports/iteration_*.json
+test_reports/pytest/*.xml
+
+
 # Mobile development
 android-sdk/
