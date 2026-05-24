@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Loader2, UploadCloud, FileText, X } from "lucide-react";
+import { Loader2, UploadCloud, FileText, X, ShieldCheck } from "lucide-react";
 import { API } from "@/lib/rp";
 
 const ACCEPT = ".pdf,.png,.jpg,.jpeg";
@@ -129,7 +129,12 @@ export default function UploadDialog({ open, onOpenChange }) {
                     </div>
 
                     <div>
-                        <Label>Policy file (PDF, PNG or JPG · max 15 MB)</Label>
+                        <div className="flex justify-between items-baseline">
+                            <Label>Policy file (PDF, PNG or JPG · max 15 MB)</Label>
+                            <span className="text-[11px] text-[#C8322A] font-semibold tracking-wide uppercase">
+                                Documents validated before review
+                            </span>
+                        </div>
                         <div
                             onClick={() => inputRef.current?.click()}
                             onDragOver={(e) => e.preventDefault()}
@@ -215,6 +220,10 @@ export default function UploadDialog({ open, onOpenChange }) {
                         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                         {loading ? "Uploading..." : "Submit for review"}
                     </button>
+                    <div className="flex items-center justify-center gap-1.5 text-xs text-[#16A34A] font-semibold mt-1">
+                        <ShieldCheck className="h-4 w-4 text-[#16A34A]" />
+                        Secure upload verification enabled
+                    </div>
                     <p className="text-xs text-center text-[#475569]">
                         Your document is handled confidentially by experienced advisors.
                     </p>

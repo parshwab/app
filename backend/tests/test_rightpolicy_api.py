@@ -104,6 +104,25 @@ def test_upload_policy_pdf_success(upload_tracker):
     assert body["size_bytes"] == 4096
 
 
+def test_upload_policy_png_success(upload_tracker):
+    # Valid PNG starts with \x89PNG\r\n\x1a\n
+    png_bytes = b"\x89PNG\r\n\x1a\n" + b"0" * 1024
+    files = {"file": ("screenshot.png", png_bytes, "image/png")}
+    data = {
+        "name": "TEST_PNG Upload",
+        "email": "test_png@example.com",
+        "phone": "+919999999999",
+        "notes": "TEST PNG",
+    }
+    r = requests.post(f"{API}/policy-uploads", files=files, data=data, timeout=30)
+    assert r.status_code == 201, r.text
+    body = r.json()
+    upload_tracker.add(body.get("stored_filename"))
+    assert body["filename"] == "screenshot.png"
+    assert body["stored_filename"].endswith(".png")
+
+
+
 def test_upload_policy_rejects_exe():
     files = {"file": ("malware.exe", b"MZ\x00\x00hello", "application/octet-stream")}
     data = {"name": "TEST_Malware", "email": "x@example.com", "phone": "9876543210"}
