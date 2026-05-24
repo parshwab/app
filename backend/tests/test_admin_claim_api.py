@@ -246,10 +246,15 @@ def test_admin_search_regex_escaped():
     assert r_invalid.status_code == 200
     assert isinstance(r_invalid.json(), list)
 
-    # 5. Query exceeding 100 characters limit
-    # We assert truncation occurs and searches successfully rather than failing or erroring
+    # 5. Query exceeding 100 characters limit (FastAPI returns 422)
     long_q = "a" * 150
     r_long = requests.get(f"{API}/admin/inquiries?q={long_q}", headers=_hdr(), timeout=30)
-    assert r_long.status_code == 200
-    assert isinstance(r_long.json(), list)
+    assert r_long.status_code == 422
 
+    # 6. Admin list limit out of bounds (too large, expects 422)
+    r_limit_large = requests.get(f"{API}/admin/inquiries?limit=250", headers=_hdr(), timeout=30)
+    assert r_limit_large.status_code == 422
+
+    # 7. Admin list limit out of bounds (too small, expects 422)
+    r_limit_small = requests.get(f"{API}/admin/inquiries?limit=0", headers=_hdr(), timeout=30)
+    assert r_limit_small.status_code == 422

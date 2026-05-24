@@ -24,6 +24,7 @@ from fastapi import (
     HTTPException,
     Depends,
     Request,
+    Query,
 )
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
@@ -312,9 +313,9 @@ class AdminLoginOut(BaseModel):
 
 
 class StatusUpdate(BaseModel):
-    status: Optional[str] = None
-    notes: Optional[str] = None
-    admin_notes: Optional[str] = None
+    status: Optional[str] = Field(default=None, max_length=50)
+    notes: Optional[str] = Field(default=None, max_length=2000)
+    admin_notes: Optional[str] = Field(default=None, max_length=2000)
 
 
 VALID_STATUSES = {"new", "in_progress", "contacted", "resolved", "closed"}
@@ -366,7 +367,7 @@ async def create_inquiry(payload: InquiryCreate):
         doc["email"],
         "We received your request, RightPolicy",
         _wrap_email(
-            f"Hi {doc['name'].split()[0]}, we'll be in touch within 24 hours.",
+            f"Hi {h(doc['name'].split()[0])}, we'll be in touch within 24 hours.",
             "<p>Thank you for reaching out to RightPolicy. A real advisor will connect with you within one business day, calmly, with no pressure.</p>"
             "<p>If it's urgent, you can also reach us on WhatsApp at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
@@ -432,9 +433,9 @@ async def upload_policy(
         record["email"],
         "We received your policy, RightPolicy",
         _wrap_email(
-            f"Thanks {record['name'].split()[0]}, your policy is with us.",
+            f"Thanks {h(record['name'].split()[0])}, your policy is with us.",
             "<p>Our advisors will review your policy for coverage gaps, claim risks, and unnecessary costs. You'll hear back within one business day.</p>"
-            "<p>Your document stays confidential and is reviewed by humans, not algorithms.</p>",
+            "<p>Your document stays confidential and is reviewed by experienced advisors, not algorithms.</p>",
         ),
     ))
     return PolicyUploadRecord(**record)
@@ -478,7 +479,7 @@ async def create_claim_request(payload: ClaimSupportCreate):
         doc["email"],
         "We're here to help, RightPolicy",
         _wrap_email(
-            f"Hi {doc['name'].split()[0]}, we'll reach out shortly.",
+            f"Hi {h(doc['name'].split()[0])}, we'll reach out shortly.",
             "<p>Claims can feel overwhelming, you don't have to navigate this alone. A RightPolicy advisor will reach out within one business day to help with paperwork, insurer coordination, and the next steps.</p>"
             "<p>If it's urgent, please WhatsApp us at <a href='https://wa.me/919404908866'>+91 9404 9088 66</a>.</p>",
         ),
@@ -535,9 +536,9 @@ async def admin_stats(current: dict = Depends(get_current_admin)):
 
 @admin_api.get("/inquiries", response_model=List[Inquiry])
 async def admin_list_inquiries(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(q, status, ["name", "email", "phone", "insurance_type", "message"])
@@ -568,9 +569,9 @@ async def admin_update_inquiry(
 
 @admin_api.get("/policy-uploads", response_model=List[PolicyUploadRecord])
 async def admin_list_uploads(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(q, status, ["name", "email", "phone", "filename", "notes"])
@@ -616,9 +617,9 @@ async def admin_download_upload(item_id: str, current: dict = Depends(get_curren
 
 @admin_api.get("/claim-requests", response_model=List[ClaimSupportRecord])
 async def admin_list_claims(
-    q: Optional[str] = None,
+    q: Optional[str] = Query(default=None, max_length=100),
     status: Optional[str] = None,
-    limit: int = 200,
+    limit: int = Query(default=200, ge=1, le=200),
     current: dict = Depends(get_current_admin),
 ):
     flt = _build_filter(
