@@ -39,9 +39,21 @@ export default function Navbar() {
     useEffect(() => {
         if (location.pathname === "/" && location.hash) {
             const id = location.hash.replace("#", "");
-            // Small timeout to wait for DOM
-            const t = setTimeout(() => scrollToId(id), 60);
-            return () => clearTimeout(t);
+            let frameId;
+            let attempts = 0;
+            const maxAttempts = 120; // Bounded check (~2 seconds at 60fps)
+
+            const attemptScroll = () => {
+                const scrolled = scrollToId(id);
+                attempts += 1;
+                if (!scrolled && attempts < maxAttempts) {
+                    frameId = requestAnimationFrame(attemptScroll);
+                }
+            };
+            frameId = requestAnimationFrame(attemptScroll);
+            return () => {
+                if (frameId) cancelAnimationFrame(frameId);
+            };
         }
     }, [location]);
 

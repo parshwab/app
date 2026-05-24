@@ -26,7 +26,7 @@
   ],
   "updated_files": ["/app/backend/tests/test_admin_claim_api.py"],
   "success_rate": {"backend": "100% (16/16)", "frontend": "100% (10/10 home + 9/9 admin; 1 selector-typo in test, not a product bug)"},
-  "test_credentials": "Admin: admin@rightpolicy.in / SKbn6cPQjVER9g8eqGulhQ (per /app/memory/test_credentials.md). Token stored in localStorage as rp_admin_token.",
+  "test_credentials": "Admin: admin@rightpolicy.in / [REDACTED_PASSWORD] (per /app/memory/test_credentials.md). Token stored in localStorage as rp_admin_token.",
   "seed_data_creation": "TEST_-prefixed inquiries/policy_uploads/claim_requests inserted via public POST endpoints during pytest run; visible in admin dashboard. PATCH on TEST_PatchInq verified end-to-end (status=in_progress, notes=TEST_admin_note shown in UI).",
   "retest_needed": false,
   "main_agent_can_self_test": true,
