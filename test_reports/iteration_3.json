@@ -42,7 +42,7 @@
     "/app/backend/tests/test_rightpolicy_api.py (3 stale tests migrated from public GET /api/inquiries|/api/policy-uploads to admin-authenticated /api/admin/* — product code untouched)"
   ],
   "success_rate": {"backend": "100% (25/25)", "frontend": "92% (12/13 — admin login page broken; everything else works)"},
-  "test_credentials": "Admin: admin@rightpolicy.in / SKbn6cPQjVER9g8eqGulhQ (per /app/memory/test_credentials.md). Token storage key: rp_admin_token in localStorage. /api/admin/login works fine via direct API; the UI form is unreachable until the missing Logo import is added.",
+  "test_credentials": "Admin: admin@rightpolicy.in / [REDACTED_PASSWORD] (per /app/memory/test_credentials.md). Token storage key: rp_admin_token in localStorage. /api/admin/login works fine via direct API; the UI form is unreachable until the missing Logo import is added.",
   "seed_data_creation": "TEST_-prefixed inquiries / policy_uploads / claim_requests inserted via public POST endpoints during pytest run. Visible to admin endpoints.",
   "retest_needed": true,
   "main_agent_can_self_test": true,

@@ -27,7 +27,7 @@
   ],
   "updated_files": [],
   "success_rate": {"backend": "100% (25/25)", "frontend": "100% on iter-4 acceptance criteria (hero, trust strip, copy, mobile nav, cross-route hash nav, em-dash audit, admin login)"},
-  "test_credentials": "Admin: admin@rightpolicy.in / SKbn6cPQjVER9g8eqGulhQ — verified working via UI and API.",
+  "test_credentials": "Admin: admin@rightpolicy.in / [REDACTED_PASSWORD] — verified working via UI and API.",
   "seed_data_creation": "TEST_-prefixed inquiries / policy_uploads / claim_requests inserted via public POST during pytest run; visible to admin endpoints.",
   "retest_needed": false,
   "main_agent_can_self_test": true,

@@ -54,11 +54,16 @@ CORS_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = "*" not in CORS_ORIGINS
 
-if APP_ENV in {"production", "prod"} and (not ADMIN_PASSWORD or not JWT_SECRET):
-    raise RuntimeError("ADMIN_PASSWORD and JWT_SECRET must be set in production")
+ALLOW_INSECURE_DEFAULTS = os.environ.get("ALLOW_INSECURE_DEFAULTS", "false").lower() == "true"
 
-ADMIN_PASSWORD = ADMIN_PASSWORD or "admin123"
-JWT_SECRET = JWT_SECRET or "dev-secret-change-me"
+if not ADMIN_PASSWORD or not JWT_SECRET:
+    if not ALLOW_INSECURE_DEFAULTS:
+        raise RuntimeError(
+            "ADMIN_PASSWORD and JWT_SECRET environment variables must be configured. "
+            "For exceptional local development convenience only, you may set ALLOW_INSECURE_DEFAULTS=true in your environment."
+        )
+    ADMIN_PASSWORD = ADMIN_PASSWORD or "admin123"
+    JWT_SECRET = JWT_SECRET or "dev-secret-change-me"
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
@@ -119,6 +124,41 @@ def upload_content_matches_ext(ext: str, head: bytes) -> bool:
         ".jpeg": lambda data: data.startswith(b"\xff\xd8\xff"),
     }
     return signatures[ext](head)
+
+
+def save_file_sync(spooled_file, dest_path: Path, ext: str) -> int:
+    size = 0
+    checked_type = False
+    try:
+        spooled_file.seek(0)
+        with dest_path.open("wb") as out:
+            while True:
+                chunk = spooled_file.read(1024 * 1024)
+                if not chunk:
+                    break
+                if not checked_type:
+                    checked_type = True
+                    if not upload_content_matches_ext(ext, chunk):
+                        raise HTTPException(
+                            status_code=400,
+                            detail="File contents do not match the uploaded file extension",
+                        )
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    raise HTTPException(status_code=413, detail="File too large. Max 15 MB.")
+                out.write(chunk)
+        if size == 0:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty")
+        return size
+    except HTTPException:
+        if dest_path.exists():
+            dest_path.unlink(missing_ok=True)
+        raise
+    except Exception as e:
+        if dest_path.exists():
+            dest_path.unlink(missing_ok=True)
+        logger.error("File upload write failure: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail="File upload failed")
 
 
 def hash_password(password: str) -> str:
@@ -355,31 +395,8 @@ async def upload_policy(
     safe_name = f"{file_id}{ext}"
     dest = UPLOAD_DIR / safe_name
 
-    size = 0
-    checked_type = False
-    with dest.open("wb") as out:
-        while True:
-            chunk = await file.read(1024 * 1024)
-            if not chunk:
-                break
-            if not checked_type:
-                checked_type = True
-                if not upload_content_matches_ext(ext, chunk):
-                    out.close()
-                    dest.unlink(missing_ok=True)
-                    raise HTTPException(
-                        status_code=400,
-                        detail="File contents do not match the uploaded file extension",
-                    )
-            size += len(chunk)
-            if size > MAX_UPLOAD_BYTES:
-                out.close()
-                dest.unlink(missing_ok=True)
-                raise HTTPException(status_code=413, detail="File too large. Max 15 MB.")
-            out.write(chunk)
-    if size == 0:
-        dest.unlink(missing_ok=True)
-        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    import anyio
+    size = await anyio.to_thread.run_sync(save_file_sync, file.file, dest, ext)
 
     record = {
         "id": file_id,
@@ -490,11 +507,14 @@ async def admin_me(current: dict = Depends(get_current_admin)):
 
 # ---------- Admin: Lists / Stats ----------
 def _build_filter(q: Optional[str], status: Optional[str], fields: List[str]) -> dict:
+    import re
     flt: dict = {}
     if status and status in VALID_STATUSES:
         flt["status"] = status
     if q:
-        flt["$or"] = [{f: {"$regex": q, "$options": "i"}} for f in fields]
+        # Enforce search query limit to prevent ReDoS/regex CPU abuse
+        escaped_q = re.escape(q[:100].strip())
+        flt["$or"] = [{f: {"$regex": escaped_q, "$options": "i"}} for f in fields]
     return flt
 
 
