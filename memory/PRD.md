@@ -41,7 +41,7 @@ Premium human-first insurance advisory platform for India with two equally impor
 - ClaimSupportBanner on homepage
 - Navbar: Services dropdown, Claim Support link, dual CTAs ("Get Claim Support" + "Book a Free Consultation")
 - All CTAs unified to "Book a Free Consultation" with subline
-- Admin auth (JWT 12h, bcrypt, idempotent seed) — credentials in `/app/memory/test_credentials.md`
+- Admin auth (JWT 12h, bcrypt, idempotent seed) — credentials must be stored only in deployment environment variables
 - Admin dashboard: stat cards, 3 tabs, search/status filter, status select, notes editor, contact icons (mail/phone/whatsapp), policy file download
 - Email notifications via Resend (advisor alert + user confirmation) — log-only fallback when key absent
 - 100% testing_agent_v3 pass (backend 16/16, frontend 19/19)
@@ -85,4 +85,4 @@ Premium human-first insurance advisory platform for India with two equally impor
 - `/app/backend/.env` — JWT_SECRET, ADMIN_EMAIL/PASSWORD, RESEND_API_KEY, ADVISOR_ALERT_EMAIL, SENDER_EMAIL
 - `/app/frontend/src/data/services.js` — single source of truth for the 6 services
 - `/app/frontend/src/lib/rp.js` — axios instance, WhatsApp helpers, error formatting
-- `/app/memory/test_credentials.md` — admin login credentials
+- Deployment environment variables — admin login credentials
