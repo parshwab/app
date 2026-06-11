@@ -1,8 +1,9 @@
 // Centralised brand + helper module for RightPolicy frontend
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-export const API = `${BACKEND_URL}/api`;
+const configuredBackendUrl = process.env.REACT_APP_BACKEND_URL?.trim().replace(/\/$/, "");
+export const BACKEND_URL = configuredBackendUrl || "";
+export const API = BACKEND_URL ? `${BACKEND_URL}/api` : "";
 
 export const WHATSAPP_NUMBER = "919404908866"; // +91 9404 9088 66
 export const WHATSAPP_DISPLAY = "+91 9404 9088 66";
@@ -16,8 +17,20 @@ export const api = axios.create({
     headers: { "Content-Type": "application/json" },
 });
 
+export const requireApiUrl = (path = "") => {
+    if (!API) {
+        throw new Error("Backend URL is not configured. Set REACT_APP_BACKEND_URL in Emergent.");
+    }
+    return `${API}${path}`;
+};
+
 // Attach admin token for admin endpoints
 api.interceptors.request.use((config) => {
+    if (!API) {
+        return Promise.reject(
+            new Error("Backend URL is not configured. Set REACT_APP_BACKEND_URL in Emergent.")
+        );
+    }
     if (config.url?.startsWith("/admin")) {
         const tok = localStorage.getItem("rp_admin_token");
         if (tok) config.headers.Authorization = `Bearer ${tok}`;

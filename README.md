@@ -38,6 +38,7 @@ Set the following variables inside `backend/.env`:
 * `MONGO_URL`: Connection string (e.g. `mongodb://localhost:27017`)
 * `DB_NAME`: Database name (e.g. `rightpolicy`)
 * `ADMIN_EMAIL`: Administrator account email (e.g. `admin@rightpolicy.in`)
+* `ADMIN_USERNAME`: Administrator username (default: `rightadmin`)
 * `ADMIN_PASSWORD`: **(Required)** A strong, secure admin password.
 * `JWT_SECRET`: **(Required)** A secure, random token signing key.
 * `ALLOW_INSECURE_DEFAULTS`: Set to `true` **ONLY** in exceptional local developer environments if you wish to bypass required passwords on startup and use defaults (`admin123` / `dev-secret-change-me`). Must be `false` in staging/production.
@@ -77,18 +78,39 @@ Pytest matches a localhost target by default:
 1. Ensure the local backend server is running on port `8000`.
 2. Execute the test suite from the root folder:
    ```bash
-   TEST_ADMIN_EMAIL=admin@rightpolicy.in TEST_ADMIN_PASSWORD=yourStrongLocalPassword pytest backend/tests
+   TEST_ADMIN_EMAIL=admin@rightpolicy.in TEST_ADMIN_USERNAME=rightadmin TEST_ADMIN_PASSWORD=yourStrongLocalPassword pytest backend/tests
    ```
 
 *Note: Pytest automatically connects to your local MongoDB instance to prune `TEST_`-prefixed database records and deletes specific test spooled upload files upon session teardown.*
 
 ---
 
+## 🚢 Emergent Deployment Checklist
+
+Before publishing the production preview, set these values in Emergent's environment/settings area.
+
+Backend environment:
+* `APP_ENV=production`
+* `MONGO_URL`: Emergent's MongoDB connection value
+* `DB_NAME=rightpolicy`
+* `ADMIN_EMAIL=admin@rightpolicy.in`
+* `ADMIN_USERNAME=rightadmin`
+* `ADMIN_PASSWORD`: set this inside Emergent only; do not commit it to Git
+* `JWT_SECRET`: a long random secret value
+* `ALLOW_INSECURE_DEFAULTS=false`
+* `CORS_ORIGINS`: the exact Emergent frontend URL
+* `RESEND_API_KEY`, `SENDER_EMAIL`, `ADVISOR_ALERT_EMAIL`: required only when live email alerts should send
+
+Frontend environment:
+* `REACT_APP_BACKEND_URL`: the Emergent backend base URL, without `/api` at the end
+
+The admin screen accepts either the configured email or the configured username. For this project, the username is `rightadmin`.
+
 ## 🔒 Security & Deployment Hardening
 
 > [!WARNING]
-> **Active Password Rotation Requirement**:
-> The historical admin credential was exposed in committed git logs. Although all current branch source files and reports are fully sanitized and redacted, **you must rotate your administrative credentials in your Emergent environment variables immediately** before or after deploying this branch.
+> **Production password safety**:
+> Keep the admin password only in Emergent environment variables. Never commit the real value to Git, README files, test files, or screenshots.
 
 * **Production Secrets Enforced**: Default credentials have been fully disabled. If `ADMIN_PASSWORD` or `JWT_SECRET` are not set, the server will crash on startup rather than falling back to weak passwords, unless `ALLOW_INSECURE_DEFAULTS=true` is set.
 * **CORS Wildcard Security**: The backend enforces that `allow_credentials` is never paired with wildcard origin `*` parameters, keeping communication between frontend and backend spec-compliant and secure.

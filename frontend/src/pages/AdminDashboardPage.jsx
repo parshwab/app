@@ -20,7 +20,7 @@ import {
     TabsContent,
 } from "@/components/ui/tabs";
 import { Toaster, toast } from "sonner";
-import { api, API, WHATSAPP_NUMBER, formatApiError } from "@/lib/rp";
+import { api, requireApiUrl, WHATSAPP_NUMBER, formatApiError } from "@/lib/rp";
 
 const STATUSES = ["new", "in_progress", "contacted", "resolved", "closed"];
 
@@ -362,7 +362,7 @@ function UploadsPanel() {
     const downloadFile = async (it) => {
         try {
             const tok = localStorage.getItem("rp_admin_token");
-            const res = await fetch(`${API}/admin/policy-uploads/${it.id}/download`, {
+            const res = await fetch(requireApiUrl(`/admin/policy-uploads/${it.id}/download`), {
                 headers: { Authorization: `Bearer ${tok}` },
             });
             if (!res.ok) throw new Error("Download failed");

@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 import { api, formatApiError } from "@/lib/rp";
 
 export default function AdminLoginPage() {
-    const [email, setEmail] = useState("");
+    const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
         e.preventDefault();
         setLoading(true);
         try {
-            const { data } = await api.post("/admin/login", { email, password });
+            const { data } = await api.post("/admin/login", { email: identifier, password });
             localStorage.setItem("rp_admin_token", data.token);
             toast.success("Welcome back.");
             navigate("/admin", { replace: true });
@@ -45,15 +45,15 @@ export default function AdminLoginPage() {
                     </p>
                     <form onSubmit={submit} className="mt-6 space-y-4">
                         <div>
-                            <Label htmlFor="al-email">Email</Label>
+                            <Label htmlFor="al-email">Username or email</Label>
                             <Input
                                 id="al-email"
                                 data-testid="admin-login-email"
-                                type="email"
+                                type="text"
                                 required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="admin@rightpolicy.in"
+                                value={identifier}
+                                onChange={(e) => setIdentifier(e.target.value)}
+                                placeholder="rightadmin"
                                 className="mt-1.5"
                             />
                         </div>

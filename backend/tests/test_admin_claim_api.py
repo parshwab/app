@@ -7,6 +7,7 @@ BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "http://localhost:8000").rstr
 API = f"{BASE_URL}/api"
 
 ADMIN_EMAIL = os.environ.get("TEST_ADMIN_EMAIL", "admin@rightpolicy.in")
+ADMIN_USERNAME = os.environ.get("TEST_ADMIN_USERNAME", "rightadmin")
 ADMIN_PASSWORD = os.environ.get("TEST_ADMIN_PASSWORD", "disposableLocalPassword123!")
 
 
@@ -32,9 +33,18 @@ def test_admin_login_success():
     body = r.json()
     assert isinstance(body.get("token"), str) and len(body["token"]) > 20
     assert body["user"]["email"] == ADMIN_EMAIL
+    assert body["user"]["username"] == ADMIN_USERNAME
     assert body["user"].get("role") == "admin"
     assert "password_hash" not in body["user"]
     assert "_id" not in body["user"]
+
+
+def test_admin_login_with_username():
+    r = _login(email=ADMIN_USERNAME)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert isinstance(body.get("token"), str) and len(body["token"]) > 20
+    assert body["user"]["username"] == ADMIN_USERNAME
 
 
 def test_admin_login_wrong_password():
@@ -47,6 +57,7 @@ def test_admin_me_with_token():
     assert r.status_code == 200
     me = r.json()
     assert me["email"] == ADMIN_EMAIL
+    assert me["username"] == ADMIN_USERNAME
     assert me["role"] == "admin"
     assert "password_hash" not in me
 

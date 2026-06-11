@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Loader2, UploadCloud, FileText, X, ShieldCheck } from "lucide-react";
-import { API } from "@/lib/rp";
+import { requireApiUrl } from "@/lib/rp";
 
 const ACCEPT = ".pdf,.png,.jpg,.jpeg";
 const MAX_BYTES = 15 * 1024 * 1024;
@@ -52,7 +52,7 @@ export default function UploadDialog({ open, onOpenChange }) {
             fd.append("notes", form.notes);
             fd.append("file", file);
 
-            const res = await fetch(`${API}/policy-uploads`, {
+            const res = await fetch(requireApiUrl("/policy-uploads"), {
                 method: "POST",
                 body: fd,
             });

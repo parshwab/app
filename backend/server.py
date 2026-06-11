@@ -43,6 +43,7 @@ JWT_EXPIRY_HOURS = 12
 
 APP_ENV = os.environ.get("APP_ENV", "development").lower()
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@rightpolicy.in")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "rightadmin").strip() or "rightadmin"
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 ADVISOR_ALERT_EMAIL = os.environ.get("ADVISOR_ALERT_EMAIL", "contact@rightpolicy.in")
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "onboarding@resend.dev")
@@ -303,8 +304,8 @@ class ClaimSupportRecord(BaseModel):
 
 
 class AdminLoginIn(BaseModel):
-    email: EmailStr
-    password: str
+    email: str = Field(min_length=1, max_length=120)
+    password: str = Field(min_length=1, max_length=200)
 
 
 class AdminLoginOut(BaseModel):
@@ -493,9 +494,13 @@ admin_api = APIRouter(prefix="/admin")
 
 @admin_api.post("/login", response_model=AdminLoginOut)
 async def admin_login(payload: AdminLoginIn):
-    user = await db.admins.find_one({"email": payload.email.lower().strip()}, {"_id": 0})
+    identifier = payload.email.lower().strip()
+    user = await db.admins.find_one(
+        {"$or": [{"email": identifier}, {"username": identifier}]},
+        {"_id": 0},
+    )
     if not user or not verify_password(payload.password, user.get("password_hash", "")):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        raise HTTPException(status_code=401, detail="Invalid username or password")
     token = create_admin_token(user["id"], user["email"])
     safe_user = {k: v for k, v in user.items() if k != "password_hash"}
     return {"token": token, "user": safe_user}
@@ -661,28 +666,42 @@ app.include_router(api)
 async def on_startup():
     # Indexes
     await db.admins.create_index("email", unique=True)
+    await db.admins.create_index("username", unique=True, sparse=True)
     await db.inquiries.create_index("created_at")
     await db.policy_uploads.create_index("created_at")
     await db.claim_requests.create_index("created_at")
 
     # Seed/refresh admin
-    existing = await db.admins.find_one({"email": ADMIN_EMAIL.lower().strip()})
+    admin_email = ADMIN_EMAIL.lower().strip()
+    admin_username = ADMIN_USERNAME.lower().strip()
+    existing = await db.admins.find_one(
+        {"$or": [{"email": admin_email}, {"username": admin_username}]}
+    )
     if existing is None:
         await db.admins.insert_one({
             "id": str(uuid.uuid4()),
-            "email": ADMIN_EMAIL.lower().strip(),
+            "email": admin_email,
+            "username": admin_username,
             "password_hash": hash_password(ADMIN_PASSWORD),
             "name": "RightPolicy Admin",
             "role": "admin",
             "created_at": now_iso(),
         })
-        logger.info("Admin seeded: %s", ADMIN_EMAIL)
-    elif not verify_password(ADMIN_PASSWORD, existing.get("password_hash", "")):
+        logger.info("Admin seeded: %s", admin_email)
+    elif (
+        not verify_password(ADMIN_PASSWORD, existing.get("password_hash", ""))
+        or existing.get("email") != admin_email
+        or existing.get("username") != admin_username
+    ):
         await db.admins.update_one(
-            {"email": ADMIN_EMAIL.lower().strip()},
-            {"$set": {"password_hash": hash_password(ADMIN_PASSWORD)}},
+            {"id": existing["id"]},
+            {"$set": {
+                "email": admin_email,
+                "username": admin_username,
+                "password_hash": hash_password(ADMIN_PASSWORD),
+            }},
         )
-        logger.info("Admin password refreshed: %s", ADMIN_EMAIL)
+        logger.info("Admin credentials refreshed: %s", admin_email)
 
 
 @app.on_event("shutdown")
