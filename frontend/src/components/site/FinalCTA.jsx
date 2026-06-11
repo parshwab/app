@@ -19,12 +19,12 @@ export default function FinalCTA() {
                     />
                     <div className="relative p-10 sm:p-16 lg:p-20 text-center">
                         <h2 className="font-display relative text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-[#0F172A] max-w-3xl mx-auto leading-[1.05]">
-                            Insurance decisions deserve{" "}
-                            <span className="text-[#C8322A]">calm conversations</span>.
+                            Before you choose a policy,{" "}
+                            <span className="text-[#C8322A]">talk it through</span>.
                         </h2>
                         <p className="mt-6 text-lg text-[#475569] max-w-xl mx-auto leading-relaxed">
-                            No bots. No pressure. Just a thoughtful conversation with
-                            advisors who&rsquo;ve done this for 15+ years.
+                            Share what you need covered. We&rsquo;ll help you understand
+                            the options and the trade-offs.
                         </p>
                         <div className="mt-9 flex flex-wrap gap-3 justify-center">
                             <button
@@ -45,7 +45,7 @@ export default function FinalCTA() {
                             </button>
                         </div>
                         <p className="mt-5 text-sm text-[#475569]">
-                            A real insurance advisor will connect with you within 24 hours.
+                            We&rsquo;ll get back to you within one business day.
                         </p>
                     </div>
                 </div>

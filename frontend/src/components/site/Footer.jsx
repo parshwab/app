@@ -8,7 +8,7 @@ export default function Footer() {
     return (
         <footer
             data-testid="site-footer"
-            className="border-t border-[#E2E8F0] bg-white"
+            className="border-t border-[#E2E8F0] bg-[#F8F6F1]"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
                 <div className="grid lg:grid-cols-12 gap-10">
@@ -17,9 +17,8 @@ export default function Footer() {
                             <Logo asLink={false} className="h-12" />
                         </Link>
                         <p className="mt-4 text-sm text-[#475569] leading-relaxed max-w-md">
-                            A premium insurance advisory for Indian families and
-                            businesses. Trusted guidance, dedicated claim assistance,
-                            long-term support.
+                            Insurance advisory for Indian families and businesses,
+                            with help before purchase and during claims.
                         </p>
                     </div>
 
@@ -80,10 +79,22 @@ export default function Footer() {
                             </li>
                             <li className="flex items-start gap-2">
                                 <MapPin className="h-4 w-4 text-[#C8322A] mt-0.5" />
-                                Mumbai · Bengaluru · Delhi NCR
+                                FC Road, Pune
                             </li>
                         </ul>
                     </div>
+                </div>
+
+                <div className="mt-10 pt-6 border-t border-[#E2E8F0] flex flex-wrap gap-4 text-sm text-[#475569]">
+                    <Link to="/about" className="hover:text-[#0F172A]">
+                        About
+                    </Link>
+                    <Link to="/contact" className="hover:text-[#0F172A]">
+                        Contact
+                    </Link>
+                    <Link to="/claim-support" className="hover:text-[#0F172A]">
+                        Claim Support
+                    </Link>
                 </div>
 
                 <div className="mt-12 pt-6 border-t border-[#E2E8F0] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-xs text-[#475569]">
@@ -91,7 +102,7 @@ export default function Footer() {
                         © {new Date().getFullYear()} RightPolicy Advisory. IRDAI aligned
                         intermediary services.
                     </p>
-                    <p>Made with care. Trusted advisory, calm support.</p>
+                    <p>Advisory and claim support for Indian policyholders.</p>
                 </div>
             </div>
         </footer>

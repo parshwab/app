@@ -8,23 +8,23 @@ import {
 const faqs = [
     {
         q: "Why use an advisor instead of buying online?",
-        a: "Online platforms optimise for price comparison; we optimise for the right outcome. Premiums matter, but exclusions, sub-limits, and claim history matter more, and that requires a calm consultation.",
+        a: "Online platforms are useful for comparing prices. We help you compare what matters after purchase: exclusions, sub-limits, waiting periods, and claim handling.",
     },
     {
         q: "Can you review my existing policy?",
-        a: "Yes. Upload your current policy and we'll review it for coverage gaps, claim risks, and unnecessary costs. The review is free, confidential, and obligation-free.",
+        a: "Yes. Upload your current policy and we'll review it for coverage gaps, claim risks, and costs that may not be useful for you.",
     },
     {
         q: "Will you help during claims?",
-        a: "Always. Claim assistance is the most important part of what we do, we help with documentation, follow-ups, and escalations so you're not navigating the process alone.",
+        a: "Yes. We help with documentation, follow-ups, and escalations so you are not left handling the insurer process by yourself.",
     },
     {
         q: "Do you charge consultation fees?",
-        a: "No. Consultations and policy reviews are free. We're compensated by insurers as IRDAI-licensed intermediaries, but our recommendations are independent, not commission-led.",
+        a: "No. Consultations and policy reviews are free. If a policy is purchased through us, we may be compensated by the insurer as an intermediary.",
     },
     {
         q: "How do I know which insurance is right for me?",
-        a: "We start by understanding your family, dependents, income, existing cover, and concerns. Then we shortlist options and walk you through the trade-offs. You decide, we just make the choice clearer.",
+        a: "We look at your family, dependents, income, existing cover, and budget. Then we explain the options and trade-offs so you can decide with better information.",
     },
     {
         q: "What documents are required?",
@@ -45,7 +45,7 @@ export default function FAQ() {
                         Frequently asked
                     </p>
                     <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                        Questions, answered honestly.
+                        Straight answers to common questions.
                     </h2>
                 </div>
 

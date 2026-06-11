@@ -48,7 +48,7 @@ export default function ClaimSupportDialog({ open, onOpenChange }) {
         try {
             await api.post("/claim-support", form);
             toast.success(
-                "We've received your request. A real advisor will reach out within 24 hours."
+                "We've received your request. We'll get back to you within one business day."
             );
             setForm({
                 name: "",
@@ -78,8 +78,8 @@ export default function ClaimSupportDialog({ open, onOpenChange }) {
                         Get Claim Support
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
-                        Share a few details and a real advisor will reach out, calmly,
-                        within 24 hours.
+                        Share a few details and we&rsquo;ll help you understand the next
+                        step.
                     </DialogDescription>
                 </DialogHeader>
 

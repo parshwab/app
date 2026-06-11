@@ -44,7 +44,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
         setLoading(true);
         try {
             await api.post("/inquiries", form);
-            toast.success("Thanks! An advisor will reach out shortly.");
+            toast.success("Thanks. We'll get back to you shortly.");
             setForm({
                 name: "",
                 email: "",
@@ -71,8 +71,8 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                         Book a Free Consultation
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
-                        A real insurance advisor will connect with you within 24 hours
-                       , no bots, no pressure.
+                        Share your details and we&rsquo;ll get back to you within one
+                        business day.
                     </DialogDescription>
                 </DialogHeader>
 

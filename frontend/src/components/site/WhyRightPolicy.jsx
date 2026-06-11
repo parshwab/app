@@ -1,12 +1,12 @@
 import { Check, X } from "lucide-react";
 
 const rows = [
-    "Experienced personal advisors",
-    "Personalised recommendations",
-    "Hands-on claim assistance",
-    "Long-term relationship support",
-    "Pressure-free consultations",
-    "Advisors available on call",
+    "Advisor you can speak to",
+    "Recommendations based on your needs",
+    "Policy purchase assistance",
+    "Backup of policy documents",
+    "Claim paperwork support",
+    "Help at renewal time",
 ];
 
 export default function WhyRightPolicy() {
@@ -21,11 +21,12 @@ export default function WhyRightPolicy() {
                         Why RightPolicy
                     </p>
                     <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                        The difference is in who picks up the phone.
+                        The honest way to choose insurance.
                     </h2>
                     <p className="mt-5 text-lg text-[#475569] leading-relaxed">
-                        Online platforms compare prices. We help you compare
-                        consequences, what cover means when life actually happens.
+                        We help with policy selection, purchase assistance, renewals,
+                        claim support, and remedial guidance if an insurer dispute
+                        needs to be escalated.
                     </p>
                 </div>
 
@@ -35,7 +36,7 @@ export default function WhyRightPolicy() {
                             What you get
                         </div>
                         <div className="p-5 sm:p-6 border-b border-[#E2E8F0] bg-[#F3F4F6] font-display font-semibold text-[#0F172A]">
-                            Typical Online Platforms
+                            Typical comparison sites
                         </div>
                         <div className="p-5 sm:p-6 border-b border-[#E2E8F0] bg-[#0F172A] text-white font-display font-semibold flex items-center gap-2">
                             <span className="h-2 w-2 rounded-full bg-[#C8322A]" />
@@ -79,7 +80,7 @@ export default function WhyRightPolicy() {
                                         <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-50 text-[#16A34A]">
                                             <Check className="h-3.5 w-3.5" strokeWidth={3} />
                                         </span>
-                                        Yes, always
+                                        Included
                                     </span>
                                 </div>
                             </div>

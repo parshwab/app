@@ -18,7 +18,7 @@ import {
 import { SERVICE_BY_SLUG, SERVICES } from "@/data/services";
 import { openDialog } from "@/lib/rp";
 
-const SUBLINE = "A real insurance advisor will connect with you within 24 hours.";
+const SUBLINE = "We'll get back to you within one business day.";
 
 export default function ServiceDetailPage() {
     const { slug } = useParams();
@@ -131,7 +131,7 @@ export default function ServiceDetailPage() {
                                     Claim Guidance
                                 </p>
                                 <h2 className="font-display mt-2 text-2xl sm:text-3xl font-bold text-[#0F172A]">
-                                    When you actually need to claim, we&rsquo;re here.
+                                    If you need to claim, we can help with the process.
                                 </h2>
                                 <p className="mt-4 text-[#475569] leading-relaxed text-lg">
                                     {service.claimGuidance}
@@ -158,7 +158,7 @@ export default function ServiceDetailPage() {
                             FAQs
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A]">
-                            Questions, answered honestly.
+                            Common questions.
                         </h2>
                     </div>
                     <Accordion
@@ -194,7 +194,7 @@ export default function ServiceDetailPage() {
                             className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#C8322A]/15 blur-3xl"
                         />
                         <h2 className="font-display relative text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl mx-auto leading-[1.1]">
-                            Talk to a real advisor before you decide.
+                            Talk through the options before you decide.
                         </h2>
                         <p className="relative mt-4 text-white/75 max-w-xl mx-auto">
                             {SUBLINE}

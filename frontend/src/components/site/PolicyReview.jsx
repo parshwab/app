@@ -26,8 +26,9 @@ export default function PolicyReview() {
                                 Get a second opinion on your insurance.
                             </h2>
                             <p className="mt-5 text-lg text-white/75 leading-relaxed max-w-2xl">
-                                Upload your existing policy and our advisors will review
-                                it for hidden gaps, claim risks, and unnecessary costs,                                 confidentially, and with no obligation.
+                                Upload your existing policy and we&rsquo;ll check the cover,
+                                exclusions, disclosures, renewals, and claim-related
+                                risks before you rely on it.
                             </p>
 
                             <ul className="mt-8 grid sm:grid-cols-2 gap-4 max-w-xl">
@@ -35,7 +36,7 @@ export default function PolicyReview() {
                                     { icon: FileSearch, t: "Coverage gap analysis" },
                                     { icon: ShieldCheck, t: "Claim-readiness check" },
                                     { icon: Lock, t: "Confidential handling" },
-                                    { icon: ShieldCheck, t: "Plain-English summary" },
+                                    { icon: ShieldCheck, t: "Policy document backup" },
                                 ].map(({ icon: Icon, t }) => (
                                     <li
                                         key={t}
@@ -68,15 +69,15 @@ export default function PolicyReview() {
                         <div className="lg:col-span-5">
                             <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl">
                                 <img
-                                    src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxmaW5hbmNpYWwlMjBhZHZpc29yJTIwbWVldGluZyUyMGluZGlhbnxlbnwwfHx8fDE3NzgxMzE3MDB8MA&ixlib=rb-4.1.0&q=85"
-                                    alt="Advisor reviewing a client's policy"
+                                    src="/second-opinion-illustration.png"
+                                    alt="Illustration of an advisor reviewing insurance policy documents"
                                     className="w-full h-[360px] lg:h-[440px] object-cover"
                                     loading="lazy"
                                 />
                             </div>
                             <div className="mt-4 flex items-center gap-2 text-sm text-white/70">
                                 <Lock className="h-4 w-4" /> Your documents stay
-                                private. Reviewed by experienced advisors, not algorithms.
+                                private and are reviewed by an advisor.
                             </div>
                         </div>
                     </div>

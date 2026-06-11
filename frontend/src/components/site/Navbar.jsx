@@ -1,32 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { openDialog } from "@/lib/rp";
 import { SERVICES } from "@/data/services";
 import Logo from "./Logo";
 
 const links = [
-    { to: "/#services", label: "Services" },
     { to: "/claim-support", label: "Claim Support" },
-    { to: "/#about", label: "About" },
-    { to: "/#contact", label: "Contact" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
 ];
-
-function scrollToId(id) {
-    const el = document.getElementById(id);
-    if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        return true;
-    }
-    return false;
-}
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
     const [servicesOpen, setServicesOpen] = useState(false);
-    const location = useLocation();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 8);
@@ -34,42 +22,6 @@ export default function Navbar() {
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
-
-    // When the URL has a hash (e.g. /#about) and user is on home, scroll to it.
-    useEffect(() => {
-        if (location.pathname === "/" && location.hash) {
-            const id = location.hash.replace("#", "");
-            let frameId;
-            let attempts = 0;
-            const maxAttempts = 120; // Bounded check (~2 seconds at 60fps)
-
-            const attemptScroll = () => {
-                const scrolled = scrollToId(id);
-                attempts += 1;
-                if (!scrolled && attempts < maxAttempts) {
-                    frameId = requestAnimationFrame(attemptScroll);
-                }
-            };
-            frameId = requestAnimationFrame(attemptScroll);
-            return () => {
-                if (frameId) cancelAnimationFrame(frameId);
-            };
-        }
-    }, [location]);
-
-    const goToHashLink = (to) => (e) => {
-        if (!to.startsWith("/#")) return; // only handle home anchors
-        e.preventDefault();
-        const id = to.slice(2); // strip "/#"
-        setOpen(false);
-        if (location.pathname !== "/") {
-            navigate(`/#${id}`);
-        } else {
-            // Already on home: scroll, and reflect the section in URL.
-            scrollToId(id);
-            window.history.replaceState(null, "", `/#${id}`);
-        }
-    };
 
     return (
         <header
@@ -141,22 +93,32 @@ export default function Navbar() {
                             Claim Support
                         </NavLink>
 
-                        <a
-                            href="/#about"
-                            onClick={goToHashLink("/#about")}
+                        <NavLink
+                            to="/about"
                             data-testid="navlink-about"
-                            className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
+                            className={({ isActive }) =>
+                                `text-sm font-medium transition-colors ${
+                                    isActive
+                                        ? "text-[#C8322A]"
+                                        : "text-[#475569] hover:text-[#0F172A]"
+                                }`
+                            }
                         >
                             About
-                        </a>
-                        <a
-                            href="/#contact"
-                            onClick={goToHashLink("/#contact")}
+                        </NavLink>
+                        <NavLink
+                            to="/contact"
                             data-testid="navlink-contact"
-                            className="text-sm font-medium text-[#475569] hover:text-[#0F172A] transition-colors"
+                            className={({ isActive }) =>
+                                `text-sm font-medium transition-colors ${
+                                    isActive
+                                        ? "text-[#C8322A]"
+                                        : "text-[#475569] hover:text-[#0F172A]"
+                                }`
+                            }
                         >
                             Contact
-                        </a>
+                        </NavLink>
                     </nav>
 
                     <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
@@ -207,33 +169,19 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <div className="h-px bg-[#E2E8F0] my-2" />
-                        {links.slice(1).map((l) => {
-                            const isHash = l.to.startsWith("/#");
-                            const handle = (e) => {
-                                if (isHash) {
-                                    goToHashLink(l.to)(e);
-                                } else {
-                                    setOpen(false);
-                                }
-                            };
-                            const common = {
-                                "data-testid": `mobile-navlink-${l.label
+                        {links.map((l) => (
+                            <Link
+                                key={l.to}
+                                to={l.to}
+                                data-testid={`mobile-navlink-${l.label
                                     .toLowerCase()
-                                    .replace(/\s+/g, "-")}`,
-                                className:
-                                    "px-3 py-3 rounded-lg text-[#0F172A] font-medium hover:bg-white",
-                                onClick: handle,
-                            };
-                            return isHash ? (
-                                <a key={l.to} href={l.to} {...common}>
-                                    {l.label}
-                                </a>
-                            ) : (
-                                <Link key={l.to} to={l.to} {...common}>
-                                    {l.label}
-                                </Link>
-                            );
-                        })}
+                                    .replace(/\s+/g, "-")}`}
+                                className="px-3 py-3 rounded-lg text-[#0F172A] font-medium hover:bg-white"
+                                onClick={() => setOpen(false)}
+                            >
+                                {l.label}
+                            </Link>
+                        ))}
                         <button
                             data-testid="navbar-mobile-claim-button"
                             onClick={() => {

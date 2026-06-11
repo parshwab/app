@@ -6,7 +6,7 @@ export const SERVICES = [
         name: "Health Insurance",
         tagline: "Protect your family from the rising cost of healthcare in India.",
         intro:
-            "Hospitalisation costs in India are rising faster than most household incomes. The right health policy is less about premium and more about what it actually covers, sub-limits, room rent caps, waiting periods, and how the insurer handles claims.",
+            "Hospitalisation costs in India are rising quickly. A good health policy is not just about premium. It is about sub-limits, room rent caps, waiting periods, hospital network, and claim handling.",
         coverage: [
             "Hospitalisation expenses (room, ICU, surgery, doctor fees)",
             "Pre and post-hospitalisation care",
@@ -19,11 +19,11 @@ export const SERVICES = [
             "Buying purely on lowest premium without checking sub-limits and room rent caps.",
             "Ignoring the pre-existing disease (PED) waiting period, usually 2-4 years.",
             "Choosing low sum insured. ₹5L is no longer enough in metros.",
-            "Skipping declaration of existing health conditions, voids future claims.",
+            "Not declaring existing health conditions, which can affect future claims.",
             "Not adding parents under a family floater when their age makes it disproportionately expensive.",
         ],
         claimGuidance:
-            "When hospitalisation is planned, request cashless pre-authorisation 3-4 days in advance. For emergencies, intimate the insurer within 24 hours and keep all bills, prescriptions, and discharge summaries. We help you with paperwork and follow-ups so a denied claim doesn't become your problem alone.",
+            "When hospitalisation is planned, request cashless pre-authorisation 3-4 days in advance. For emergencies, intimate the insurer within 24 hours and keep bills, prescriptions, and discharge summaries. We help with paperwork and follow-ups if the claim gets delayed or questioned.",
         faqs: [
             {
                 q: "How much sum insured is enough for a family?",
@@ -31,11 +31,11 @@ export const SERVICES = [
             },
             {
                 q: "Will my pre-existing conditions be covered?",
-                a: "Yes, but typically after a waiting period of 2–4 years. Always declare honestly, undisclosed PEDs are the #1 reason claims get rejected.",
+                a: "Yes, but typically after a waiting period of 2–4 years. Always declare medical history correctly. Undisclosed pre-existing diseases are a common reason for claim rejection.",
             },
             {
                 q: "What is a sub-limit and why does it matter?",
-                a: "Sub-limits cap how much the insurer will pay for specific items (room rent, surgeries). A low room-rent sub-limit can quietly reduce your entire claim, we help you avoid such policies.",
+                a: "Sub-limits cap how much the insurer will pay for specific items such as room rent or surgeries. A low room-rent cap can reduce the final claim amount.",
             },
             {
                 q: "Cashless or reimbursement, which is better?",
@@ -48,7 +48,7 @@ export const SERVICES = [
         name: "Motor Insurance",
         tagline: "Comprehensive protection for your car or two-wheeler.",
         intro:
-            "Third-party motor insurance is mandatory in India, but it covers very little. Comprehensive cover protects you against accidents, theft, natural disasters, and third-party liability, and most importantly, against insurer behaviour at claim time.",
+            "Third-party motor insurance is mandatory in India, but it covers limited situations. Comprehensive cover adds protection for accidents, theft, natural disasters, own damage, and claim-related support.",
         coverage: [
             "Third-party liability (mandatory)",
             "Own damage from accidents, fire, vandalism",
@@ -60,16 +60,16 @@ export const SERVICES = [
         mistakes: [
             "Letting cover lapse, you lose accumulated No Claim Bonus instantly.",
             "Skipping zero-depreciation cover on cars under 5 years old.",
-            "Under-declaring IDV to lower premium, directly reduces your claim payout.",
+            "Under-declaring IDV to lower premium, which directly reduces your claim payout.",
             "Forgetting roadside assistance, especially in monsoon-prone cities.",
-            "Filing small claims that erode No Claim Bonus, sometimes paying out of pocket is smarter.",
+            "Filing very small claims without considering the impact on No Claim Bonus.",
         ],
         claimGuidance:
-            "Inform your insurer within 24 hours of any incident. For accidents, take dated photos before moving the vehicle and get a police FIR for theft or third-party injury. We help you decide whether to claim or self-pay (to protect your NCB), and we coordinate with surveyors so estimates are fair.",
+            "Inform your insurer within 24 hours of any incident. For accidents, take dated photos before moving the vehicle and get a police FIR for theft or third-party injury. We help you decide whether a claim makes sense and assist with surveyor coordination.",
         faqs: [
             {
                 q: "Is third-party insurance enough?",
-                a: "Legally yes, practically no. Third-party only pays for damage you cause to others, you bear all repair, theft, and disaster costs yourself.",
+                a: "Legally yes, but it is limited. Third-party cover pays for damage you cause to others. Repair, theft, and own-damage costs remain your responsibility.",
             },
             {
                 q: "What is IDV and why is it important?",
@@ -86,7 +86,7 @@ export const SERVICES = [
         name: "Life Insurance",
         tagline: "Protection for the people who depend on your income.",
         intro:
-            "Life insurance is for one purpose, protecting your family's lifestyle if your income disappears. Mixing it with investment usually means inadequate protection and disappointing returns. We help separate the two cleanly.",
+            "Life insurance should first protect the people who depend on your income. Mixing protection and investment often leaves families under-insured. We help you separate the two clearly.",
         coverage: [
             "Pure-term cover (highest cover, lowest premium)",
             "Whole-life and traditional endowment plans",
@@ -95,22 +95,22 @@ export const SERVICES = [
             "Return-of-premium term plans",
         ],
         mistakes: [
-            "Buying ULIPs or endowment for protection, they leave you under-insured.",
+            "Buying ULIPs or endowment plans mainly for protection.",
             "Choosing a sum-assured smaller than 10–15× annual income.",
-            "Stopping premiums early, voids the entire policy.",
-            "Hiding lifestyle facts (smoking, medical conditions), claims get rejected.",
+            "Stopping premiums early and losing the benefit of the policy.",
+            "Not declaring lifestyle facts such as smoking or medical conditions.",
             "Not nominating, or naming a minor without an appointee.",
         ],
         claimGuidance:
-            "On a death claim, the nominee should inform the insurer within 30 days. Documents required: original policy, death certificate, claim form, ID proof of nominee, and bank details. We sit with families through the process, including hospital records, post-mortem reports, and insurer questions, so the family doesn't have to face this alone.",
+            "On a death claim, the nominee should inform the insurer as early as possible. Common documents include the original policy, death certificate, claim form, nominee ID proof, and bank details. We help families organise records and respond to insurer questions.",
         faqs: [
             {
                 q: "How much life cover do I need?",
-                a: "A practical rule: 10–15× your annual income, plus outstanding loans, minus existing savings. We compute this for you in one conversation.",
+                a: "A practical starting point is 10–15× annual income, plus outstanding loans, minus existing savings. We can calculate this with you.",
             },
             {
                 q: "Term vs traditional plan, which is better?",
-                a: "For protection, pure term is almost always better. For investment, mutual funds typically outperform traditional plans. We help separate the two.",
+                a: "For protection, pure term is usually the cleaner option. Investment should be considered separately based on your goals and risk appetite.",
             },
             {
                 q: "Until what age should I take cover?",
@@ -123,7 +123,7 @@ export const SERVICES = [
         name: "Business Insurance",
         tagline: "Cover that protects what you've built, and the people who built it with you.",
         intro:
-            "Business insurance is rarely about one big risk, it's about a portfolio of small ones that compound. Property, liability, employee benefits, cyber exposure, and key-person cover all need to be sized to your specific business model, not bought off-the-shelf.",
+            "Business insurance should match how your business actually operates. Property, liability, employee benefits, cyber exposure, and key-person cover need to be sized to your risk, not bought as a generic package.",
         coverage: [
             "Property (fire, burglary, equipment breakdown)",
             "Public, product, and professional liability",
@@ -141,7 +141,7 @@ export const SERVICES = [
             "Treating insurance as compliance instead of risk management.",
         ],
         claimGuidance:
-            "Business claims are won or lost in the first 72 hours, preserve evidence, file FIRs where applicable, and intimate insurers immediately. We work with your finance and ops teams to assemble documentation, manage surveyor visits, and escalate when claim handling slows down.",
+            "For business claims, the first few days matter. Preserve evidence, file FIRs where applicable, and intimate insurers quickly. We help assemble documents, manage surveyor visits, and escalate when claim handling slows down.",
         faqs: [
             {
                 q: "Do I need business insurance for a small startup?",
@@ -149,11 +149,11 @@ export const SERVICES = [
             },
             {
                 q: "What is D&O insurance?",
-                a: "Directors & Officers insurance protects company leadership against personal liability arising from management decisions. Critical for funded startups and growing companies.",
+                a: "Directors & Officers insurance protects company leadership against personal liability arising from management decisions. It is important for funded startups and growing companies.",
             },
             {
                 q: "How is group health priced?",
-                a: "By age mix, family size, and prior claim experience. We help structure the plan and negotiate with insurers, sometimes the best plan isn't the cheapest one.",
+                a: "Pricing depends on age mix, family size, and prior claim experience. We help structure the plan and compare insurer terms.",
             },
         ],
     },
@@ -162,7 +162,7 @@ export const SERVICES = [
         name: "Travel Insurance",
         tagline: "Reliable cover for domestic and international travel.",
         intro:
-            "Travel insurance feels invisible until you actually need it, a missed connection at 2 AM, a hospitalisation in a foreign country, a lost passport. The right policy is one you can call from anywhere in the world and get help in minutes.",
+            "Travel insurance matters when something interrupts the trip: illness abroad, baggage delay, passport loss, or cancellation. The right policy should be easy to use when you are away from home.",
         coverage: [
             "Medical emergencies and hospitalisation abroad",
             "Trip cancellation, delay, and interruption",
@@ -173,18 +173,18 @@ export const SERVICES = [
             "Pre-existing condition cover (with declaration)",
         ],
         mistakes: [
-            "Buying the cheapest cover bundled with the airline, usually inadequate for medical claims.",
+            "Buying the cheapest cover bundled with the airline without checking medical limits.",
             "Skipping declaration of pre-existing conditions.",
             "Choosing low medical sum insured for US/Europe, costs are 5–10× of India.",
             "Missing the trip-cancellation window because of a non-covered reason.",
-            "Forgetting the 24/7 helpline number, keep it on phone and on paper.",
+            "Not saving the 24/7 helpline number before travelling.",
         ],
         claimGuidance:
-            "For medical emergencies abroad, call the insurer's 24/7 helpline first, many hospitals require pre-authorisation for cashless treatment. Keep all bills, prescriptions, police reports (for theft) and boarding passes. We help with claim filing and follow-ups in the local time zone.",
+            "For medical emergencies abroad, call the insurer's 24/7 helpline first because many hospitals require pre-authorisation. Keep bills, prescriptions, police reports, and boarding passes. We help with claim filing and follow-ups.",
         faqs: [
             {
                 q: "Is travel insurance really necessary for short trips?",
-                a: "Yes, even a 3-day medical hospitalisation in the US can cost ₹15–20L. Premium for adequate cover is typically a fraction of one day's hotel stay.",
+                a: "Yes. A short medical hospitalisation abroad can be expensive. Adequate travel cover is usually a small part of the overall trip cost.",
             },
             {
                 q: "Does it cover trip cancellation due to illness?",
@@ -192,7 +192,7 @@ export const SERVICES = [
             },
             {
                 q: "What about adventure activities?",
-                a: "Standard policies often exclude trekking above 4,000m, scuba diving, skiing. Declare planned activities upfront, we'll find a policy that covers them.",
+                a: "Standard policies often exclude activities such as high-altitude trekking, scuba diving, or skiing. Declare planned activities upfront so the cover can be checked.",
             },
         ],
     },
@@ -201,7 +201,7 @@ export const SERVICES = [
         name: "Personal Accident Insurance",
         tagline: "Income protection if an accident changes everything.",
         intro:
-            "Personal accident cover is one of the most under-bought insurances in India. It pays a lumpsum and weekly income on accidental death, disability, or temporary disablement, exactly when health insurance and life insurance both fall short.",
+            "Personal accident cover helps when an accident affects your ability to earn. It can pay a lump sum or weekly income for accidental death, disability, or temporary disablement.",
         coverage: [
             "Accidental death benefit",
             "Permanent total / partial disability",
@@ -211,22 +211,22 @@ export const SERVICES = [
             "Worldwide cover, 24x7",
         ],
         mistakes: [
-            "Assuming life insurance covers disability, it usually doesn't.",
+            "Assuming life insurance covers disability. It usually does not.",
             "Choosing a low sum insured. Aim for at least 10–15× annual income.",
             "Skipping coverage for self-employed individuals where income depends on physical work.",
-            "Not declaring high-risk occupations, voids the cover.",
+            "Not declaring high-risk occupations, which can affect the cover.",
             "Forgetting to add it to a family floater for spouse and adult children.",
         ],
         claimGuidance:
-            "Inform the insurer within 24–48 hours of the accident. Preserve FIRs, medical reports, and disability certificates from a government hospital. We help compile the disability declaration and follow up with the insurer's medical board so payouts aren't delayed by paperwork gaps.",
+            "Inform the insurer within 24–48 hours of the accident. Preserve FIRs, medical reports, and disability certificates from a government hospital. We help compile the documents and follow up so payouts are not delayed by paperwork gaps.",
         faqs: [
             {
                 q: "Isn't personal accident cover already in my motor policy?",
-                a: "Motor policies include limited owner-driver PA cover. A standalone PA policy provides much higher cover, applies anywhere, and includes disability income, a different and stronger product.",
+                a: "Motor policies include limited owner-driver PA cover. A standalone PA policy can provide higher cover, wider applicability, and disability income.",
             },
             {
                 q: "What is the difference between disability and death benefit?",
-                a: "Death benefit is a one-time lumpsum to your nominee. Disability benefit pays you a sum (and sometimes weekly income) while you can't earn, often more financially relevant during your working years.",
+                a: "Death benefit is a one-time lump sum to your nominee. Disability benefit pays you a sum, and sometimes weekly income, while you cannot earn.",
             },
             {
                 q: "Will it cover injuries from sports or two-wheelers?",

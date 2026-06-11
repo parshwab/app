@@ -3,23 +3,23 @@ import { MessageSquareQuote, Users, LifeBuoy, Heart } from "lucide-react";
 const values = [
     {
         icon: MessageSquareQuote,
-        title: "Clear explanations",
-        body: "Clauses, exclusions, and waiting periods explained the way you&rsquo;d explain them to a friend.",
+        title: "Insurance counselling",
+        body: "Unbiased analysis of policy options based on your present and future needs.",
     },
     {
         icon: Users,
-        title: "Trusted guidance",
-        body: "A consistent advisor who knows your story, not a new agent every renewal.",
+        title: "One point of contact",
+        body: "You do not have to explain your situation from scratch every renewal.",
     },
     {
         icon: LifeBuoy,
         title: "Claim support",
-        body: "We help with paperwork, follow-ups, and tough conversations when claims get complicated.",
+        body: "We help with paperwork, insurer follow-ups, and escalation routes when needed.",
     },
     {
         icon: Heart,
-        title: "Long-term trust",
-        body: "Relationships that span weddings, businesses, parents, and children growing up.",
+        title: "Renewal assistance",
+        body: "We remind you before due dates and help update policy details when required.",
     },
 ];
 
@@ -27,7 +27,7 @@ export default function ClientExperience() {
     return (
         <section
             data-testid="client-experience"
-            className="rp-section py-20 sm:py-24 bg-white/60 border-y border-[#E2E8F0]"
+            className="rp-section py-20 sm:py-24 bg-[#F8F6F1] border-y border-[#E2E8F0]"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid lg:grid-cols-12 gap-10 items-end">
@@ -36,13 +36,12 @@ export default function ClientExperience() {
                             Client experience
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                            What clients value about RightPolicy.
+                        Everything around the policy, not just the purchase.
                         </h2>
                     </div>
                     <p className="lg:col-span-5 text-[#475569] leading-relaxed">
-                        We don&rsquo;t use staged testimonials. Instead, here&rsquo;s
-                        what the families and businesses we work with consistently
-                        tell us they value most.
+                        Insurance needs do not end after payment. We stay involved
+                        through documents, renewals, claims, and practical next steps.
                     </p>
                 </div>
 

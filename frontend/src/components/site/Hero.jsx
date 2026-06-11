@@ -9,15 +9,22 @@ import {
 import { openDialog } from "@/lib/rp";
 
 const ADVISORY_POINTS = [
-    "Personalised recommendations",
-    "Transparent guidance",
-    "Long-term support",
+    "Policy options explained clearly",
+    "Help comparing trade-offs",
+    "Support at renewal and claim time",
 ];
 
 const CLAIM_POINTS = [
     "Documentation help",
     "Insurer coordination",
-    "Calm guidance during emergencies",
+    "Support during urgent situations",
+];
+
+const BRAND_PROMISE = [
+    "Right Policy",
+    "Right People",
+    "Right Advice",
+    "Right Assistance",
 ];
 
 export default function Hero() {
@@ -34,24 +41,34 @@ export default function Hero() {
                         className="inline-flex items-center gap-2 rounded-full bg-white border border-[#E2E8F0] px-3.5 py-1.5 text-xs font-medium text-[#475569] shadow-sm"
                     >
                         <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#C8322A]" />
-                        Insurance Advisory &amp; Claim Support
+                        Pune-based Insurance Advisory &amp; Claim Support
                     </div>
                     <h1
                         data-testid="hero-headline"
                         className="font-display mt-6 text-4xl sm:text-5xl lg:text-[3.65rem] leading-[1.05] font-bold tracking-tight text-[#0F172A]"
                     >
-                        Insurance guidance you can{" "}
-                        <span className="text-[#C8322A]">actually trust.</span>
+                        Insurance advice from{" "}
+                        <span className="text-[#C8322A]">real people, not bots.</span>
                     </h1>
                     <p
                         data-testid="hero-subheadline"
                         className="mt-5 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-3xl"
                     >
-                        No bots. No automated recommendations. Just experienced
-                        advisors helping families and businesses make confident
-                        insurance decisions, and standing by you when it&rsquo;s
-                        time to claim.
+                        Built over 25+ years in Pune, RightPolicy gives families and
+                        businesses advisor-led guidance before they buy, renew, or file
+                        a claim. For something this personal, you should be able to
+                        speak to a person.
                     </p>
+                    <div className="mt-6 flex flex-wrap gap-2.5" aria-label="RightPolicy promise">
+                        {BRAND_PROMISE.map((item) => (
+                            <span
+                                key={item}
+                                className="inline-flex rounded-full border border-[#E2E8F0] bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0F172A] shadow-sm"
+                            >
+                                {item}
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="mt-12 grid md:grid-cols-2 gap-5 lg:gap-7 items-stretch">
@@ -72,8 +89,8 @@ export default function Hero() {
                             Insurance Advisory
                         </h2>
                         <p className="mt-3 text-[#475569] leading-relaxed">
-                            Trusted guidance for choosing new insurance, or reviewing
-                            an existing policy with experienced advisors.
+                            Choose a new policy or review an existing one with someone
+                            who can explain the details properly.
                         </p>
                         <ul className="mt-5 space-y-2.5">
                             {ADVISORY_POINTS.map((p) => (
@@ -107,8 +124,7 @@ export default function Hero() {
                                 </button>
                             </div>
                             <p className="mt-3 text-xs text-[#475569]">
-                                A real insurance advisor will connect with you within
-                                24 hours.
+                                We&rsquo;ll get back to you within one business day.
                             </p>
                         </div>
                     </article>
@@ -134,8 +150,8 @@ export default function Hero() {
                             Claim Support &amp; Assistance
                         </h2>
                         <p className="relative mt-3 text-white/75 leading-relaxed">
-                            Support for claim queries, documentation, insurer
-                            coordination, and stressful claim situations.
+                            Help with claim questions, paperwork, insurer follow-ups,
+                            and situations where the process has slowed down.
                         </p>
                         <ul className="relative mt-5 space-y-2.5">
                             {CLAIM_POINTS.map((p) => (

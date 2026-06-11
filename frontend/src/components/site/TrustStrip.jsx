@@ -8,12 +8,12 @@ import {
 } from "lucide-react";
 
 const items = [
-    { icon: CalendarClock, label: "15+ Years Experience" },
-    { icon: BookOpenCheck, label: "Transparent Guidance" },
-    { icon: LifeBuoy, label: "Dedicated Claim Assistance" },
-    { icon: Handshake, label: "Long-Term Support" },
-    { icon: Users, label: "Experienced Advisors" },
-    { icon: UserCheck, label: "Personal Consultation" },
+    { icon: CalendarClock, label: "15+ Years in Insurance" },
+    { icon: BookOpenCheck, label: "Policy Terms Explained" },
+    { icon: LifeBuoy, label: "Claim Paperwork Help" },
+    { icon: Handshake, label: "Renewal Support" },
+    { icon: Users, label: "Advisor-Led Reviews" },
+    { icon: UserCheck, label: "Phone Consultation" },
 ];
 
 // Duplicate the items so the marquee loops seamlessly.
@@ -23,7 +23,7 @@ export default function TrustStrip() {
     return (
         <section
             data-testid="trust-strip"
-            className="border-y border-[#E2E8F0] bg-white/60 overflow-hidden"
+            className="border-y border-[#E2E8F0] bg-[#F8F6F1] overflow-hidden"
             aria-label="What clients value about RightPolicy"
         >
             <div className="relative max-w-7xl mx-auto py-5 sm:py-6">

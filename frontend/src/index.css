@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-    --rp-bg: #faf9f6;
+    --rp-bg: #f7f5f0;
     --rp-surface: #ffffff;
     --rp-surface-2: #f3f4f6;
     --rp-primary: #c8322a;
@@ -83,7 +83,7 @@ h6,
 
 @layer base {
     :root {
-        --background: 40 36% 97%;
+        --background: 40 30% 95%;
         --foreground: 222 47% 11%;
         --card: 0 0% 100%;
         --card-foreground: 222 47% 11%;

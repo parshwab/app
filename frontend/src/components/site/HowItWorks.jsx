@@ -4,22 +4,22 @@ const steps = [
     {
         icon: Phone,
         title: "Talk to an Advisor",
-        body: "A short, calm conversation, at a time that works for you. No sales scripts.",
+        body: "A short call to understand what you need covered and what you already have.",
     },
     {
         icon: Compass,
         title: "Get Personalized Guidance",
-        body: "We translate options into clear, side-by-side recommendations grounded in your needs.",
+        body: "We compare suitable options and explain the practical differences.",
     },
     {
         icon: BadgeCheck,
         title: "Choose with Confidence",
-        body: "You decide. We help with paperwork, KYC, and getting the policy issued correctly.",
+        body: "You decide. We help with forms, KYC, and policy issuance.",
     },
     {
         icon: InfinityIcon,
         title: "Ongoing Support",
-        body: "Renewals, life changes, and most importantly, claims, we&rsquo;re still on the line.",
+        body: "Need help with renewal, changes, or a claim later? You can reach us.",
     },
 ];
 
@@ -27,7 +27,7 @@ export default function HowItWorks() {
     return (
         <section
             data-testid="how-it-works"
-            className="rp-section py-20 sm:py-24 bg-white/60 border-y border-[#E2E8F0]"
+            className="rp-section py-20 sm:py-24 bg-[#F8F6F1] border-y border-[#E2E8F0]"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-2xl">

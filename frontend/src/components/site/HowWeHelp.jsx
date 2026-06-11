@@ -4,17 +4,17 @@ const cards = [
     {
         icon: Ear,
         title: "Understand",
-        body: "We start by listening, your family, your finances, your concerns. No forms, no pressure.",
+        body: "We start with your family, budget, current policies, and future requirements.",
     },
     {
         icon: Lightbulb,
         title: "Recommend",
-        body: "We translate the fine print into clear language and recommend cover that fits your real life.",
+        body: "We analyse policy options, explain disclosures, and shortlist suitable cover.",
     },
     {
         icon: HeartHandshake,
         title: "Support",
-        body: "We stay with you, at renewal, when life changes, and most importantly, when you need to claim.",
+        body: "We help with purchase formalities, renewals, policy records, and claims.",
     },
 ];
 
@@ -31,12 +31,12 @@ export default function HowWeHelp() {
                         How we help
                     </p>
                     <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                        Three calm steps. Trusted guidance throughout.
+                        Simple advice before, during, and after the policy.
                     </h2>
                     <p className="mt-5 text-lg text-[#475569] leading-relaxed">
-                        Our advisors aren&rsquo;t paid to push policies. They&rsquo;re
-                        here to help you choose what&rsquo;s right, and to be there
-                        long after you&rsquo;ve signed.
+                        We focus on what the policy will do for you when it matters:
+                        what is covered, what must be disclosed, how renewals work,
+                        and what support is available during claims.
                     </p>
                 </div>
 

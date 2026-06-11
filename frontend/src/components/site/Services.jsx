@@ -31,7 +31,7 @@ export default function Services() {
         <section
             id="services"
             data-testid="services-section"
-            className="rp-section py-20 sm:py-24 bg-white/60 border-y border-[#E2E8F0]"
+            className="rp-section py-20 sm:py-24 bg-[#F8F6F1] border-y border-[#E2E8F0]"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -44,8 +44,8 @@ export default function Services() {
                         </h2>
                     </div>
                     <p className="text-base text-[#475569] max-w-md">
-                        Browse the categories we advise on. Every recommendation is
-                        independent, transparent, and rooted in your real needs.
+                        Browse the categories we advise on. We focus on cover,
+                        exclusions, claim rules, and what fits your budget.
                     </p>
                 </div>
 

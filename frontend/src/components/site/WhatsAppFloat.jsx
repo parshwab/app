@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { WHATSAPP_NUMBER } from "@/lib/rp";
 
 const DEFAULT_MSG =
-    "Hi RightPolicy, I'd like to speak with an expert advisor about insurance.";
+    "Hi RightPolicy, I need help with insurance.";
 
 export default function WhatsAppFloat({ message = DEFAULT_MSG }) {
     const [show, setShow] = useState(false);
@@ -30,7 +30,7 @@ export default function WhatsAppFloat({ message = DEFAULT_MSG }) {
                     <MessageCircle className="h-5 w-5" strokeWidth={2} />
                 </span>
                 <span className="text-sm font-semibold tracking-tight">
-                    Chat with our Expert
+                    Chat on WhatsApp
                 </span>
                 <span className="absolute -top-1 -right-1 inline-flex h-3 w-3">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-[#C8322A] opacity-75 animate-ping" />

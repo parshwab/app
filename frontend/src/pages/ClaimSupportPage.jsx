@@ -21,12 +21,12 @@ const HELP = [
     {
         icon: ClipboardList,
         title: "Documentation guidance",
-        body: "We tell you exactly which forms, bills, and reports to collect, and in what order. No paperwork loops.",
+        body: "We list the forms, bills, reports, and dates you need before you submit or appeal.",
     },
     {
         icon: HeartHandshake,
         title: "Insurer coordination",
-        body: "We speak insurer language, follow up on your behalf, and keep you out of long call queues.",
+        body: "We help you follow up with the insurer and keep track of what has been asked for.",
     },
     {
         icon: AlertCircle,
@@ -36,12 +36,12 @@ const HELP = [
     {
         icon: Scale,
         title: "Escalation support",
-        body: "If a fair claim gets unfairly rejected, we help you escalate, internally, to the Ombudsman, or further.",
+        body: "If a claim is denied, we help you understand options such as grievance cells, IRDAI, Ombudsman, or consumer forums.",
     },
     {
         icon: Phone,
         title: "Emergency guidance",
-        body: "Hospital admission at 2 AM? We help you with cashless authorisation and the next 24 hours.",
+        body: "For hospitalisation, we help you understand cashless approval steps and timelines.",
     },
     {
         icon: FileCheck,
@@ -54,7 +54,7 @@ const STEPS = [
     {
         n: "01",
         t: "Tell us what's happening",
-        b: "Share basics, insurer, policy number, claim type. We respond within hours, not days.",
+        b: "Share the insurer, policy number, claim type, and current issue.",
     },
     {
         n: "02",
@@ -64,12 +64,12 @@ const STEPS = [
     {
         n: "03",
         t: "We handle the back-and-forth",
-        b: "Phone calls, emails, surveyor visits, we coordinate so you can focus on what matters.",
+        b: "We help with insurer follow-ups, emails, and surveyor coordination.",
     },
     {
         n: "04",
         t: "We stay until it's resolved",
-        b: "Through approval, settlement, and (if needed) escalation. Quietly, calmly.",
+        b: "We stay involved through approval, settlement, or escalation if needed.",
     },
 ];
 
@@ -103,7 +103,7 @@ export default function ClaimSupportPage() {
 
     return (
         <article data-testid="claim-support-page" className="bg-[#FAF9F6]">
-            {/* Hero, calm, reassuring */}
+            {/* Hero */}
             <section className="border-b border-[#E2E8F0]">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full bg-white border border-[#E2E8F0] px-3.5 py-1.5 text-xs font-medium text-[#475569]">
@@ -115,9 +115,9 @@ export default function ClaimSupportPage() {
                         <span className="text-[#C8322A]">claim alone.</span>
                     </h1>
                     <p className="mt-6 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-2xl mx-auto">
-                        An advisor will help you understand your policy, organise
-                        documents, coordinate with insurers, and stay with you until
-                        your claim is resolved, calmly and without judgement.
+                        We help you understand the policy, organise documents, follow
+                        up with the insurer, and decide the next practical or remedial
+                        step.
                     </p>
                     <div className="mt-9 flex flex-wrap gap-3 justify-center">
                         <button
@@ -150,12 +150,13 @@ export default function ClaimSupportPage() {
                             How RightPolicy helps during claims
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                            Trusted advisor support, end to end.
+                            Practical help during the claim process.
                         </h2>
                         <p className="mt-5 text-lg text-[#475569] leading-relaxed">
-                            Insurance is sold easily. Claims are where it gets hard. We
-                            stand on your side, quietly, persistently, and with the
-                            insurers&rsquo; processes already mapped out.
+                            Claims usually get difficult because of missing documents,
+                            unclear replies, or slow follow-ups. We help you keep the
+                            process organised, especially when a claim is delayed,
+                            queried, or rejected.
                         </p>
                     </div>
 
@@ -190,7 +191,7 @@ export default function ClaimSupportPage() {
                             What happens after you reach out
                         </p>
                         <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                            Four calm steps.
+                            Four simple steps.
                         </h2>
                     </div>
                     <ol className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
@@ -218,11 +219,10 @@ export default function ClaimSupportPage() {
             <section className="py-16 sm:py-24">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] leading-[1.1]">
-                        &ldquo;RightPolicy isn&rsquo;t only there when you buy
-                        insurance, they&rsquo;re there when you actually need help.&rdquo;
+                        We can help even if the policy was not bought through us.
                     </h2>
                     <p className="mt-5 text-[#475569]">
-                        That&rsquo;s the promise. Quietly kept, again and again.
+                        Send us the claim details and we&rsquo;ll help you understand the next step.
                     </p>
                 </div>
             </section>
@@ -271,10 +271,10 @@ export default function ClaimSupportPage() {
                             className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#C8322A]/15 blur-3xl"
                         />
                         <h2 className="font-display relative text-3xl sm:text-4xl font-bold tracking-tight max-w-2xl mx-auto leading-[1.1]">
-                            Whatever your claim situation, start the conversation.
+                            Stuck with a claim? Start here.
                         </h2>
                         <p className="relative mt-4 text-white/75 max-w-xl mx-auto">
-                            A real advisor will respond within one business day.
+                            We&rsquo;ll get back to you within one business day.
                         </p>
                         <div className="relative mt-8 flex flex-wrap gap-3 justify-center">
                             <button

@@ -18,15 +18,13 @@ export default function ClaimSupportBanner() {
                                 Claim Support
                             </div>
                             <h2 className="font-display mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A] leading-[1.1]">
-                                We&rsquo;re not just here when you{" "}
-                                <span className="text-[#C8322A]">buy</span>, we&rsquo;re
-                                here when you actually need support.
+                                Claim paperwork and follow-ups can be{" "}
+                                <span className="text-[#C8322A]">handled better</span>.
                             </h2>
                             <p className="mt-5 text-lg text-[#475569] leading-relaxed max-w-2xl">
-                                Claims can feel overwhelming. Our advisors help with
-                                paperwork, follow up with insurers, and stand with you
-                                through escalations, even if you didn&rsquo;t buy the
-                                policy from us.
+                                We help with documents, insurer follow-ups, and
+                                escalation steps, even if the policy was not bought
+                                through RightPolicy.
                             </p>
                         </div>
                         <div className="lg:col-span-4 flex flex-col gap-3 lg:items-end">

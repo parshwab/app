@@ -13,6 +13,8 @@ import ClaimSupportDialog from "./components/site/ClaimSupportDialog";
 import HomePage from "./pages/HomePage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import ClaimSupportPage from "./pages/ClaimSupportPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import RequireAdmin from "./pages/RequireAdmin";
@@ -77,6 +79,22 @@ function App() {
                     element={
                         <PublicShell>
                             <ClaimSupportPage />
+                        </PublicShell>
+                    }
+                />
+                <Route
+                    path="/about"
+                    element={
+                        <PublicShell>
+                            <AboutPage />
+                        </PublicShell>
+                    }
+                />
+                <Route
+                    path="/contact"
+                    element={
+                        <PublicShell>
+                            <ContactPage />
                         </PublicShell>
                     }
                 />

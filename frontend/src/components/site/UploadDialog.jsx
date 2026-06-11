@@ -82,8 +82,8 @@ export default function UploadDialog({ open, onOpenChange }) {
                         Upload Existing Policy
                     </DialogTitle>
                     <DialogDescription className="text-[#475569]">
-                        Confidential, free, no obligation. We&rsquo;ll review for
-                        coverage gaps and claim risks.
+                        Share your current policy and we&rsquo;ll review the main cover,
+                        exclusions, and claim-related risks.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -132,7 +132,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                         <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline">
                             <Label>Policy file (PDF, PNG or JPG · max 15 MB)</Label>
                             <span className="text-[11px] text-[#C8322A] font-semibold tracking-wide uppercase sm:text-right">
-                                Documents validated before review
+                                File checked before review
                             </span>
                         </div>
                         <div
@@ -155,7 +155,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                                         or drag and drop
                                     </p>
                                     <p className="text-xs">
-                                        PDF / PNG / JPG up to 15 MB · securely checked
+                                        PDF / PNG / JPG up to 15 MB
                                     </p>
                                 </div>
                             ) : (
@@ -222,10 +222,10 @@ export default function UploadDialog({ open, onOpenChange }) {
                     </button>
                     <div className="flex items-center justify-center gap-1.5 text-xs text-[#16A34A] font-semibold mt-1">
                         <ShieldCheck className="h-4 w-4 text-[#16A34A]" />
-                        Secure upload verification enabled
+                        File type verification enabled
                     </div>
                     <p className="text-xs text-center text-[#475569]">
-                        Your document is handled confidentially by experienced advisors.
+                        Your document is handled confidentially.
                     </p>
                 </form>
             </DialogContent>
