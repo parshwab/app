@@ -14,7 +14,7 @@ export default function Footer() {
                 <div className="grid lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-5">
                         <Link to="/" className="inline-flex items-center">
-                            <Logo asLink={false} className="h-8" />
+                            <Logo asLink={false} className="h-12" />
                         </Link>
                         <p className="mt-4 text-sm text-[#475569] leading-relaxed max-w-md">
                             A premium insurance advisory for Indian families and

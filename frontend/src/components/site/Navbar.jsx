@@ -87,7 +87,7 @@ export default function Navbar() {
                         data-testid="navbar-logo"
                         className="flex items-center gap-2 group flex-shrink-0"
                     >
-                        <Logo asLink={false} className="h-7 sm:h-9" testid="navbar-logo-img" />
+                        <Logo asLink={false} className="h-12 sm:h-14" testid="navbar-logo-img" />
                     </Link>
 
                     <nav

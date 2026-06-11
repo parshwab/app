@@ -674,7 +674,7 @@ export default function AdminDashboardPage() {
             <header className="bg-white border-b border-[#E2E8F0]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
                     <Link to="/" className="flex items-center gap-3">
-                        <Logo asLink={false} className="h-7" />
+                        <Logo asLink={false} className="h-10" />
                         <span className="text-[#475569] font-medium text-sm hidden sm:inline">
                             / admin
                         </span>

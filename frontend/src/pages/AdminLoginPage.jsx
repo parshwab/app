@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
             <Toaster position="top-center" richColors />
             <div className="w-full max-w-md">
                 <Link to="/" className="flex items-center justify-center">
-                    <Logo asLink={false} className="h-10" />
+                    <Logo asLink={false} className="h-14" />
                 </Link>
                 <div className="mt-8 rounded-2xl border border-[#E2E8F0] bg-white shadow-sm p-8">
                     <h1 className="font-display text-2xl font-bold text-[#0F172A]">
