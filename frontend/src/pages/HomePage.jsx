@@ -10,19 +10,22 @@ import ImpactStats from "../components/site/ImpactStats";
 import HowItWorks from "../components/site/HowItWorks";
 import FAQ from "../components/site/FAQ";
 import FinalCTA from "../components/site/FinalCTA";
+import useSiteContent from "@/hooks/useSiteContent";
 
 export default function HomePage() {
+    const { content } = useSiteContent();
+
     return (
         <>
-            <Hero />
+            <Hero content={content.home.hero} />
             <TrustStrip />
             <HowWeHelp />
             <PolicyReview />
             <Services />
             <ClaimSupportBanner />
-            <WhyRightPolicy />
+            <WhyRightPolicy content={content.home.why} />
             <ClientExperience />
-            <ImpactStats />
+            <ImpactStats stats={content.home.stats} />
             <HowItWorks />
             <FAQ />
             <FinalCTA />

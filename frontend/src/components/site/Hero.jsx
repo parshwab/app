@@ -7,27 +7,13 @@ import {
     CheckCircle2,
 } from "lucide-react";
 import { openDialog } from "@/lib/rp";
+import { defaultSiteContent } from "@/content/siteContent";
 
-const ADVISORY_POINTS = [
-    "Policy options explained clearly",
-    "Help comparing trade-offs",
-    "Support at renewal and claim time",
-];
+export default function Hero({ content = defaultSiteContent.home.hero }) {
+    const advisoryPoints = content.advisoryPoints || [];
+    const claimPoints = content.claimPoints || [];
+    const promises = content.promises || [];
 
-const CLAIM_POINTS = [
-    "Documentation help",
-    "Insurer coordination",
-    "Support during urgent situations",
-];
-
-const BRAND_PROMISE = [
-    "Right Policy",
-    "Right People",
-    "Right Advice",
-    "Right Assistance",
-];
-
-export default function Hero() {
     return (
         <section
             id="top"
@@ -41,26 +27,23 @@ export default function Hero() {
                         className="inline-flex items-center gap-2 rounded-full bg-white border border-[#E2E8F0] px-3.5 py-1.5 text-xs font-medium text-[#475569] shadow-sm"
                     >
                         <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#C8322A]" />
-                        Pune-based Insurance Advisory &amp; Claim Support
+                        {content.eyebrow}
                     </div>
                     <h1
                         data-testid="hero-headline"
                         className="font-display mt-6 text-4xl sm:text-5xl lg:text-[3.65rem] leading-[1.05] font-bold tracking-tight text-[#0F172A]"
                     >
-                        Insurance advice from{" "}
-                        <span className="text-[#C8322A]">real people, not bots.</span>
+                        {content.headlinePrefix}{" "}
+                        <span className="text-[#C8322A]">{content.headlineHighlight}</span>
                     </h1>
                     <p
                         data-testid="hero-subheadline"
                         className="mt-5 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-3xl"
                     >
-                        Built over 25+ years in Pune, RightPolicy gives families and
-                        businesses advisor-led guidance before they buy, renew, or file
-                        a claim. For something this personal, you should be able to
-                        speak to a person.
+                        {content.body}
                     </p>
                     <div className="mt-6 flex flex-wrap gap-2.5" aria-label="RightPolicy promise">
-                        {BRAND_PROMISE.map((item) => (
+                        {promises.map((item) => (
                             <span
                                 key={item}
                                 className="inline-flex rounded-full border border-[#E2E8F0] bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0F172A] shadow-sm"
@@ -86,14 +69,13 @@ export default function Hero() {
                             </span>
                         </div>
                         <h2 className="font-display mt-5 text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
-                            Insurance Advisory
+                            {content.advisoryTitle}
                         </h2>
                         <p className="mt-3 text-[#475569] leading-relaxed">
-                            Choose a new policy or review an existing one with someone
-                            who can explain the details properly.
+                            {content.advisoryBody}
                         </p>
                         <ul className="mt-5 space-y-2.5">
-                            {ADVISORY_POINTS.map((p) => (
+                            {advisoryPoints.map((p) => (
                                 <li
                                     key={p}
                                     className="flex items-start gap-2.5 text-sm text-[#0F172A]"
@@ -147,14 +129,13 @@ export default function Hero() {
                             </span>
                         </div>
                         <h2 className="relative font-display mt-5 text-2xl sm:text-3xl font-bold tracking-tight">
-                            Claim Support &amp; Assistance
+                            {content.claimTitle}
                         </h2>
                         <p className="relative mt-3 text-white/75 leading-relaxed">
-                            Help with claim questions, paperwork, insurer follow-ups,
-                            and situations where the process has slowed down.
+                            {content.claimBody}
                         </p>
                         <ul className="relative mt-5 space-y-2.5">
-                            {CLAIM_POINTS.map((p) => (
+                            {claimPoints.map((p) => (
                                 <li
                                     key={p}
                                     className="flex items-start gap-2.5 text-sm text-white/90"

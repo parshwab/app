@@ -1,11 +1,6 @@
-const stats = [
-    { value: "25+", label: "Years in insurance, finance, and claims" },
-    { value: "2,000+", label: "Families and businesses covered" },
-    { value: "5,000+", label: "General insurance claims handled" },
-    { value: "1:1", label: "Personal support, not bot replies" },
-];
+import { defaultSiteContent } from "@/content/siteContent";
 
-export default function ImpactStats() {
+export default function ImpactStats({ stats = defaultSiteContent.home.stats }) {
     return (
         <section
             data-testid="impact-stats"

@@ -1,15 +1,9 @@
 import { Check, X } from "lucide-react";
+import { defaultSiteContent } from "@/content/siteContent";
 
-const rows = [
-    "Advisor you can speak to",
-    "Recommendations based on your needs",
-    "Policy purchase assistance",
-    "Backup of policy documents",
-    "Claim paperwork support",
-    "Help at renewal time",
-];
+export default function WhyRightPolicy({ content = defaultSiteContent.home.why }) {
+    const rows = content.rows || [];
 
-export default function WhyRightPolicy() {
     return (
         <section
             data-testid="why-rightpolicy"
@@ -18,15 +12,13 @@ export default function WhyRightPolicy() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-2xl">
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#C8322A]">
-                        Why RightPolicy
+                        {content.eyebrow}
                     </p>
                     <h2 className="font-display mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0F172A]">
-                        The honest way to choose insurance.
+                        {content.title}
                     </h2>
                     <p className="mt-5 text-lg text-[#475569] leading-relaxed">
-                        We help with policy selection, purchase assistance, renewals,
-                        claim support, and remedial guidance if an insurer dispute
-                        needs to be escalated.
+                        {content.body}
                     </p>
                 </div>
 

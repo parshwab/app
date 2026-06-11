@@ -11,6 +11,8 @@ import {
     Inbox,
     FileText,
     LifeBuoy,
+    PencilLine,
+    Save,
 } from "lucide-react";
 import Logo from "@/components/site/Logo";
 import {
@@ -21,6 +23,7 @@ import {
 } from "@/components/ui/tabs";
 import { Toaster, toast } from "sonner";
 import { api, requireApiUrl, WHATSAPP_NUMBER, formatApiError } from "@/lib/rp";
+import { defaultSiteContent, mergeSiteContent } from "@/content/siteContent";
 
 const STATUSES = ["new", "in_progress", "contacted", "resolved", "closed"];
 
@@ -212,6 +215,340 @@ function MobileCard({ children }) {
     return (
         <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 space-y-2">
             {children}
+        </div>
+    );
+}
+
+const contentFieldClass =
+    "w-full rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#0F172A] focus:ring-2 focus:ring-[#C8322A]/30 outline-none";
+
+function ContentInput({ label, value, onChange, multiline = false, rows = 3 }) {
+    return (
+        <label className="block">
+            <span className="text-sm font-semibold text-[#0F172A]">{label}</span>
+            {multiline ? (
+                <textarea
+                    value={value || ""}
+                    onChange={(e) => onChange(e.target.value)}
+                    rows={rows}
+                    className={`${contentFieldClass} mt-1.5 resize-y`}
+                />
+            ) : (
+                <input
+                    value={value || ""}
+                    onChange={(e) => onChange(e.target.value)}
+                    className={`${contentFieldClass} mt-1.5`}
+                />
+            )}
+        </label>
+    );
+}
+
+function ContentArrayEditor({ label, value, onChange, rows = 5 }) {
+    return (
+        <ContentInput
+            label={label}
+            value={(value || []).join("\n")}
+            onChange={(text) =>
+                onChange(text.split("\n").map((item) => item.trim()).filter(Boolean))
+            }
+            multiline
+            rows={rows}
+        />
+    );
+}
+
+function ContentSection({ title, children }) {
+    return (
+        <section className="rounded-2xl border border-[#E2E8F0] bg-white p-5 sm:p-6 shadow-sm">
+            <h2 className="font-display text-xl font-bold text-[#0F172A]">{title}</h2>
+            <div className="mt-5 grid gap-4">{children}</div>
+        </section>
+    );
+}
+
+function ContentPanel() {
+    const [content, setContent] = useState(defaultSiteContent);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    const load = async () => {
+        setLoading(true);
+        try {
+            const { data } = await api.get("/admin/content");
+            setContent(mergeSiteContent(defaultSiteContent, data?.content));
+        } catch (err) {
+            toast.error(formatApiError(err, "Failed to load site content"));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        load();
+    }, []);
+
+    const update = (path, value) => {
+        setContent((current) => {
+            const next = structuredClone(current);
+            let target = next;
+            path.slice(0, -1).forEach((key) => {
+                target = target[key];
+            });
+            target[path[path.length - 1]] = value;
+            return next;
+        });
+    };
+
+    const save = async () => {
+        setSaving(true);
+        try {
+            const { data } = await api.put("/admin/content", { content });
+            setContent(mergeSiteContent(defaultSiteContent, data?.content));
+            toast.success("Website content saved");
+        } catch (err) {
+            toast.error(formatApiError(err, "Failed to save content"));
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const setStat = (index, key, value) => {
+        const stats = [...(content.home.stats || [])];
+        stats[index] = { ...stats[index], [key]: value };
+        update(["home", "stats"], stats);
+    };
+
+    if (loading) {
+        return (
+            <div className="rounded-2xl border border-[#E2E8F0] bg-white p-8 text-[#475569]">
+                Loading site content...
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-5">
+            <div className="rounded-2xl border border-[#C8322A]/20 bg-white p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 className="font-display text-2xl font-bold text-[#0F172A]">
+                        Site content
+                    </h2>
+                    <p className="mt-1 text-sm text-[#475569]">
+                        Edit public website copy here. Changes are saved to the
+                        database and appear on the website without changing code.
+                    </p>
+                </div>
+                <button
+                    onClick={save}
+                    disabled={saving}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] text-white font-semibold px-5 py-3 text-sm transition-colors disabled:opacity-60"
+                >
+                    <Save className="h-4 w-4" />
+                    {saving ? "Saving..." : "Save content"}
+                </button>
+            </div>
+
+            <ContentSection title="Homepage hero">
+                <ContentInput
+                    label="Small red label"
+                    value={content.home.hero.eyebrow}
+                    onChange={(v) => update(["home", "hero", "eyebrow"], v)}
+                />
+                <div className="grid md:grid-cols-2 gap-4">
+                    <ContentInput
+                        label="Headline first part"
+                        value={content.home.hero.headlinePrefix}
+                        onChange={(v) => update(["home", "hero", "headlinePrefix"], v)}
+                    />
+                    <ContentInput
+                        label="Headline red part"
+                        value={content.home.hero.headlineHighlight}
+                        onChange={(v) => update(["home", "hero", "headlineHighlight"], v)}
+                    />
+                </div>
+                <ContentInput
+                    label="Hero paragraph"
+                    value={content.home.hero.body}
+                    onChange={(v) => update(["home", "hero", "body"], v)}
+                    multiline
+                    rows={4}
+                />
+                <ContentArrayEditor
+                    label="Brand promise chips, one per line"
+                    value={content.home.hero.promises}
+                    onChange={(v) => update(["home", "hero", "promises"], v)}
+                    rows={4}
+                />
+            </ContentSection>
+
+            <div className="grid lg:grid-cols-2 gap-5">
+                <ContentSection title="Homepage cards">
+                    <ContentInput
+                        label="Advisory card title"
+                        value={content.home.hero.advisoryTitle}
+                        onChange={(v) => update(["home", "hero", "advisoryTitle"], v)}
+                    />
+                    <ContentInput
+                        label="Advisory card body"
+                        value={content.home.hero.advisoryBody}
+                        onChange={(v) => update(["home", "hero", "advisoryBody"], v)}
+                        multiline
+                    />
+                    <ContentArrayEditor
+                        label="Advisory bullets, one per line"
+                        value={content.home.hero.advisoryPoints}
+                        onChange={(v) => update(["home", "hero", "advisoryPoints"], v)}
+                    />
+                    <ContentInput
+                        label="Claim card title"
+                        value={content.home.hero.claimTitle}
+                        onChange={(v) => update(["home", "hero", "claimTitle"], v)}
+                    />
+                    <ContentInput
+                        label="Claim card body"
+                        value={content.home.hero.claimBody}
+                        onChange={(v) => update(["home", "hero", "claimBody"], v)}
+                        multiline
+                    />
+                    <ContentArrayEditor
+                        label="Claim bullets, one per line"
+                        value={content.home.hero.claimPoints}
+                        onChange={(v) => update(["home", "hero", "claimPoints"], v)}
+                    />
+                </ContentSection>
+
+                <ContentSection title="Why RightPolicy">
+                    <ContentInput
+                        label="Small label"
+                        value={content.home.why.eyebrow}
+                        onChange={(v) => update(["home", "why", "eyebrow"], v)}
+                    />
+                    <ContentInput
+                        label="Heading"
+                        value={content.home.why.title}
+                        onChange={(v) => update(["home", "why", "title"], v)}
+                    />
+                    <ContentInput
+                        label="Paragraph"
+                        value={content.home.why.body}
+                        onChange={(v) => update(["home", "why", "body"], v)}
+                        multiline
+                        rows={4}
+                    />
+                    <ContentArrayEditor
+                        label="Comparison rows, one per line"
+                        value={content.home.why.rows}
+                        onChange={(v) => update(["home", "why", "rows"], v)}
+                        rows={7}
+                    />
+                </ContentSection>
+            </div>
+
+            <ContentSection title="Homepage numbers">
+                <div className="grid md:grid-cols-2 gap-4">
+                    {(content.home.stats || []).map((stat, index) => (
+                        <div
+                            key={index}
+                            className="rounded-xl border border-[#E2E8F0] bg-[#FAF9F6] p-4 grid grid-cols-[7rem_1fr] gap-3"
+                        >
+                            <ContentInput
+                                label="Number"
+                                value={stat.value}
+                                onChange={(v) => setStat(index, "value", v)}
+                            />
+                            <ContentInput
+                                label="Description"
+                                value={stat.label}
+                                onChange={(v) => setStat(index, "label", v)}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </ContentSection>
+
+            <div className="grid lg:grid-cols-2 gap-5">
+                <ContentSection title="About page">
+                    <ContentInput
+                        label="Small label"
+                        value={content.about.eyebrow}
+                        onChange={(v) => update(["about", "eyebrow"], v)}
+                    />
+                    <ContentInput
+                        label="Main heading"
+                        value={content.about.title}
+                        onChange={(v) => update(["about", "title"], v)}
+                    />
+                    <ContentInput
+                        label="Intro paragraph"
+                        value={content.about.body}
+                        onChange={(v) => update(["about", "body"], v)}
+                        multiline
+                    />
+                    <ContentInput
+                        label="Founder label"
+                        value={content.about.founderLabel}
+                        onChange={(v) => update(["about", "founderLabel"], v)}
+                    />
+                    <ContentInput
+                        label="Founder name"
+                        value={content.about.founderName}
+                        onChange={(v) => update(["about", "founderName"], v)}
+                    />
+                    <ContentInput
+                        label="Founder summary"
+                        value={content.about.founderSummary}
+                        onChange={(v) => update(["about", "founderSummary"], v)}
+                        multiline
+                    />
+                    <ContentInput
+                        label="Founder note heading"
+                        value={content.about.founderNoteTitle}
+                        onChange={(v) => update(["about", "founderNoteTitle"], v)}
+                    />
+                    <ContentArrayEditor
+                        label="Founder note paragraphs, one paragraph per line"
+                        value={content.about.founderNoteParagraphs}
+                        onChange={(v) => update(["about", "founderNoteParagraphs"], v)}
+                        rows={5}
+                    />
+                </ContentSection>
+
+                <ContentSection title="Contact page">
+                    <ContentInput
+                        label="Small label"
+                        value={content.contact.eyebrow}
+                        onChange={(v) => update(["contact", "eyebrow"], v)}
+                    />
+                    <ContentInput
+                        label="Main heading"
+                        value={content.contact.title}
+                        onChange={(v) => update(["contact", "title"], v)}
+                    />
+                    <ContentInput
+                        label="Intro paragraph"
+                        value={content.contact.body}
+                        onChange={(v) => update(["contact", "body"], v)}
+                        multiline
+                    />
+                    <ContentInput
+                        label="Location card title"
+                        value={content.contact.locationTitle}
+                        onChange={(v) => update(["contact", "locationTitle"], v)}
+                    />
+                    <ContentInput
+                        label="Location line 1"
+                        value={content.contact.locationLine1}
+                        onChange={(v) => update(["contact", "locationLine1"], v)}
+                    />
+                    <ContentInput
+                        label="Location line 2"
+                        value={content.contact.locationLine2}
+                        onChange={(v) => update(["contact", "locationLine2"], v)}
+                        multiline
+                    />
+                </ContentSection>
+            </div>
         </div>
     );
 }
@@ -647,6 +984,13 @@ export default function AdminDashboardPage() {
     const cards = useMemo(
         () => [
             {
+                k: "content",
+                label: "Website copy",
+                icon: PencilLine,
+                total: "Edit",
+                new: "Database",
+            },
+            {
                 k: "inquiries",
                 label: "Consultation requests",
                 icon: Inbox,
@@ -700,7 +1044,7 @@ export default function AdminDashboardPage() {
                     </p>
                 </div>
 
-                <div className="grid sm:grid-cols-3 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {cards.map((c) => (
                         <button
                             key={c.k}
@@ -717,7 +1061,7 @@ export default function AdminDashboardPage() {
                                     <c.icon className="h-5 w-5" />
                                 </span>
                                 <span className="text-xs font-semibold uppercase tracking-wider text-[#C8322A]">
-                                    {c.new} new
+                                    {c.k === "content" ? c.new : `${c.new} new`}
                                 </span>
                             </div>
                             <div className="mt-4 font-display text-3xl font-bold text-[#0F172A]">
@@ -736,6 +1080,9 @@ export default function AdminDashboardPage() {
                         <TabsTrigger value="inquiries" data-testid="tab-inquiries">
                             Inquiries
                         </TabsTrigger>
+                        <TabsTrigger value="content" data-testid="tab-content">
+                            Site content
+                        </TabsTrigger>
                         <TabsTrigger value="uploads" data-testid="tab-uploads">
                             Policy uploads
                         </TabsTrigger>
@@ -745,6 +1092,9 @@ export default function AdminDashboardPage() {
                     </TabsList>
                     <TabsContent value="inquiries" className="mt-4">
                         <InquiriesPanel />
+                    </TabsContent>
+                    <TabsContent value="content" className="mt-4">
+                        <ContentPanel />
                     </TabsContent>
                     <TabsContent value="uploads" className="mt-4">
                         <UploadsPanel />

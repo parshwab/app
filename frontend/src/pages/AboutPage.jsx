@@ -9,6 +9,7 @@ import {
     ShieldCheck,
 } from "lucide-react";
 import { openDialog } from "@/lib/rp";
+import useSiteContent from "@/hooks/useSiteContent";
 
 const experience = [
     {
@@ -48,6 +49,9 @@ const principles = [
 ];
 
 export default function AboutPage() {
+    const { content } = useSiteContent();
+    const page = content.about;
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "instant" });
     }, []);
@@ -59,15 +63,13 @@ export default function AboutPage() {
                     <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                         <div className="lg:col-span-7">
                             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#C8322A]">
-                                About RightPolicy
+                                {page.eyebrow}
                             </p>
                             <h1 className="font-display mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0F172A] leading-[1.05]">
-                                Insurance advice shaped by claim experience.
+                                {page.title}
                             </h1>
                             <p className="mt-6 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-3xl">
-                                RightPolicy helps families and businesses choose insurance
-                                with a clearer view of what is covered, what is excluded,
-                                and what may matter during a claim.
+                                {page.body}
                             </p>
                             <div className="mt-9 flex flex-wrap gap-3">
                                 <button
@@ -96,14 +98,13 @@ export default function AboutPage() {
                                     </div>
                                     <div>
                                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C8322A]">
-                                            Founder &amp; CEO
+                                            {page.founderLabel}
                                         </p>
                                         <h2 className="font-display mt-1 text-2xl font-bold text-[#0F172A]">
-                                            Bhupendra Bhandari
+                                            {page.founderName}
                                         </h2>
                                         <p className="mt-2 text-[#475569] leading-relaxed">
-                                            CA and general insurance claims professional
-                                            based in Pune.
+                                            {page.founderSummary}
                                         </p>
                                     </div>
                                 </div>
@@ -132,24 +133,16 @@ export default function AboutPage() {
                     <div className="grid lg:grid-cols-12 gap-10 lg:gap-14">
                         <div className="lg:col-span-5">
                             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#C8322A]">
-                                Founder note
+                                {page.founderNoteEyebrow}
                             </p>
                             <h2 className="font-display mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A]">
-                                Built around practical claim knowledge.
+                                {page.founderNoteTitle}
                             </h2>
                         </div>
                         <div className="lg:col-span-7 text-[#475569] text-lg leading-relaxed space-y-5">
-                            <p>
-                                Bhupendra Bhandari has worked as an Insurance Surveyor
-                                and Loss Assessor since 2000, with experience in property
-                                insurance claims and documentation-heavy claim situations.
-                            </p>
-                            <p>
-                                That background shapes how RightPolicy advises clients.
-                                The focus is not only on buying a policy, but on whether
-                                the policy can be understood, used, renewed, and supported
-                                when a claim is filed.
-                            </p>
+                            {(page.founderNoteParagraphs || []).map((paragraph) => (
+                                <p key={paragraph}>{paragraph}</p>
+                            ))}
                         </div>
                     </div>
                 </div>

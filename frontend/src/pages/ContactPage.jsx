@@ -15,6 +15,7 @@ import {
     waLink,
     openDialog,
 } from "@/lib/rp";
+import useSiteContent from "@/hooks/useSiteContent";
 
 const contactOptions = [
     {
@@ -65,6 +66,9 @@ const reasons = [
 ];
 
 export default function ContactPage() {
+    const { content } = useSiteContent();
+    const page = content.contact;
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "instant" });
     }, []);
@@ -76,15 +80,13 @@ export default function ContactPage() {
                     <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end">
                         <div className="lg:col-span-7">
                             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#C8322A]">
-                                Contact
+                                {page.eyebrow}
                             </p>
                             <h1 className="font-display mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0F172A] leading-[1.05]">
-                                Tell us what you need help with.
+                                {page.title}
                             </h1>
                             <p className="mt-6 text-lg sm:text-xl text-[#475569] leading-relaxed max-w-3xl">
-                                Whether you are buying, renewing, reviewing a policy, or
-                                dealing with a claim, share the details and we will guide
-                                you to the next step.
+                                {page.body}
                             </p>
                         </div>
                         <div className="lg:col-span-5">
@@ -93,14 +95,13 @@ export default function ContactPage() {
                                     <MapPin className="h-5 w-5 text-[#C8322A] mt-0.5" />
                                     <div>
                                         <h2 className="font-display text-xl font-semibold text-[#0F172A]">
-                                            RightPolicy Advisory
+                                            {page.locationTitle}
                                         </h2>
                                         <p className="mt-2 text-[#475569] leading-relaxed">
-                                            Pune / Pimpri-Chinchwad, Maharashtra
+                                            {page.locationLine1}
                                         </p>
                                         <p className="mt-1 text-[#475569]">
-                                            Serving clients across India by phone,
-                                            WhatsApp, and email.
+                                            {page.locationLine2}
                                         </p>
                                     </div>
                                 </div>

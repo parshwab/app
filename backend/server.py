@@ -9,7 +9,7 @@ import logging
 import uuid
 from html import escape
 from datetime import datetime, timezone, timedelta
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import bcrypt
 import jwt
@@ -321,6 +321,94 @@ class StatusUpdate(BaseModel):
 
 VALID_STATUSES = {"new", "in_progress", "contacted", "resolved", "closed"}
 
+DEFAULT_SITE_CONTENT: Dict[str, Any] = {
+    "home": {
+        "hero": {
+            "eyebrow": "Pune-based Insurance Advisory & Claim Support",
+            "headlinePrefix": "Insurance advice from",
+            "headlineHighlight": "real people, not bots.",
+            "body": "Built over 25+ years in Pune, RightPolicy gives families and businesses advisor-led guidance before they buy, renew, or file a claim. For something this personal, you should be able to speak to a person.",
+            "promises": [
+                "Right Policy",
+                "Right People",
+                "Right Advice",
+                "Right Assistance",
+            ],
+            "advisoryTitle": "Insurance Advisory",
+            "advisoryBody": "Choose a new policy or review an existing one with someone who can explain the details properly.",
+            "advisoryPoints": [
+                "Policy options explained clearly",
+                "Help comparing trade-offs",
+                "Support at renewal and claim time",
+            ],
+            "claimTitle": "Claim Support & Assistance",
+            "claimBody": "Help with claim questions, paperwork, insurer follow-ups, and situations where the process has slowed down.",
+            "claimPoints": [
+                "Documentation help",
+                "Insurer coordination",
+                "Support during urgent situations",
+            ],
+        },
+        "why": {
+            "eyebrow": "Why RightPolicy",
+            "title": "The honest way to choose insurance.",
+            "body": "We help with policy selection, purchase assistance, renewals, claim support, and remedial guidance if an insurer dispute needs to be escalated.",
+            "rows": [
+                "Advisor you can speak to",
+                "Recommendations based on your needs",
+                "Policy purchase assistance",
+                "Backup of policy documents",
+                "Claim paperwork support",
+                "Help at renewal time",
+            ],
+        },
+        "stats": [
+            {"value": "25+", "label": "Years in insurance, finance, and claims"},
+            {"value": "2,000+", "label": "Families and businesses covered"},
+            {"value": "5,000+", "label": "General insurance claims handled"},
+            {"value": "1:1", "label": "Personal support, not bot replies"},
+        ],
+    },
+    "about": {
+        "eyebrow": "About RightPolicy",
+        "title": "Insurance advice shaped by claim experience.",
+        "body": "RightPolicy helps families and businesses choose insurance with a clearer view of what is covered, what is excluded, and what may matter during a claim.",
+        "founderLabel": "Founder & CEO",
+        "founderName": "Bhupendra Bhandari",
+        "founderSummary": "CA and general insurance claims professional based in Pune.",
+        "founderNoteEyebrow": "Founder note",
+        "founderNoteTitle": "Built around practical claim knowledge.",
+        "founderNoteParagraphs": [
+            "Bhupendra Bhandari has worked as an Insurance Surveyor and Loss Assessor since 2000, with experience in property insurance claims and documentation-heavy claim situations.",
+            "That background shapes how RightPolicy advises clients. The focus is not only on buying a policy, but on whether the policy can be understood, used, renewed, and supported when a claim is filed.",
+        ],
+    },
+    "contact": {
+        "eyebrow": "Contact",
+        "title": "Tell us what you need help with.",
+        "body": "Whether you are buying, renewing, reviewing a policy, or dealing with a claim, share the details and we will guide you to the next step.",
+        "locationTitle": "RightPolicy Advisory",
+        "locationLine1": "FC Road, Pune",
+        "locationLine2": "Serving clients across India by phone, WhatsApp, and email.",
+    },
+}
+
+
+class SiteContentPayload(BaseModel):
+    content: Dict[str, Any] = Field(default_factory=dict)
+
+
+def deep_merge_content(base: Dict[str, Any], override: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if not isinstance(override, dict):
+        return base
+    merged = dict(base)
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(base.get(key), dict):
+            merged[key] = deep_merge_content(base[key], value)
+        elif value is not None:
+            merged[key] = value
+    return merged
+
 
 # ---------- Public Routes ----------
 @api.get("/")
@@ -331,6 +419,16 @@ async def root():
 @api.get("/health")
 async def health():
     return {"status": "healthy", "time": now_iso()}
+
+
+@api.get("/site-content")
+async def get_site_content():
+    doc = await db.site_content.find_one({"key": "public"}, {"_id": 0})
+    saved = doc.get("content") if doc else {}
+    return {
+        "content": deep_merge_content(DEFAULT_SITE_CONTENT, saved),
+        "updated_at": doc.get("updated_at") if doc else None,
+    }
 
 
 @api.post("/inquiries", response_model=Inquiry, status_code=201)
@@ -511,6 +609,38 @@ async def admin_me(current: dict = Depends(get_current_admin)):
     return current
 
 
+@admin_api.get("/content")
+async def admin_get_content(current: dict = Depends(get_current_admin)):
+    doc = await db.site_content.find_one({"key": "public"}, {"_id": 0})
+    saved = doc.get("content") if doc else {}
+    return {
+        "content": deep_merge_content(DEFAULT_SITE_CONTENT, saved),
+        "updated_at": doc.get("updated_at") if doc else None,
+    }
+
+
+@admin_api.put("/content")
+async def admin_save_content(
+    payload: SiteContentPayload,
+    current: dict = Depends(get_current_admin),
+):
+    content = deep_merge_content(DEFAULT_SITE_CONTENT, payload.content)
+    updated_at = now_iso()
+    await db.site_content.update_one(
+        {"key": "public"},
+        {
+            "$set": {
+                "key": "public",
+                "content": content,
+                "updated_at": updated_at,
+                "updated_by": current.get("id"),
+            }
+        },
+        upsert=True,
+    )
+    return {"content": content, "updated_at": updated_at}
+
+
 # ---------- Admin: Lists / Stats ----------
 def _build_filter(q: Optional[str], status: Optional[str], fields: List[str]) -> dict:
     import re
@@ -670,6 +800,7 @@ async def on_startup():
     await db.inquiries.create_index("created_at")
     await db.policy_uploads.create_index("created_at")
     await db.claim_requests.create_index("created_at")
+    await db.site_content.create_index("key", unique=True)
 
     # Seed/refresh admin
     admin_email = ADMIN_EMAIL.lower().strip()
