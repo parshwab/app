@@ -24,6 +24,7 @@ import {
 import { Toaster, toast } from "sonner";
 import { api, requireApiUrl, WHATSAPP_NUMBER, formatApiError } from "@/lib/rp";
 import { defaultSiteContent, mergeSiteContent } from "@/content/siteContent";
+import { cacheSiteContent } from "@/hooks/useSiteContent";
 
 const STATUSES = ["new", "in_progress", "contacted", "resolved", "closed"];
 
@@ -304,7 +305,9 @@ function ContentPanel() {
         setSaving(true);
         try {
             const { data } = await api.put("/admin/content", { content });
-            setContent(mergeSiteContent(defaultSiteContent, data?.content));
+            const merged = mergeSiteContent(defaultSiteContent, data?.content);
+            setContent(merged);
+            cacheSiteContent(merged);
             toast.success("Website content saved");
         } catch (err) {
             toast.error(formatApiError(err, "Failed to save content"));
