@@ -78,17 +78,17 @@ export default function UploadDialog({ open, onOpenChange }) {
                 className="sm:max-w-lg bg-white border-[#E2E8F0]"
             >
                 <DialogHeader>
-                    <DialogTitle className="font-display text-2xl text-[#0F172A]">
+                    <DialogTitle className="font-display text-xl sm:text-2xl text-[#0F172A]">
                         Upload Existing Policy
                     </DialogTitle>
-                    <DialogDescription className="text-[#475569]">
+                    <DialogDescription className="text-sm sm:text-base text-[#475569]">
                         Share your current policy and we&rsquo;ll review the main cover,
                         exclusions, and claim-related risks.
                     </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={submit} className="space-y-4 mt-2">
-                    <div className="grid sm:grid-cols-2 gap-4">
+                <form onSubmit={submit} className="space-y-3 sm:space-y-4 mt-1 sm:mt-2">
+                    <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
                             <Label htmlFor="up-name">Full name</Label>
                             <Input
@@ -98,7 +98,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                                 onChange={update("name")}
                                 required
                                 placeholder="Your name"
-                                className="mt-1.5"
+                                className="mt-1 sm:mt-1.5"
                             />
                         </div>
                         <div>
@@ -110,7 +110,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                                 onChange={update("phone")}
                                 required
                                 placeholder="+91 ..."
-                                className="mt-1.5"
+                                className="mt-1 sm:mt-1.5"
                             />
                         </div>
                     </div>
@@ -124,7 +124,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                             onChange={update("email")}
                             required
                             placeholder="you@example.com"
-                            className="mt-1.5"
+                            className="mt-1 sm:mt-1.5"
                         />
                     </div>
 
@@ -143,11 +143,11 @@ export default function UploadDialog({ open, onOpenChange }) {
                                 onFile(e.dataTransfer.files?.[0]);
                             }}
                             data-testid="upload-dropzone"
-                            className="mt-1.5 cursor-pointer rounded-xl border-2 border-dashed border-[#E2E8F0] hover:border-[#C8322A]/40 bg-[#FAF9F6] p-6 text-center transition-colors"
+                            className="mt-1 sm:mt-1.5 cursor-pointer rounded-xl border-2 border-dashed border-[#E2E8F0] hover:border-[#C8322A]/40 bg-[#FAF9F6] p-4 text-center transition-colors sm:p-6"
                         >
                             {!file ? (
                                 <div className="flex flex-col items-center gap-2 text-[#475569]">
-                                    <UploadCloud className="h-7 w-7 text-[#C8322A]" />
+                                    <UploadCloud className="h-6 w-6 text-[#C8322A] sm:h-7 sm:w-7" />
                                     <p className="text-sm">
                                         <span className="font-semibold text-[#0F172A]">
                                             Click to upload
@@ -207,7 +207,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                             onChange={update("notes")}
                             placeholder="Concerns, claim history, renewal date..."
                             rows={3}
-                            className="mt-1.5"
+                            className="mt-1 sm:mt-1.5"
                         />
                     </div>
 
@@ -215,7 +215,7 @@ export default function UploadDialog({ open, onOpenChange }) {
                         type="submit"
                         disabled={loading}
                         data-testid="upload-form-submit"
-                        className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] disabled:opacity-70 text-white font-semibold px-6 py-3 transition-colors"
+                        className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] disabled:opacity-70 text-white font-semibold px-6 py-2.5 transition-colors sm:py-3"
                     >
                         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                         {loading ? "Uploading..." : "Submit for review"}

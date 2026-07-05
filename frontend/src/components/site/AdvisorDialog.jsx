@@ -67,17 +67,17 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                 className="sm:max-w-lg bg-white border-[#E2E8F0]"
             >
                 <DialogHeader>
-                    <DialogTitle className="font-display text-2xl text-[#0F172A]">
+                    <DialogTitle className="font-display text-xl sm:text-2xl text-[#0F172A]">
                         Book a Free Consultation
                     </DialogTitle>
-                    <DialogDescription className="text-[#475569]">
+                    <DialogDescription className="text-sm sm:text-base text-[#475569]">
                         Share your details and we&rsquo;ll get back to you within one
                         business day.
                     </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={submit} className="space-y-4 mt-2">
-                    <div className="grid sm:grid-cols-2 gap-4">
+                <form onSubmit={submit} className="space-y-3 sm:space-y-4 mt-1 sm:mt-2">
+                    <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
                             <Label htmlFor="adv-name">Full name</Label>
                             <Input
@@ -87,7 +87,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                                 onChange={update("name")}
                                 required
                                 placeholder="Your name"
-                                className="mt-1.5"
+                                className="mt-1 sm:mt-1.5"
                             />
                         </div>
                         <div>
@@ -99,7 +99,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                                 onChange={update("phone")}
                                 required
                                 placeholder="+91 ..."
-                                className="mt-1.5"
+                                className="mt-1 sm:mt-1.5"
                             />
                         </div>
                     </div>
@@ -113,7 +113,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                             onChange={update("email")}
                             required
                             placeholder="you@example.com"
-                            className="mt-1.5"
+                            className="mt-1 sm:mt-1.5"
                         />
                     </div>
                     <div>
@@ -141,8 +141,8 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                             value={form.message}
                             onChange={update("message")}
                             placeholder="Tell us briefly about your situation..."
-                            rows={4}
-                            className="mt-1.5"
+                            rows={3}
+                            className="mt-1 sm:mt-1.5"
                         />
                     </div>
 
@@ -150,7 +150,7 @@ export default function AdvisorDialog({ open, onOpenChange }) {
                         type="submit"
                         disabled={loading}
                         data-testid="advisor-form-submit"
-                        className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] disabled:opacity-70 text-white font-semibold px-6 py-3 transition-colors"
+                        className="w-full inline-flex justify-center items-center gap-2 rounded-full bg-[#C8322A] hover:bg-[#A82A23] disabled:opacity-70 text-white font-semibold px-6 py-2.5 transition-colors sm:py-3"
                     >
                         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                         {loading ? "Sending..." : "Request a callback"}
